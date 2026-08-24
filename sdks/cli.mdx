@@ -11,6 +11,18 @@ You need an organisation API key (`ct_live_…` or `ct_test_…`) from **Assess 
 
 ## Install
 
+### npm
+
+```bash
+npm install -g @praxicraft/assess-cli
+# or
+bun add -g @praxicraft/assess-cli
+```
+
+The interactive TUI requires [Bun](https://bun.sh) ≥ 1.1 on your `PATH` (the package shebang is `bun`).
+
+### Binary installer
+
 ```bash
 curl -fsSL https://praxicraft.com/install.sh | sh
 ```
@@ -71,7 +83,7 @@ praxicraft-assess invites create senior-backend-screen --email candidate@example
 praxicraft-assess invites result <invite-token>
 ```
 
-Run `praxicraft-assess` with no arguments to open an interactive shell (Dodo-style command palette + Ask AI).
+Run `praxicraft-assess` with no arguments to open an interactive shell (command palette + Ask AI).
 
 Type naturally to ask the assistant, or `/` for slash commands (for example `/login`, `/assessments list`). Ask AI uses your Assess API key against `POST /api/v1/public/assistant/chat/` (Starter+, scope `assistant:write`) and can call Assess MCP + docs tools.
 

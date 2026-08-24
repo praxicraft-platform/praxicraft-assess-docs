@@ -1,7 +1,7 @@
 # Praxicraft Assess Documentation
 
 <p align="center">
-  <img src="./images/og/docs.png" alt="Praxicraft Assess documentation" width="720"/>
+  <img src="./images/docs-banner.jpg" alt="Praxicraft Assess documentation" width="900"/>
 </p>
 
 <div align="center">

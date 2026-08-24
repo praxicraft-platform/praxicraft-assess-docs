@@ -85,7 +85,16 @@ praxicraft-assess invites result <invite-token>
 
 Run `praxicraft-assess` with no arguments to open an interactive shell (command palette + Ask AI).
 
-Type naturally to ask the assistant, or `/` for slash commands (for example `/login`, `/assessments list`). Ask AI uses your Assess API key against `POST /api/v1/public/assistant/chat/` (Starter+, scope `assistant:write`) and can call Assess MCP + docs tools.
+## Ask AI
+
+Type naturally to ask the assistant, or `/` for slash commands (for example `/login`, `/assessments list`).
+
+Ask AI uses your Assess API key against `POST /api/v1/public/assistant/chat/` (Starter+, scope `assistant:write`) and:
+
+- Points the model at the docs index: [llms.txt](https://docs.praxicraft.com/llms.txt)
+- Loads Knowledge MCP (`https://docs.praxicraft.com/mcp`) plus Assess API tools (`@praxicraft/assess-mcp`)
+
+Use it for “how do I invite…”, scope questions, webhook recipes, and CLI command help grounded in current docs.
 
 JSON bodies for create/update:
 

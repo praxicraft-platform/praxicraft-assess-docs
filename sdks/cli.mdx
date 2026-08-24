@@ -1,0 +1,119 @@
+---
+title: "CLI"
+description: "Install and use the praxicraft-assess command-line tool."
+---
+
+Official CLI for the Assess Public API. Invite candidates, manage assessments and pipelines, work with webhooks and interviews, and automate hiring workflows from your terminal.
+
+Binary: [`praxicraft-assess`](https://github.com/praxicraft-platform/praxicraft-assess-cli). Source and releases: [praxicraft-assess-cli](https://github.com/praxicraft-platform/praxicraft-assess-cli).
+
+You need an organisation API key (`ct_live_…` or `ct_test_…`) from **Assess → Developer → API Keys**.
+
+## Install
+
+```bash
+curl -fsSL https://praxicraft.com/install.sh | sh
+```
+
+That installs the latest GitHub Release binary (with SHA-256 check) as `praxicraft-assess` to `~/.local/bin` or `/usr/local/bin`.
+
+Optional:
+
+```bash
+# specific version
+curl -fsSL https://praxicraft.com/install.sh | PRAXICRAFT_VERSION=v2.0.0 sh
+
+# custom directory
+curl -fsSL https://praxicraft.com/install.sh | PRAXICRAFT_INSTALL_DIR="$HOME/bin" sh
+```
+
+### Manual (GitHub Releases)
+
+Download `praxicraft-assess-{os}-{arch}` from [Releases](https://github.com/praxicraft-platform/praxicraft-assess-cli/releases) (for example `praxicraft-assess-darwin-arm64`), `chmod +x`, and put it on your `PATH` as `praxicraft-assess`.
+
+### From source
+
+```bash
+git clone https://github.com/praxicraft-platform/praxicraft-assess-cli.git
+cd praxicraft-assess-cli
+bun install
+bun run src/index.ts
+```
+
+Requires [Bun](https://bun.sh) ≥ 1.1.
+
+## Configure
+
+```bash
+praxicraft-assess configure
+```
+
+Or set environment variables:
+
+```bash
+export PRAXICRAFT_API_KEY="ct_test_xxxxxxxxxxxxxxxx"
+# optional
+export PRAXICRAFT_API_BASE_URL="https://assess.praxicraft.com"
+```
+
+Profiles are stored in `~/.config/praxicraft/config.toml`. Use `--profile` to switch between them.
+
+```bash
+praxicraft-assess whoami
+```
+
+## Quickstart
+
+```bash
+praxicraft-assess org get
+praxicraft-assess assessments list --output table
+praxicraft-assess invites create senior-backend-screen --email candidate@example.com --name "Jane Doe"
+praxicraft-assess invites result <invite-token>
+```
+
+Run `praxicraft-assess` with no arguments to open an interactive shell (Dodo-style command palette + Ask AI).
+
+Type naturally to ask the assistant, or `/` for slash commands (for example `/login`, `/assessments list`). Ask AI uses your Assess API key against `POST /api/v1/public/assistant/chat/` (Starter+, scope `assistant:write`) and can call Assess MCP + docs tools.
+
+JSON bodies for create/update:
+
+```bash
+praxicraft-assess assessments create --body '{"title":"Backend screen"}'
+praxicraft-assess assessments create --body-file ./assessment.json
+```
+
+## Commands
+
+| Group | What you can do |
+|-------|-----------------|
+| `org` | Profile, stats, team, audit log, squads |
+| `assessments` | List, create, update, duplicate, cases, results |
+| `invites` | Create, bulk create, list, remind, cancel, result |
+| `results` | List by assessment, get by invite token |
+| `cases` | Platform and organisation cases |
+| `pipelines` | Enroll, bulk enroll, hold, reject, enrollments |
+| `webhooks` | Endpoints, test pings, deliveries, retries |
+| `interviews` | Rooms, templates, analysis, share, cancel |
+| `integrations` | Connected ATS providers |
+
+Run `praxicraft-assess <command> --help` for flags on any command.
+
+## Useful flags
+
+| Flag | Description |
+|------|-------------|
+| `--api-key` | API key (overrides env / config) |
+| `--base-url` | API host (default `https://assess.praxicraft.com`) |
+| `--profile` | Named config profile |
+| `--output` | `json`, `table`, or `yaml` |
+| `--query` | JMESPath filter on JSON output |
+| `--yes` | Skip confirmation prompts |
+| `--non-interactive` | Disable prompts (CI-friendly) |
+
+## Examples
+
+More recipes (SDKs, curl, n8n, Zapier) live in [praxicraft-assess-examples](https://github.com/praxicraft-platform/praxicraft-assess-examples).
+
+## Next
+
+[Authentication](/authentication) · [SDKs](/sdks/introduction) · [API Reference](/api-reference) · [Verify webhooks](/sdks/webhooks)

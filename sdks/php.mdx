@@ -1,0 +1,69 @@
+---
+title: "PHP"
+description: "Install and use the `praxicraft/assess` PHP client."
+---
+
+Composer package: [`praxicraft/assess`](https://packagist.org/packages/praxicraft/assess). Source: [praxicraft-php](https://github.com/praxicraft-platform/praxicraft-php). Requires **PHP 8.1+** (`ext-curl`, `ext-json`, `ext-hash`).
+
+## Install
+
+```bash
+composer require praxicraft/assess
+```
+
+## Authentication
+
+```bash
+export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
+```
+
+```php
+use Praxicraft\Assess\Client;
+
+$client = new Client(); // reads PRAXICRAFT_API_KEY
+// or new Client(['apiKey' => 'ct_live_…', 'baseUrl' => 'https://assess.praxicraft.com']);
+```
+
+## Quickstart
+
+```php
+use Praxicraft\Assess\Client;
+
+$client = new Client();
+
+$page = $client->assessments->list();
+foreach ($page['results'] as $assessment) {
+    echo $assessment['slug'], ' ', $assessment['status'], PHP_EOL;
+}
+
+$invite = $client->invites->create('senior-backend-screen', [
+    'email' => 'candidate@example.com',
+    'name' => 'Jane Doe',
+    'send_email' => true,
+]);
+
+echo $invite['invite_token'], PHP_EOL;
+$result = $client->results->retrieve($invite['invite_token']);
+```
+
+Responses are flat JSON (no `{ "data": … }` wrapper).
+
+## Resources
+
+| Resource | Common methods |
+|----------|----------------|
+| `$client->org` | `retrieve()`, `stats()` |
+| `$client->assessments` | `list()`, `retrieve()`, `create()`, `update()`, `activate()`, `listCases()`, `attachCases()`, `replaceCases()`, `removeCase()` |
+| `$client->invites` | `create()`, `bulkCreate()`, `list()`, `retrieve()`, `remind()`, `cancel()` |
+| `$client->results` | `list()`, `retrieve()`, `iterAll()` |
+| `$client->webhooks` | `list()`, `create()`, `retrieve()`, `update()`, `delete()`, `test()`, `deliveries()` |
+| `$client->pipelines` | `list()`, `retrieve()`, `enroll()`, `bulkEnroll()`, `listEnrollments()`, `getEnrollment()` |
+| `Webhooks::verifySignature` | Webhook HMAC helper |
+
+## Verify webhooks
+
+See [Verify webhooks](/sdks/webhooks).
+
+## Next
+
+[Authentication](/authentication) · [API Reference](/api-reference) · [Verify webhooks](/sdks/webhooks)

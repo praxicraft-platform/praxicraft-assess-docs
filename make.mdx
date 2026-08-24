@@ -1,0 +1,110 @@
+---
+title: "Make"
+description: "Connect Praxicraft Assess to Make — invite candidates and react to hiring events without hand-rolled HTTP modules."
+---
+
+**Praxicraft Assess** is a Make Custom App with a **Watch Assess Event** instant trigger and modules for invites, results, pipelines, interviews, and more.
+
+Setup docs live here. The integration source is [github.com/praxicraft-platform/make-praxicraft-assess](https://github.com/praxicraft-platform/make-praxicraft-assess).
+
+Coverage matches the [Zapier](/zapier) app and [n8n](/n8n) node (same Public API).
+
+## Prerequisites
+
+- A Make account
+- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/authentication)
+
+## Setup guide
+
+### 1. Create a scenario
+
+In Make, open **Scenarios** → create a new scenario. Click the purple **+** on the canvas to add the first module.
+
+<Frame caption="New Make scenario — add the first module">
+  <img src="/images/make/01-new-scenario.png" alt="Empty Make scenario canvas with purple plus button to add a module" />
+</Frame>
+
+### 2. Search for Praxicraft Assess
+
+Type `praxi` (or `Praxicraft`) in the search box. Select **Praxicraft Assess**, then pick a module (for example **List Integrations** or **Invite Candidate**). Private Custom App modules show a **Private** tag until the app is approved for the public catalog.
+
+<Frame caption="Search results showing Praxicraft Assess">
+  <img src="/images/make/02-search-praxicraft.png" alt="Make module search for praxi showing Praxicraft Assess with Private modules" />
+</Frame>
+
+### 3. Confirm organisation install
+
+The first time someone in your org uses the app, Make asks you to install it for the organisation. Confirm **Yes** so the app is available to your teammates.
+
+<Frame caption="Confirm installation of Praxicraft Assess for the organisation">
+  <img src="/images/make/03-confirm-install.png" alt="Make confirmation dialog to install Praxicraft Assess for all users in the organisation" />
+</Frame>
+
+### 4. Create a connection
+
+On the module, open **Connection** → **Create a connection**.
+
+<Frame caption="Module settings — create a Praxicraft Assess connection">
+  <img src="/images/make/04-create-connection.png" alt="Praxicraft Assess List Integrations module with Create a connection button" />
+</Frame>
+
+### 5. Paste your Assess API key
+
+1. Create an API key in Assess ([Developer → API Keys](https://assess.praxicraft.com/assess/api)).
+2. In Make, set **Connection name** (optional rename).
+3. Paste the key into **API Key**. Keys start with `ct_live_` (live) or `ct_test_` (test).
+4. Leave **Base URL** as `https://assess.praxicraft.com` unless you use a custom host.
+5. Click **Save**. Make tests the connection with `GET /org/` (needs `organisation:read` or a full-access key).
+
+<Frame caption="Create a connection — API Key and Base URL">
+  <img src="/images/make/05-connection-form.png" alt="Make Create a connection dialog with API Key and Base URL for Praxicraft Assess" />
+</Frame>
+
+### 6. Save the module
+
+After the connection succeeds, select it on the module and click **Save**.
+
+<Frame caption="Connection selected on List Integrations">
+  <img src="/images/make/06-connection-selected.png" alt="Praxicraft Assess module with an existing organisation connection selected" />
+</Frame>
+
+### 7. Invite a candidate
+
+Add **Invite Candidate**:
+
+- Assessment slug
+- Email
+- Optional name, send email, expires days, external id (ATS)
+
+The module output includes `invite_token` and invite URL fields from the Public API.
+
+### 8. Watch Assess events
+
+Add **Watch Assess Event** (instant). Pick one event (for example `candidate.passed` or `assessment.completed`).
+
+When the scenario is activated, Make registers an Assess webhook (`POST /webhooks/create/`) and receives signed deliveries. `webhook.test` pings are ignored.
+
+## Common modules
+
+| Module | Purpose |
+|--------|---------|
+| Invite Candidate | `POST …/assessments/{slug}/invites/` |
+| Get Invitation Result | `GET …/invites/{token}/result/` |
+| Enroll Candidate | `POST …/pipelines/{slug}/enroll/` |
+| List Assessments | `GET …/assessments/` |
+| Get Organisation | `GET …/org/` (invite quota) |
+| Watch Assess Event | Instant trigger via Assess webhooks |
+| Make an API Call | Escape hatch for any Public API path |
+
+Full list: same surface as [Zapier](/zapier) / [n8n](/n8n).
+
+## Recommended scopes
+
+| Use case | Scopes |
+|----------|--------|
+| Invite + notify on results | `assessments:read`, `invitations:write`, `candidates:read`, `webhooks:write` |
+| Pipeline enroll | `pipelines:read`, `pipelines:write`, `webhooks:write` |
+
+## Next
+
+[Automations](/automations) · [Zapier](/zapier) · [n8n](/n8n) · [Webhooks](/webhooks) · [Authentication](/authentication)

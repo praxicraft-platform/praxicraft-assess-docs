@@ -1,0 +1,68 @@
+---
+title: "Automations"
+description: "Run invites and notifications through n8n, Zapier, or Make."
+---
+
+Automations let hiring workflows run themselves: when someone applies in your ATS, invite them; when they pass, notify Slack.
+
+## Pick a path
+
+<CardGroup cols={2}>
+  <Card title="n8n" icon="boxes" href="/n8n">
+    Verified community node with trigger + actions.
+  </Card>
+  <Card title="Zapier" icon="zap" href="/zapier">
+    Assess app — events, invites, pipelines, interviews.
+  </Card>
+  <Card title="Make" icon="workflow" href="/make">
+    Custom App — Watch Assess Event, invites, pipelines.
+  </Card>
+  <Card title="Build with agents" icon="bot" href="/build-with-agents">
+    Knowledge MCP + API MCP + skills in one install
+  </Card>
+  <Card title="MCP / agents" icon="bot" href="/assess-mcp">
+    Coding agents that call Assess tools.
+  </Card>
+</CardGroup>
+
+## If you are recruiting / ops
+
+1. Decide the trigger (“application hits Stage X”, “candidate passed”).
+2. Decide the action (“send Assess invite”, “post to Slack”).
+3. Give an engineer (or a teammate with the [developer](/roles) role) an API key from [Authentication](/authentication) and point them at [n8n](/n8n), [Zapier](/zapier), or [Make](/make).
+4. Test with **your own email** before rolling out to a cohort.
+
+## Common recipes
+
+| When this happens | Do this |
+|-------------------|---------|
+| ATS stage change | Invite to an active assessment (`send_email: true`) via Zapier, n8n, or Make |
+| `candidate.passed` | Notify hiring manager via [Slack](/integrations/slack) or [Teams](/integrations/teams) |
+| New application | Enroll in a [pipeline](/pipelines) |
+
+Importable n8n workflows and Zapier recipes: [praxicraft-assess-examples](https://github.com/praxicraft-platform/praxicraft-assess-examples).
+
+## For engineers — generic pattern
+
+Prefer the [Zapier](/zapier), [n8n](/n8n), or [Make](/make) apps when you can. For a custom worker:
+
+1. Create an HTTPS catch-hook URL in your automation tool.
+2. Register it: `POST /api/v1/public/webhooks/create/` with an `events` array.
+3. Save `whsec_…` and verify `X-Praxicraft-Signature` when the platform exposes the raw body.
+4. Send `POST /webhooks/{id}/test/`.
+5. Add HTTP actions with `Authorization: Bearer ct_live_…` (or `ct_test_…` in Test mode).
+
+### Recommended scopes
+
+| Flow | Scopes |
+|------|--------|
+| Invite + notify | `assessments:read`, `invitations:write`, `candidates:read`, `webhooks:write` |
+| Pipeline | `pipelines:read`, `pipelines:write`, `webhooks:write` |
+
+## Make
+
+Use the [Make Custom App](/make) (Watch Assess Event + Invite Candidate and the full Public API module set). Source: [make-praxicraft-assess](https://github.com/praxicraft-platform/make-praxicraft-assess).
+
+## Next
+
+[Integrations](/integrations) · [Make](/make) · [Zapier](/zapier) · [n8n](/n8n) · [Slack](/integrations/slack) · [Webhooks](/webhooks)

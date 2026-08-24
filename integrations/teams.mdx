@@ -1,0 +1,30 @@
+---
+title: "Microsoft Teams"
+description: "Post Assess pass/fail alerts into a Teams channel via Incoming Webhook."
+---
+
+Teams destinations use a **Teams Incoming Webhook** connector URL (`webhook.office.com`). There is no OAuth “Connect Teams” flow today — paste the connector URL in **Developer → Destinations**.
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Create a Teams connector">
+    In your Teams channel, add an **Incoming Webhook** connector and copy the URL.
+  </Step>
+  <Step title="Add a destination">
+    In Assess **Developer → Destinations**, choose **Teams** (or paste the URL as an HTTPS destination that Assess treats as chat).
+  </Step>
+  <Step title="Subscribe and test">
+    Subscribe to `candidate.passed` (and optionally `candidate.failed`, `assessment.completed`). Send a test ping. Assess posts a formatted chat card, not the signed JSON envelope.
+  </Step>
+</Steps>
+
+Prefer [Slack](/integrations/slack) **Connect Slack** when your hiring channel lives in Slack. Use automation tools if you need multi-step routing after a pass/fail event.
+
+## For engineers
+
+Same `/webhooks/` API as other destinations — see [Webhooks](/webhooks). Teams is Incoming Webhook only (no `teams_channel_id` equivalent to Slack’s connected-workspace flow).
+
+## Next
+
+[Slack](/integrations/slack) · [Webhooks](/webhooks) · [Automations](/automations) · [Integrations](/integrations)

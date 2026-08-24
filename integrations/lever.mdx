@@ -1,0 +1,52 @@
+---
+title: "Lever"
+description: "Connect Lever for AI interview rooms, or automate assessment invites from opportunity stages."
+---
+
+Lever supports both Assess loops: **native** (Growth+) creates an AI interview room and writes a note on the opportunity; **automations** send assessment invites when a candidate hits your assessment stage.
+
+## Native connector (Growth+)
+
+<Steps>
+  <Step title="Open Integrations">
+    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+  </Step>
+  <Step title="Connect Lever">
+    Use an API key **or** OAuth. Follow the on-screen flow.
+  </Step>
+  <Step title="Confirm">
+    Matching events can create an **interview room**; score-back is an unstructured note. Stage filters are **not** applied.
+  </Step>
+</Steps>
+
+## Cookbook — stage → assessment invite → score back
+
+Use [Zapier](/zapier), [n8n](/n8n), or [Make](/make).
+
+**Golden recipe:** Lever stage **Assessment** → invite → note on the opportunity.
+
+<Steps>
+  <Step title="Invite">
+    1. Trigger: Lever **Candidate Stage Changed** (or opportunity webhook).
+    2. Filter: **Stage** equals `Assessment` (or your stage name).
+    3. Action: Praxicraft Assess **Invite Candidate**.
+  </Step>
+  <Step title="Map fields">
+    | Assess field | Lever field |
+    |--------------|-------------|
+    | Assessment | Your active assessment |
+    | Email | Opportunity emails[0] / Candidate Email |
+    | Name | Opportunity Name |
+    | External ID | Opportunity ID |
+    | Send email | `true` |
+  </Step>
+  <Step title="Score back">
+    1. Trigger: `candidate.passed` / `candidate.failed`.
+    2. Action: Lever **Add Note** on opportunity `data.external_id` (`POST /opportunities/{id}/notes`).
+    3. Optional: move the opportunity to **On-site** or **Rejected**.
+  </Step>
+</Steps>
+
+## Next
+
+[Integrations](/integrations) · [Zapier](/zapier) · [n8n](/n8n) · [Make](/make) · [Interviews](/interviews)

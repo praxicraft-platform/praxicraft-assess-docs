@@ -1,0 +1,34 @@
+---
+title: "Workday"
+description: "Connect Workday Recruiting for AI interview rooms with an optional stage filter."
+---
+
+Workday’s **native** connector (Growth+) creates an AI interview room and can write an unstructured note back. Assessment invites still go through [Zapier](/zapier), [n8n](/n8n), or [Make](/make).
+
+## Native connector (Growth+)
+
+<Steps>
+  <Step title="Open Integrations">
+    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+  </Step>
+  <Step title="Connect Workday">
+    Use basic auth plus your RaaS URL. Optionally set `stage_name` so only matching stages create rooms.
+  </Step>
+  <Step title="Confirm">
+    Use the dashboard test/connect flow. Stage filter works when the payload includes stage.
+  </Step>
+</Steps>
+
+| Setup | Stage filter |
+|-------|----------------|
+| Basic auth + RaaS URL. Optional `stage_name` | **Yes** when payload includes stage |
+
+Score-back is a note on the application, not a mapped scorecard field.
+
+## Assessment invites
+
+Native connectors do **not** send take-home invites. Mirror the Greenhouse/Lever pattern with Zapier, n8n, or Make: stage change → **Invite Candidate** → on `candidate.passed` / `failed`, write a note or advance the candidate. Store the Workday candidate id as `external_id`.
+
+## Next
+
+[Integrations](/integrations) · [Via webhooks](/integrations/via-webhooks) · [Automations](/automations) · [Interviews](/interviews)

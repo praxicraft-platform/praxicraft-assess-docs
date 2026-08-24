@@ -1,0 +1,81 @@
+---
+title: "API Reference"
+description: "Interactive OpenAPI playground and live ReDoc for the Public API."
+---
+
+Use this when you are building software against Assess. Recruiters and ops can stay in the [dashboard](https://assess.praxicraft.com/assess) or start at [Quickstart](/quickstart).
+
+## Open the API docs
+
+<CardGroup cols={2}>
+  <Card title="ReDoc" icon="book-open" href="https://assess.praxicraft.com/api/v1/public/redoc/">
+    Live reference for every Public API endpoint — schemas, examples, try-it.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Keys, Bearer auth, and base URL before you call anything.
+  </Card>
+</CardGroup>
+
+Direct link: [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/)
+
+Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground (snapshot `openapi.json`, currently **1.4.0**).
+
+## Current surface (1.4.0)
+
+Additive org/ops endpoints since the 1.1.0 baseline — details in the [API changelog](/api-changelog):
+
+| Area | Paths | Notes |
+|------|-------|--------|
+| Org reads | `/org/usage/`, `/org/developer/health/`, `/org/billing/`, `/org/audit-log/export/` | Mode-scoped usage/health/export; billing is org-global |
+| Org writes | `PATCH /org/`, `/org/squads/…`, `/org/member-invites/` | Scope `organisation:write` for mutations; member-invite list is read-only |
+| Pipelines | `POST /pipelines/create/`, `PATCH /pipelines/{slug}/`, enrollments `advance` + `notes` | Linear stages; Growth+; `pipelines:write` |
+| Destinations | `/webhooks/` (+ delivery retry) | Same as Developer → Destinations; no separate `/destinations/` path |
+
+Guides with curl and Live/Test callouts: [Organisation](/organisation) · [Pipelines](/pipelines) · [Scopes](/scopes) · [Webhooks](/webhooks).
+
+## Playground notes
+
+- Auth: Bearer token (`ct_live_…` or `ct_test_…`)
+- Server: `https://assess.praxicraft.com` (paths under `/api/v1/public/…`)
+- Example languages: curl, Python, JavaScript, Node, Go
+
+Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for production apps.
+
+## Schema files
+
+| Resource | URL |
+|----------|-----|
+| ReDoc | [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/) |
+| Live schema | `GET /api/v1/public/schema/` with `Accept: application/json` |
+| Docs snapshot | [openapi.json](https://docs.praxicraft.com/openapi.json) |
+
+## Conventions
+
+- Flat JSON success bodies
+- Errors: `{ "error": { "code", "message", "details?" } }`
+- Invitation id: **`invite_token`**
+- Cursor pagination: `cursor`, `page_size` (default 20, max 100)
+- Audit export format query: **`export_format`** (`csv` \| `json`) — not `?format=` (DRF renderer)
+
+## Guides
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    First call in five minutes.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Keys and scopes.
+  </Card>
+  <Card title="API changelog" icon="scroll-text" href="/api-changelog">
+    Public API release notes (separate from the product changelog).
+  </Card>
+  <Card title="Organisation" icon="building" href="/organisation">
+    Usage, billing, health, squads, audit export.
+  </Card>
+  <Card title="Errors" icon="triangle-alert" href="/errors">
+    Stable `error.code` catalogue.
+  </Card>
+  <Card title="SDKs" icon="package" href="/sdks/introduction">
+    Python, Node.js, Go.
+  </Card>
+</CardGroup>

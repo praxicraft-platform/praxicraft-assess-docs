@@ -1,0 +1,120 @@
+---
+title: "Webhooks"
+description: "Get notified when candidates finish, pass, or move through a pipeline."
+---
+
+A webhook is an HTTPS URL Assess calls when something happens. Your tool (n8n, Zapier, Make, or your backend) listens and reacts — no need to refresh the dashboard.
+
+**Destinations** (HTTPS, Slack, Teams) are the same Public API surface: `/webhooks/`. There is no separate `/destinations/` path.
+
+## If you are recruiting / ops
+
+You usually do **not** configure webhooks by hand. Instead:
+
+1. Ask engineering to register your automation URL, **or**
+2. Use the [n8n Assess node](/n8n), [Zapier](/zapier), or [Make](/make) app — they register the webhook when the scenario/workflow is active, **or**
+3. Follow [Automations](/automations) for a custom catch hook
+
+Useful events to ask for:
+
+| Event | Plain meaning |
+|-------|----------------|
+| `assessment.completed` | Candidate finished the test |
+| `candidate.passed` / `failed` | Score vs passing score |
+| `invitation.created` | New assessment invite created |
+| `pipeline.enrolled` / `advanced` / `held` / `unheld` | Funnel movement |
+| `interview.completed` / `no_show` | Live interview ended or expired |
+
+## For engineers
+
+Register an HTTPS endpoint. You receive a `whsec_…` secret **once** to verify `X-Praxicraft-Signature`.
+
+Live destinations only receive live events. Create a separate destination in **Test** mode (or with a `ct_test_` key) while you debug — test `candidate.passed` never hits a live URL. See [Live and Test mode](/authentication#live-and-test-mode).
+
+### Endpoints
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/webhooks/` | `webhooks:read` |
+| POST | `/webhooks/create/` | `webhooks:write` |
+| GET / PATCH / DELETE | `/webhooks/{id}/` | read / write |
+| GET | `/webhooks/{id}/deliveries/` | `webhooks:read` |
+| POST | `/webhooks/{id}/deliveries/{delivery_id}/retry/` | `webhooks:write` |
+| POST | `/webhooks/{id}/test/` | `webhooks:write` |
+
+### Create and verify
+
+Body uses **`events`** (not `event_types`):
+
+```bash
+curl -sS -X POST https://assess.praxicraft.com/api/v1/public/webhooks/create/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com/hooks/praxicraft",
+    "events": ["assessment.completed", "candidate.passed"]
+  }'
+```
+
+Store `secret_key`. Then:
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/test/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+HTTP 2xx on the test ping sets `is_verified` and `is_active`.
+
+### Slack or Teams (no HMAC)
+
+For “candidate passed → hiring channel”, use a chat destination instead of a signed HTTPS URL:
+
+- [Slack](/integrations/slack) — **Connect Slack** or Incoming Webhook
+- [Microsoft Teams](/integrations/teams) — Incoming Webhook connector
+
+Assess posts a formatted chat message (not the signed JSON envelope). HTTPS destinations still use `whsec_…` and `X-Praxicraft-Signature`.
+
+Failed deliveries can be resent from **Developer → Events** (filter **Failed**) or:
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/deliveries/DELIVERY_ID/retry/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+### Signature
+
+```http
+X-Praxicraft-Signature: sha256=<hex>
+```
+
+HMAC-SHA256 of the **raw** body with `whsec_…`. Helpers: [SDK webhooks](/sdks/webhooks).
+
+### Debugging deliveries
+
+Failed rows live in **Developer → Events** (filter **Failed**) and on each destination’s delivery log.
+
+| What you see | What to do |
+|--------------|------------|
+| Last payload | Open the event. **Event data** is the JSON Assess sent (or the chat card for Slack/Teams). |
+| HTTP 4xx/5xx + response body | The destination answered. Fix the listener, then **Resend**. |
+| HTTP 401 / 403 | Often HMAC: verify the **raw** body with `whsec_…` in the signature playground. |
+| Timeout / connection error | URL unreachable. Check TLS, firewall, and that the host is public. |
+| Auto-paused | Health probes failed. Fix the URL, send a test ping, pending rows replay. |
+
+`GET /webhooks/{id}/deliveries/` now includes `payload`, `last_error`, `response_status_code`, and a truncated `response_body`.
+
+### Full event list
+
+`assessment.started`, `assessment.completed`, `candidate.passed`, `candidate.failed`, `candidate.violation`, `invitation.created`, `invitation.expired`, `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`, `interview.scheduled`, `interview.started`, `interview.completed`, `interview.cancelled`, `interview.no_show`, `interview.analysis_ready`, `webhook.test`.
+
+### Delivery behaviour
+
+- Retries on 5xx/timeout: up to **3** (~1m, 2m, 4m)
+- **4xx** = no retry
+- Deduplicate with delivery `id` / `event_id`
+
+## Next
+
+[SDK verification](/sdks/webhooks) · [Slack](/integrations/slack) · [Teams](/integrations/teams) · [Integrations](/integrations) · [Automations](/automations)

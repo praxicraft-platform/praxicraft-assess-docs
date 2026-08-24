@@ -1,0 +1,76 @@
+---
+title: "Ruby"
+description: "Install and use the `praxicraft` Ruby gem."
+---
+
+Gem: [`praxicraft`](https://rubygems.org/gems/praxicraft). Source: [praxicraft-ruby](https://github.com/praxicraft-platform/praxicraft-ruby). Requires **Ruby 3.1+**.
+
+## Install
+
+```bash
+gem install praxicraft
+```
+
+Or in a Gemfile:
+
+```ruby
+gem "praxicraft"
+```
+
+## Authentication
+
+```bash
+export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
+```
+
+```ruby
+require "praxicraft"
+
+client = Praxicraft::Client.new # reads PRAXICRAFT_API_KEY
+# or Praxicraft::Client.new(api_key: "ct_live_…", base_url: "https://assess.praxicraft.com")
+```
+
+## Quickstart
+
+```ruby
+require "praxicraft"
+
+client = Praxicraft::Client.new
+
+page = client.assessments.list
+page.fetch("results", []).each do |assessment|
+  puts "#{assessment["slug"]} #{assessment["status"]}"
+end
+
+invite = client.invites.create(
+  "senior-backend-screen",
+  email: "candidate@example.com",
+  name: "Jane Doe",
+  send_email: true,
+)
+
+puts invite["invite_token"]
+result = client.results.retrieve(invite["invite_token"])
+```
+
+Responses are flat JSON (no `{ "data": … }` wrapper).
+
+## Resources
+
+| Resource | Common methods |
+|----------|----------------|
+| `client.org` | `retrieve`, `stats` |
+| `client.assessments` | `list`, `retrieve`, `create`, `update`, `activate`, `list_cases`, `attach_cases`, `replace_cases`, `remove_case` |
+| `client.invites` | `create`, `bulk_create`, `list`, `retrieve`, `remind`, `cancel` |
+| `client.results` | `list`, `retrieve`, `iter_all` |
+| `client.webhooks` | `list`, `create`, `retrieve`, `update`, `delete`, `test`, `deliveries` |
+| `client.pipelines` | `list`, `retrieve`, `enroll`, `bulk_enroll`, `list_enrollments`, `get_enrollment` |
+| `Praxicraft::Webhooks.verify_signature` | Webhook HMAC helper |
+
+## Verify webhooks
+
+See [Verify webhooks](/sdks/webhooks).
+
+## Next
+
+[Authentication](/authentication) · [API Reference](/api-reference) · [Verify webhooks](/sdks/webhooks)

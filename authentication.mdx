@@ -1,0 +1,143 @@
+---
+title: "Authentication"
+description: "When you need an API key, how to create one, and how software authenticates."
+---
+
+Dashboard hiring does not need a key. Automations, SDKs, MCP, and custom ATS flows do.
+
+## Do you need an API key?
+
+| Goal | Need a key? |
+|------|-------------|
+| Invite candidates and review scores in the [dashboard](https://assess.praxicraft.com/assess) | **No** |
+| Connect n8n, Zapier, Make, or a custom ATS | **Yes** |
+| Use SDKs or MCP with a stored secret | **Yes** |
+| Free plan | Keys **not** available — upgrade to Starter+ |
+
+If you only use the dashboard, you can skip the rest of this page.
+
+## Create a key (Starter+)
+
+<Steps>
+  <Step title="Open API Keys">
+    Go to [Assess → Developer → API Keys](https://assess.praxicraft.com/assess/api). Owners, admins, and [developers](/roles) can create keys.
+  </Step>
+  <Step title="Create and copy">
+    Create a key and copy it immediately — Assess shows it **once**. Live keys start with `ct_live_`. Test keys start with `ct_test_`. The dashboard **Live / Test** toggle decides which kind you mint.
+  </Step>
+  <Step title="Choose permissions (scopes)">
+    Limit what the key can do. Empty scopes = full access (legacy). Prefer the smallest set — see [Scopes](/scopes).
+  </Step>
+  <Step title="Optional: restrict this key by IP">
+    Add CIDR ranges on create or later under **IPs** on that key. Empty = any IP. Each key has its own list — this is not an org-wide or MCP setting.
+  </Step>
+  <Step title="Store it safely">
+    Put it in your secrets manager or env var `PRAXICRAFT_API_KEY`. Never commit it to git or paste it into a public chat.
+  </Step>
+</Steps>
+
+There is no Public API to create, list, or revoke keys. Manage them only in the dashboard.
+
+## How software uses the key
+
+<Note>
+**Base URL:** `https://assess.praxicraft.com`  
+**Prefix:** `/api/v1/public/`  
+**Auth:** `Authorization: Bearer ct_live_…` or `ct_test_…`
+</Note>
+
+Every Public API request sends:
+
+```http
+Authorization: Bearer ct_live_xxxxxxxxxxxxxxxx
+```
+
+Use a `ct_test_…` key the same way when you are in Test mode. The prefix selects the environment — you do not send a livemode header on Public API requests.
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `PRAXICRAFT_API_KEY` | Yes | The Bearer token |
+| `PRAXICRAFT_API_BASE_URL` | No | Override host (default `https://assess.praxicraft.com`) |
+
+Full route shape:
+
+```text
+https://assess.praxicraft.com/api/v1/public/…
+```
+
+## What success and errors look like
+
+Success bodies are plain JSON objects/lists (not wrapped in `{ "status", "data" }`).
+
+Errors look like:
+
+```json
+{
+  "error": {
+    "code": "INVALID_API_KEY",
+    "message": "…"
+  }
+}
+```
+
+| HTTP | `error.code` | Meaning in plain terms |
+|------|--------------|------------------------|
+| 401 | `INVALID_API_KEY` | Wrong or missing key |
+| 401 | `EXPIRED_API_KEY` | Key was revoked or expired |
+| 403 | `INSUFFICIENT_SCOPE` | Key is not allowed to do that action |
+| 403 | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |
+
+Full list: [Errors](/errors).
+
+## IP allowlists (per key)
+
+Set CIDRs on **that key** in [Developer → API Keys](https://assess.praxicraft.com/assess/api). Empty list = any IP.
+
+When a list is set, Public API requests that use `Authorization: Bearer ct_live_…` or `ct_test_…` must come from one of those networks. Otherwise Assess returns **403** `IP_NOT_ALLOWED`.
+
+<Note>
+IP allowlists do **not** apply to [MCP](/assess-mcp) OAuth (Cursor, Claude, and other hosted agents). Those clients do not have stable IPs. Use a dedicated key with an empty allowlist for stdio MCP (`PRAXICRAFT_API_KEY`) if you also restrict other keys by CIDR.
+</Note>
+
+## Webhook secrets are different
+
+When Assess calls *your* URL, it uses a webhook secret (`whsec_…`), not your API key. See [Webhooks](/webhooks).
+
+## Rotate a key safely
+
+1. Create a new key with the same scopes.
+2. Update Zapier / n8n / workers / MCP to use the new key.
+3. Revoke the old key in the dashboard once traffic has moved.
+
+## Live and Test mode
+
+Same organisation, two isolated environments. Switch **Live / Test** in the dashboard.
+
+| | Live (`ct_live_…`) | Test (`ct_test_…`) |
+|--|--|--|
+| Dashboard | Org menu → **Switch to test mode** | Org menu → **Switch to live mode** (amber banner) |
+| Assessments, invites, pipelines, webhooks, API keys | Production hiring data | Isolated copies — starts **empty** |
+| Candidate email | Sent when you ask | Never sent |
+| Invite / assessment quota | Counts | Does not count |
+| Webhooks | Only live destinations | Only test destinations |
+
+**Shared across modes:** org profile, team members, billing, platform case catalog, org case library. **Copy to test mode** on a live assessment duplicates the assessment and its case links (new slug, draft, no invites).
+
+Wrong-mode GET returns **404** (a test key cannot see a live assessment id). Objects include `"livemode": true|false` in Public API JSON.
+
+Dashboard session requests send `X-Praxicraft-Livemode: true|false`. Public API mode comes only from the key prefix.
+
+<Warning>
+A key that does not start with `ct_live_` or `ct_test_` is not treated as an organisation key (MCP tokens use a different format). Do not mint a fake prefix that still points at production data — use Test mode instead.
+</Warning>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Scopes" icon="shield" href="/scopes">
+    What each permission allows.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    First invite with your new key.
+  </Card>
+</CardGroup>

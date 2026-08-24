@@ -1,0 +1,60 @@
+---
+title: "SDKs"
+description: "Official clients for the Assess Public API — Python, Node.js, Go, PHP, Ruby, Java, .NET, and the CLI."
+---
+
+Use an SDK or the CLI when you want typed helpers, automatic retries, and webhook verification without hand-rolling HTTP.
+
+## Languages
+
+<CardGroup cols={3}>
+  <Card title="Python" icon="/images/sdk/python.svg" href="/sdks/python">
+    Official Python client · Python 3.10+
+  </Card>
+  <Card title="Node.js" icon="/images/sdk/nodejs.svg" href="/sdks/node">
+    Official Node.js / TypeScript client · Node 18+
+  </Card>
+  <Card title="Go" icon="/images/sdk/go.svg" href="/sdks/go">
+    Official Go module · Go 1.22+
+  </Card>
+  <Card title="PHP" icon="code" href="/sdks/php">
+    Composer `praxicraft/assess` · PHP 8.1+
+  </Card>
+  <Card title="Ruby" icon="gem" href="/sdks/ruby">
+    Gem `praxicraft` · Ruby 3.1+
+  </Card>
+  <Card title="Java" icon="coffee" href="/sdks/java">
+    Maven `com.praxicraft:assess` · Java 17+
+  </Card>
+  <Card title=".NET" icon="square-code" href="/sdks/dotnet">
+    NuGet `Praxicraft.Assess` · .NET 8+
+  </Card>
+  <Card title="CLI" icon="terminal" href="/sdks/cli">
+    `praxicraft-assess` · scripts and interactive shell
+  </Card>
+</CardGroup>
+
+Install commands and examples live on each language page. For copy-paste recipes across SDKs, curl, n8n, and Zapier, see [praxicraft-assess-examples](https://github.com/praxicraft-platform/praxicraft-assess-examples).
+
+## Shared behaviour
+
+| Topic | Behaviour |
+|-------|-----------|
+| Auth | `PRAXICRAFT_API_KEY` or constructor `api_key` / `apiKey` / `WithAPIKey` |
+| Base URL | Optional `PRAXICRAFT_API_BASE_URL` |
+| Retries | Auto-retry on `429`, `500–504`, and transport errors (default 2 retries); honour `Retry-After` |
+| Invite field | `invite_token` |
+| Webhooks | Verify raw body with `whsec_…` — see [Verify webhooks](/sdks/webhooks) |
+
+## Resources
+
+Official clients expose org, assessments, invites, results, webhooks, and pipelines. The [CLI](/sdks/cli) also covers cases, interviews, and integrations. Language-specific method names differ (`attach_cases` vs `attachCases` vs `AttachCases`).
+
+## When to use raw HTTP instead
+
+- One-off curl debugging
+- n8n / Zapier / Make HTTP modules — see [Automations](/automations)
+
+## Next
+
+[Quickstart](/quickstart) · [CLI](/sdks/cli) · [Python](/sdks/python) · [Node.js](/sdks/node) · [Go](/sdks/go) · [PHP](/sdks/php) · [Ruby](/sdks/ruby) · [Java](/sdks/java) · [.NET](/sdks/dotnet)

@@ -1,0 +1,348 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Praxicraft Assess",
+  "description": "Praxicraft Assess  technical hiring docs for assessments, live interviews, SDKs, webhooks, MCP, and ATS automations.",
+  "colors": {
+    "primary": "#0D41FF",
+    "light": "#5B8AFF",
+    "dark": "#0A2FCC"
+  },
+  "logo": {
+    "light": "/images/brand/logo-light.svg",
+    "dark": "/images/brand/logo-dark.svg",
+    "href": "https://praxicraft.com"
+  },
+  "favicon": "/images/brand/favicon.svg",
+  "icons": {
+    "library": "lucide"
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "cursor"],
+    "display": "header"
+  },
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Dashboard",
+          "icon": "layout-dashboard",
+          "href": "https://assess.praxicraft.com/assess"
+        },
+        {
+          "anchor": "ReDoc",
+          "icon": "book-open",
+          "href": "https://assess.praxicraft.com/api/v1/public/redoc/"
+        },
+        {
+          "anchor": "Product changelog",
+          "icon": "megaphone",
+          "href": "https://praxicraft.com/changelog"
+        },
+        {
+          "anchor": "API changelog",
+          "icon": "scroll-text",
+          "href": "/api-changelog"
+        },
+        {
+          "anchor": "Status",
+          "icon": "activity",
+          "href": "https://status.praxicraft.com/"
+        }
+      ]
+    },
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Get started",
+            "icon": "rocket",
+            "pages": [
+              "index",
+              "about",
+              "roles",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Assessments & candidates",
+            "icon": "clipboard-check",
+            "pages": [
+              "assessments",
+              "invitations",
+              "results",
+              "proctoring"
+            ]
+          },
+          {
+            "group": "Interviews & webhooks",
+            "icon": "video",
+            "pages": [
+              "interviews",
+              "webhooks"
+            ]
+          },
+          {
+            "group": "Content & pipelines",
+            "icon": "layers",
+            "pages": [
+              "custom-cases",
+              "pipelines"
+            ]
+          },
+          {
+            "group": "Account & reference",
+            "icon": "book-marked",
+            "pages": [
+              "organisation",
+              "scopes",
+              "rate-limits",
+              "plan-limits",
+              "errors",
+              "api-reference",
+              "postman",
+              "glossary"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "Overview",
+            "icon": "compass",
+            "pages": [
+              "integrations",
+              "automations"
+            ]
+          },
+          {
+            "group": "ATS",
+            "icon": "briefcase",
+            "pages": [
+              "integrations/greenhouse",
+              "integrations/lever",
+              "integrations/ashby",
+              "integrations/workday",
+              "integrations/bamboohr",
+              "integrations/zoho-recruit",
+              "integrations/breezy",
+              "integrations/via-webhooks"
+            ]
+          },
+          {
+            "group": "Chat destinations",
+            "icon": "message-square",
+            "pages": [
+              "integrations/slack",
+              "integrations/teams"
+            ]
+          },
+          {
+            "group": "Automations & agents",
+            "icon": "workflow",
+            "pages": [
+              "build-with-agents",
+              "n8n",
+              "zapier",
+              "make",
+              "assess-mcp",
+              "using-llms"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDKs",
+        "icon": "package",
+        "groups": [
+          {
+            "group": "Official clients",
+            "icon": "code",
+            "pages": [
+              "sdks/introduction",
+              "sdks/python",
+              "sdks/node",
+              "sdks/go",
+              "sdks/php",
+              "sdks/ruby",
+              "sdks/java",
+              "sdks/dotnet",
+              "sdks/cli",
+              "sdks/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API changelog",
+        "icon": "scroll-text",
+        "groups": [
+          {
+            "group": "Releases",
+            "icon": "scroll-text",
+            "pages": [
+              "api-changelog/index",
+              "api-changelog/1-5-0",
+              "api-changelog/1-4-0",
+              "api-changelog/1-3-0",
+              "api-changelog/1-2-0",
+              "api-changelog/1-1-0"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "code-xml",
+        "openapi": "openapi.json"
+      }
+    ]
+  },
+  "metadata": {
+    "timestamp": true
+  },
+  "integrations": {
+    "telemetry": {
+      "enabled": true
+    }
+  },
+  "api": {
+    "openapi": "openapi.json",
+    "playground": {
+      "display": "interactive",
+      "proxy": true
+    },
+    "url": "full",
+    "mdx": {
+      "server": "https://assess.praxicraft.com",
+      "auth": {
+        "method": "bearer"
+      }
+    },
+    "examples": {
+      "languages": ["curl", "python", "javascript", "node", "go"]
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@praxicraft.com"
+      },
+      {
+        "label": "Community",
+        "href": "https://community.praxicraft.com"
+      },
+      {
+        "label": "Contact us",
+        "href": "https://praxicraft.com/contact"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get started",
+      "href": "https://docs.praxicraft.com/quickstart"
+    }
+  },
+  "redirects": [
+    { "source": "/docs", "destination": "/" },
+    { "source": "/docs/overview", "destination": "/" },
+    { "source": "/docs/:slug", "destination": "/:slug" },
+    { "source": "/assess/overview", "destination": "/" },
+    { "source": "/assess/:slug", "destination": "/:slug" },
+    { "source": "/sdks", "destination": "/sdks/introduction" }
+  ],
+  "footer": {
+    "socials": {
+      "x": "https://x.com/praxicraft",
+      "github": "https://github.com/praxicraft-platform",
+      "linkedin": "https://www.linkedin.com/company/praxicraft/",
+      "instagram": "https://www.instagram.com/praxicraft/",
+      "website": "https://praxicraft.com"
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          {
+            "label": "Product changelog",
+            "href": "https://praxicraft.com/changelog"
+          },
+          {
+            "label": "API changelog",
+            "href": "/api-changelog"
+          },
+          {
+            "label": "Status",
+            "href": "https://status.praxicraft.com/"
+          },
+          {
+            "label": "Assess dashboard",
+            "href": "https://assess.praxicraft.com/assess"
+          },
+          {
+            "label": "ReDoc (live API)",
+            "href": "https://assess.praxicraft.com/api/v1/public/redoc/"
+          },
+          {
+            "label": "Community",
+            "href": "https://community.praxicraft.com"
+          }
+        ]
+      },
+      {
+        "header": "Support",
+        "items": [
+          {
+            "label": "Contact support",
+            "href": "https://praxicraft.com/contact"
+          },
+          {
+            "label": "Email support",
+            "href": "mailto:support@praxicraft.com"
+          }
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "indexing": "navigable",
+    "metatags": {
+      "title": "Praxicraft Assess API for Technical Hiring",
+      "description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "keywords": "Assess API, technical hiring API, assessment webhooks, ATS integration, MCP, Praxicraft",
+      "robots": "index, follow",
+      "canonical": "https://docs.praxicraft.com",
+      "og:site_name": "Praxicraft Assess Docs",
+      "og:title": "Praxicraft Assess API for Technical Hiring",
+      "og:description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "og:type": "website",
+      "og:url": "https://docs.praxicraft.com",
+      "og:locale": "en_US",
+      "og:image": "/images/og/docs.png",
+      "og:image:alt": "Praxicraft Assess API documentation",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@praxicraft",
+      "twitter:title": "Praxicraft Assess API for Technical Hiring",
+      "twitter:description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "twitter:image": "/images/og/docs.png",
+      "twitter:image:alt": "Praxicraft Assess API documentation"
+    },
+    "organization": {
+      "id": "https://praxicraft.com/#organization",
+      "name": "Praxicraft",
+      "url": "https://praxicraft.com",
+      "logo": "https://praxicraft.com/images/brand/meta-image.png",
+      "sameAs": [
+        "https://x.com/praxicraft",
+        "https://www.linkedin.com/company/praxicraft/",
+        "https://www.instagram.com/praxicraft/"
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+---
+title: "1.2.0 — Org usage, health, billing, audit export"
+description: "Additive Public API reads for dashboards, ops health, entitlements, and compliance exports."
+---
+
+**Shipped:** 2026-08-23 · **OpenAPI:** `1.2.0` · **Prefix:** `/api/v1/public/`
+
+## Added
+
+- `GET /org/usage/` — daily series (mode-scoped, Starter+)
+- `GET /org/developer/health/` — destination / API health without secrets (mode-scoped, Starter+)
+- `GET /org/billing/` — plan, seats, quotas (org-global; no checkout IDs)
+- `GET /org/audit-log/export/` — CSV/JSON export, capped (mode-scoped, Starter+)
+
+## Changed
+
+- None
+
+## Deprecated
+
+- None
+
+## Breaking
+
+- None
+
+## Related guides
+
+[Organisation](/organisation) · [Scopes](/scopes) · [API Reference](/api-reference)

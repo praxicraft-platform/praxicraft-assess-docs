@@ -1,0 +1,29 @@
+---
+title: "1.5.0 — CLI Ask AI assistant"
+description: "Public assistant chat proxy for the Assess CLI Ask AI feature."
+---
+
+**Shipped:** 2026-08-24 · **OpenAPI:** `1.5.0` · **Prefix:** `/api/v1/public/`
+
+## Added
+
+- `POST /assistant/chat/` — one chat-completion turn for the CLI Ask AI assistant (Starter+)
+- API key scope `assistant:write`
+- Billing capability `capabilities.cli_assistant` on `GET /org/billing/`
+- Dedicated throttle scope `public_api_assistant` (default 30/hour)
+
+## Changed
+
+- None
+
+## Deprecated
+
+- None
+
+## Breaking
+
+- None
+
+## Related guides
+
+[CLI](/sdks/cli) · [Scopes](/scopes) · [API Reference](/api-reference)

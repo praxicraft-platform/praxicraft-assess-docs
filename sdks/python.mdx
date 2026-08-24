@@ -1,0 +1,130 @@
+---
+title: "Python"
+description: "Install and use the `praxicraft` Python client."
+---
+
+Package on PyPI: [`praxicraft`](https://pypi.org/project/praxicraft/). Source: [praxicraft-python](https://github.com/praxicraft-platform/praxicraft-python). Requires **Python 3.10+**.
+
+## Install
+
+```bash
+pip install praxicraft
+```
+
+## Authentication
+
+```bash
+export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
+```
+
+```python
+from praxicraft import Client
+
+client = Client()  # reads PRAXICRAFT_API_KEY
+# or Client(api_key="ct_live_…", base_url="https://assess.praxicraft.com")
+```
+
+## Quickstart
+
+```python
+from praxicraft import Client
+
+client = Client()
+
+page = client.assessments.list()
+for assessment in page["results"]:
+    print(assessment["slug"], assessment["status"])
+
+invite = client.invites.create(
+    "senior-backend-screen",
+    email="candidate@example.com",
+    name="Jane Doe",
+    send_email=True,
+)
+print(invite["invite_token"], invite.get("invite_url"))
+
+result = client.results.retrieve(invite_token=invite["invite_token"])
+print(result)
+```
+
+Responses are flat JSON (no `{ "data": … }` wrapper).
+
+## Resources
+
+| Resource | Common methods |
+|----------|----------------|
+| `client.org` | `retrieve()`, `stats()` |
+| `client.assessments` | `list()`, `retrieve()`, `create()`, `update()`, `activate()`, `list_cases()`, `attach_cases()`, `replace_cases()`, `remove_case()` |
+| `client.invites` | `create()`, `bulk_create()`, `list()`, `retrieve()`, `remind()`, `cancel()` |
+| `client.results` | `list()`, `retrieve()`, `iter_all()` |
+| `client.webhooks` | `list()`, `create()`, `retrieve()`, `update()`, `delete()`, `test()`, `deliveries()` |
+| `client.pipelines` | `list()`, `retrieve()`, `enroll()`, `bulk_enroll()`, `list_enrollments()`, `get_enrollment()` |
+| `verify_signature` | Webhook HMAC helper |
+
+## Examples
+
+### Invite quota before bulk send
+
+```python
+org = client.org.retrieve()
+if (org.get("invites_remaining") or 0) < len(candidates):
+    raise SystemExit("Not enough invites remaining this month")
+```
+
+### Build and activate an assessment
+
+```python
+assessment = client.assessments.create(title="Backend screen")
+client.assessments.attach_cases(
+    assessment["slug"],
+    cases=[{"case_id": "<uuid>", "source": "platform"}],
+)
+client.assessments.activate(assessment["slug"])
+```
+
+### Webhook register + test
+
+```python
+hook = client.webhooks.create(
+    url="https://example.com/hooks/praxicraft",
+    events=["assessment.completed", "candidate.passed"],
+)
+# Store hook["secret_key"] (whsec_…) — shown once
+client.webhooks.test(hook["id"])
+client.webhooks.update(hook["id"], is_active=True)
+```
+
+### Paginate results
+
+```python
+for row in client.results.iter_all("senior-backend-screen", page_size=50):
+    print(row.get("email"), row.get("score_percentage"), row.get("passed"))
+```
+
+## Errors
+
+```python
+from praxicraft import (
+    AuthenticationError,
+    InsufficientScopeError,
+    RateLimitError,
+    ValidationError,
+)
+
+try:
+    client.invites.create("demo", email="candidate@example.com")
+except ValidationError as exc:
+    print(exc.code, exc.details)
+except InsufficientScopeError as exc:
+    print(exc.code)
+except AuthenticationError as exc:
+    print(exc.code)
+except RateLimitError as exc:
+    print(exc.retry_after)
+```
+
+Branch on `exc.code`. `403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP. Catalogue: [Errors](/errors).
+
+## Verify webhooks
+
+See [Verify webhooks](/sdks/webhooks).

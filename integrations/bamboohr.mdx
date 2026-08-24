@@ -1,0 +1,34 @@
+---
+title: "BambooHR"
+description: "Connect BambooHR for AI interview rooms from your HRIS hiring flow."
+---
+
+BambooHR’s **native** connector (Growth+) creates an AI interview room and can write an unstructured note back. Assessment invites still go through [Zapier](/zapier), [n8n](/n8n), or [Make](/make).
+
+## Native connector (Growth+)
+
+<Steps>
+  <Step title="Open Integrations">
+    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+  </Step>
+  <Step title="Connect BambooHR">
+    Provide an API key and your BambooHR subdomain.
+  </Step>
+  <Step title="Confirm">
+    Use the dashboard test/connect flow. Stage filters are **not** applied for BambooHR.
+  </Step>
+</Steps>
+
+| Setup | Stage filter |
+|-------|----------------|
+| API key + subdomain | Not applied |
+
+Score-back is a note on the application, not a mapped scorecard field.
+
+## Assessment invites
+
+Use Zapier, n8n, or Make: applicant/stage trigger → **Invite Candidate** with BambooHR applicant id as `external_id` → score-back note on `candidate.passed` / `failed`.
+
+## Next
+
+[Integrations](/integrations) · [Automations](/automations) · [Interviews](/interviews)

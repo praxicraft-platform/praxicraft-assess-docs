@@ -1,0 +1,29 @@
+---
+title: "1.3.0 — Org write, squads, member invites"
+description: "organisation:write scope, limited PATCH /org/, squad CRUD, pending member-invite list."
+---
+
+**Shipped:** 2026-08-23 · **OpenAPI:** `1.3.0` · **Prefix:** `/api/v1/public/`
+
+## Added
+
+- Scope `organisation:write`
+- `PATCH /org/` — allowlisted `name`, `notify_on_candidate_completion` (org-global)
+- Squad create / rename / delete and member add/remove (`/org/squads/…`, Growth+)
+- `GET /org/member-invites/` — pending org member invites (no tokens)
+
+## Changed
+
+- [Scopes](/scopes) matrix documents `organisation:write`
+
+## Deprecated
+
+- None
+
+## Breaking
+
+- None
+
+## Related guides
+
+[Organisation](/organisation) · [Scopes](/scopes) · [Roles](/roles)

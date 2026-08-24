@@ -1,0 +1,129 @@
+---
+title: "Build with agents"
+description: "Install the Assess Agent Plugin — docs Knowledge MCP, API MCP, and hiring skills for Cursor, Claude, and Codex."
+---
+
+Coding agents work best with three primitives: **docs search**, **live API tools**, and **skills** (procedural cheat sheets). Praxicraft Assess ships all three.
+
+## Pick a path
+
+<CardGroup cols={2}>
+  <Card title="Agent Plugin (recommended)" icon="puzzle" href="#agent-plugin">
+    One install → Knowledge MCP + API MCP + eight skills
+  </Card>
+  <Card title="API MCP only" icon="bot" href="/assess-mcp">
+    Call Assess tools from Cursor / Claude / Codex
+  </Card>
+  <Card title="Knowledge MCP only" icon="book-open" href="#knowledge-mcp">
+    Search docs — no API credentials
+  </Card>
+  <Card title="Skills CLI" icon="sparkles" href="#skills">
+    `npx skills add` without the full plugin
+  </Card>
+</CardGroup>
+
+## What each piece does
+
+| Primitive | Endpoint / package | Auth | Use for |
+|-----------|-------------------|------|---------|
+| **Knowledge MCP** | `https://docs.praxicraft.com/mcp` | None | Semantic search + reading Assess docs |
+| **API MCP** | `https://assess.praxicraft.com/mcp` or `@praxicraft/assess-mcp` | OAuth (live) or `PRAXICRAFT_API_KEY` | Invites, webhooks, pipelines, results |
+| **Skills** | Agent Plugin / `npx skills add` | — | Correct patterns (HMAC, `external_id`, ATS loops) |
+
+Knowledge MCP cannot invite candidates. API MCP does not replace reading docs for payload shapes — use both.
+
+## Agent Plugin
+
+Source: [praxicraft-assess-agent-plugin](https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin) (Agent Plugins 1.0). Until the public repo is live, clone or symlink from your local checkout.
+
+### Cursor
+
+```bash
+git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
+  ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
+```
+
+Restart Cursor. Skills load from `skills/`; MCP servers from `.mcp.json`.
+
+### Claude Code
+
+```bash
+claude plugins marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
+claude plugins install praxicraft-assess@praxicraft
+```
+
+### Codex CLI
+
+```bash
+codex plugin marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
+```
+
+Then `/plugins` → install **praxicraft-assess**.
+
+### Skills included
+
+| Skill | When it loads |
+|-------|----------------|
+| `assess-best-practices` | Auth, scopes, errors, architecture |
+| `live-test-mode` | `ct_live_` vs `ct_test_`, go-live |
+| `webhook-hmac` | HTTPS destinations + signature verify |
+| `invitations-external-id` | Invites + ATS join keys |
+| `ats-invite-loops` | Stage → invite → score-back |
+| `pipelines` | Multi-stage enroll / advance |
+| `sdk-webhooks-verify` | Official SDK verify helpers |
+| `mcp-scopes` | Hosted vs stdio MCP, IP allowlists |
+
+### Try this prompt
+
+```
+Invite a Greenhouse candidate with external_id set to their Candidate ID, then add a webhook handler that verifies X-Praxicraft-Signature and posts a note on candidate.passed.
+```
+
+## Knowledge MCP
+
+Connect any MCP client (no credentials):
+
+```json
+{
+  "mcpServers": {
+    "praxicraft-assess-knowledge": {
+      "url": "https://docs.praxicraft.com/mcp"
+    }
+  }
+}
+```
+
+Tools search the Assess docs site and read page content. Discovery card: `https://docs.praxicraft.com/.well-known/mcp/server-card.json`.
+
+## Skills
+
+Install Mintlify-hosted skills (and the suite after deploy):
+
+```bash
+npx skills add https://docs.praxicraft.com
+```
+
+Or install from the Agent Plugin repo:
+
+```bash
+npx skills add praxicraft-platform/praxicraft-assess-agent-plugin
+```
+
+Also available: [llms.txt](https://docs.praxicraft.com/llms.txt) and `.md` on every page — see [Using docs with LLMs](/using-llms).
+
+## API MCP
+
+Full setup (Cursor, Claude Code, Claude Desktop, stdio): [MCP (Coding Agents)](/assess-mcp).
+
+Hosted OAuth is always **live**. For Test mode, use stdio with a `ct_test_` key via `@praxicraft/assess-mcp`.
+
+## Security
+
+- Prefer hosted OAuth over pasting live keys into agent config
+- Develop with `ct_test_` keys
+- Never commit `ct_live_`, `ct_test_`, or `whsec_` secrets
+- Review agent-generated handlers for **raw-body** HMAC verification
+
+## Next
+
+[MCP](/assess-mcp) · [Using docs with LLMs](/using-llms) · [Webhooks](/webhooks) · [Integrations](/integrations) · [Automations](/automations)

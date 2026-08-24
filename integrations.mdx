@@ -1,0 +1,103 @@
+---
+title: "Integrations"
+description: "Connect Assess to your ATS, chat tools, and automation platforms."
+---
+
+Assess plugs into the tools you already use. Pick a path below — native ATS connectors create **AI interview rooms**; Zapier / n8n / Make send **assessment invites**; Slack and Teams get pass/fail alerts.
+
+## ATS
+
+Native connectors need **Growth+**. Long-tail ATS use webhooks + the Public API.
+
+<CardGroup cols={3}>
+  <Card title="Greenhouse" href="/integrations/greenhouse">
+    Harvest API — interview rooms + invite recipes
+  </Card>
+  <Card title="Lever" href="/integrations/lever">
+    API key or OAuth — notes on opportunities
+  </Card>
+  <Card title="Ashby" href="/integrations/ashby">
+    API key or OAuth — application notes
+  </Card>
+  <Card title="Workday" href="/integrations/workday">
+    Basic auth + RaaS — optional stage filter
+  </Card>
+  <Card title="BambooHR" href="/integrations/bamboohr">
+    API key + subdomain
+  </Card>
+  <Card title="Zoho Recruit" href="/integrations/zoho-recruit">
+    OAuth — stage filter; inbound needs Pro+
+  </Card>
+  <Card title="Breezy HR" href="/integrations/breezy">
+    API token — stage filter; inbound needs Pro
+  </Card>
+  <Card title="Other ATS via webhooks" href="/integrations/via-webhooks">
+    Dover, Binary, TalentHR, Indeed, and custom tools
+  </Card>
+</CardGroup>
+
+## Chat destinations
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="hash" href="/integrations/slack">
+    Connect Slack or Incoming Webhook — pass/fail in channel
+  </Card>
+  <Card title="Microsoft Teams" icon="users" href="/integrations/teams">
+    Teams Incoming Webhook connector
+  </Card>
+</CardGroup>
+
+## Automations & agents
+
+<CardGroup cols={2}>
+  <Card title="Automations overview" icon="workflow" href="/automations">
+    When to use Zapier, n8n, Make, or a custom worker
+  </Card>
+  <Card title="n8n" icon="boxes" href="/n8n">
+    Verified community node
+  </Card>
+  <Card title="Zapier" icon="zap" href="/zapier">
+    Assess app — events, invites, pipelines
+  </Card>
+  <Card title="Make" icon="workflow" href="/make">
+    Custom App — Watch Assess Event + modules
+  </Card>
+  <Card title="Build with agents" icon="bot" href="/build-with-agents">
+    Knowledge MCP, API MCP, and hiring skills for Cursor / Claude / Codex
+  </Card>
+  <Card title="MCP / agents" icon="bot" href="/assess-mcp">
+    Coding agents that call Assess API tools
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/webhooks">
+    HTTPS destinations, signatures, delivery logs
+  </Card>
+</CardGroup>
+
+## Two loops (do not mix them up)
+
+| Path | What Assess creates | Who it is for |
+|------|---------------------|---------------|
+| **Native connectors** (Growth+) | An **AI interview room**, then an unstructured note on the application | Live screens inside Greenhouse, Lever, Ashby, Workday, BambooHR, Zoho Recruit, or Breezy HR |
+| **Zapier / n8n / Make / webhooks** | An **assessment invitation** or pipeline enroll | Take-home / async screens — and long-tail ATS |
+
+Native connectors do **not** send assessment invites today. A Greenhouse stage change does not create a take-home link unless you add Zapier, n8n, or Make.
+
+## For engineers
+
+Scope for status endpoints: `organisation:read`.
+
+| Method | Path | What you get |
+|--------|------|----------------|
+| GET | `/integrations/` | `integrations[]` with `webhook_url`, `connect_url`, `has_api_key`, `is_active` (no secrets) |
+| GET | `/integrations/{provider}/connect/` | Dashboard `connect_url` + whether OAuth is available |
+| POST | `/integrations/{provider}/test/` | `{ ok, connect_url }` — `404 NOT_CONFIGURED` if never connected |
+
+Open `connect_url` in a browser as owner, admin, or developer — do not complete OAuth from a server alone.
+
+Providers post into Assess at:
+
+```text
+https://assess.praxicraft.com/api/v1/integrations/webhooks/{provider}/?org={organisation_uuid}
+```
+
+Those inbound webhooks create **interview rooms**, not assessment invites. Destinations (HTTPS / Slack / Teams) use `/webhooks/` — see [Webhooks](/webhooks).

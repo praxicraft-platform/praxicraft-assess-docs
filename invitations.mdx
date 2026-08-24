@@ -1,0 +1,102 @@
+---
+title: "Invitations"
+description: "Send unique candidate links from the dashboard or the Public API."
+---
+
+An invitation is one candidate’s link to an **active** assessment.
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Confirm the assessment is Active">
+    Draft assessments cannot be invited to. Open it in the [dashboard](https://assess.praxicraft.com/assess) and activate if needed.
+  </Step>
+  <Step title="Invite">
+    Use **Invite** (single or bulk). Enter email and name. Choose whether Assess should send the email.
+  </Step>
+  <Step title="Track status">
+    - **Pending** — not opened yet  
+    - **Started** — in progress  
+    - **Completed** — submitted or timed out  
+    - **Expired** — unused after the expiry window (default 7 days)
+  </Step>
+  <Step title="Remind or cancel">
+    Send a reminder if they have not finished (limits apply). Cancel only works before they start.
+  </Step>
+</Steps>
+
+Monthly invite caps: [Plan limits](/plan-limits). Re-inviting the **same email** to the **same** assessment does not use another invite.
+
+## For engineers
+
+The durable id in API responses is **`invite_token`** (not `token`).
+
+### Endpoints
+
+| Method | Path | Scope |
+|--------|------|-------|
+| POST | `/assessments/{slug}/invites/` | `invitations:write` |
+| POST | `/assessments/{slug}/invites/bulk/` | `invitations:write` |
+| GET | `/invites/` | `invitations:read` |
+| GET | `/invites/{token}/` | `invitations:read` |
+| POST | `/invites/{token}/remind/` | `invitations:write` |
+| DELETE | `/invites/{token}/` | `invitations:write` → `204` |
+| GET | `/invites/{token}/result/` | `candidates:read` |
+
+Inactive assessment → `ASSESSMENT_NOT_ACTIVE`. Out of quota → **403** `INVITE_QUOTA_EXCEEDED`.
+
+### Create one invite
+
+Idempotent on email: first create → **201**; repeat → **200** with the existing invitation.
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "candidate@example.com",
+    "name": "Jane Doe",
+    "send_email": true,
+    "external_id": "ats_cand_123"
+  }'
+```
+
+| Field | Notes |
+|-------|--------|
+| `email` | Required |
+| `name`, `role` | Optional |
+| `expires_days` | Default 7 |
+| `send_email` | Default **false** |
+| `external_id` | Optional ATS candidate id. Unique per assessment when set. Retries with the same id return the existing invite. |
+
+Idempotent on **email** (same assessment + email → existing invite). If you also send `external_id`, Assess looks that up first so ATS retries stay stable even when the email changes. Email uniqueness still wins if the email already has an invite with a different id.
+
+Response includes `invite_token`, `invite_url`, `expires_at`, `status`, and `external_id`.
+
+### Bulk
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/bulk/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "candidates": [
+      { "email": "a@example.com", "name": "Alex" },
+      { "email": "b@example.com", "name": "Blair" }
+    ],
+    "send_email": true
+  }'
+```
+
+Returns `invited[]` and `skipped[{ "email", "reason" }]`. Also limited to **20 bulk requests/hour**.
+
+### Remind / cancel
+
+- Remind: one per invitation per 24 hours → else `REMINDER_COOLDOWN`
+- Cancel: **pending** only → `204`; fails if already started
+
+## Next
+
+[Results](/results) · [Webhooks](/webhooks) · [Plan limits](/plan-limits)

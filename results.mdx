@@ -1,0 +1,69 @@
+---
+title: "Results"
+description: "Read scores and pass/fail in the dashboard or via the Public API."
+---
+
+A result is the scored session for one invitation: overall percentage, pass/fail, per-task outcomes, and optional proctoring counts.
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Open the assessment">
+    In the [dashboard](https://assess.praxicraft.com/assess), go to the assessment → **Results**.
+  </Step>
+  <Step title="Find the candidate">
+    Filter by completed sessions. Open a row for the detailed report (and recordings if you enabled them).
+  </Step>
+  <Step title="Read the score">
+    **Passed** means their score meets the assessment’s passing score (often 70% unless you changed it). Proctoring signals do **not** auto-fail — see [Proctoring](/proctoring).
+  </Step>
+</Steps>
+
+Want Slack or your ATS updated automatically when someone finishes? Use [Webhooks](/webhooks) or [Automations](/automations).
+
+## For engineers
+
+Prefer webhooks (`assessment.completed`) over polling in production.
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/assessments/{slug}/results/` | `candidates:read` |
+| GET | `/invites/{token}/result/` | `candidates:read` |
+
+### Cohort list
+
+```bash
+curl -sS \
+  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/results/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+Includes scores, pass/fail, violation counts, and `invite_token` for detail fetches. Paginate with `cursor` / `page_size`.
+
+### Per invitation
+
+```bash
+curl -sS \
+  "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+- Not started yet → **200** with a short `{ "status", "message" }` body  
+- Completed → scores, `passed`, `cases[]`, optional `violation_events`, `detailed_report_url`
+
+### Scoring rules
+
+- `score_percentage = (earned / max) * 100`
+- `passed` when `score_percentage >= passing_score`
+- Per-task `status`: `correct` \| `partial` \| `incorrect` \| `skipped` \| `pending_review`
+
+### SDK
+
+```python
+page = client.results.list("YOUR_SLUG")
+detail = client.results.retrieve(invite_token="…")
+```
+
+## Next
+
+[Proctoring](/proctoring) · [Webhooks](/webhooks) · [Errors](/errors)

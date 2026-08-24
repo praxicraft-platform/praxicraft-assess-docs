@@ -1,0 +1,94 @@
+---
+title: "Organisation"
+description: "Plan, seats, usage, team, squads, and audit log for your Assess workspace."
+---
+
+Engineers can read org profile, quotas, usage, billing entitlements, and developer health over the Public API. Checkout and role changes stay dashboard-only.
+
+Event destinations (HTTPS, [Slack](/integrations/slack), [Teams](/integrations/teams)) are managed under [Webhooks](/webhooks) — same as **Developer → Destinations** in the dashboard.
+
+## If you are recruiting / ops
+
+Open settings / billing / team in the [dashboard](https://assess.praxicraft.com/assess):
+
+| Question | Where to look |
+|----------|----------------|
+| What plan are we on? | Billing, or ask eng to call `GET /org/` / `GET /org/billing/` |
+| How many invites / seats left? | `GET /org/billing/` (or invite fields on `GET /org/`) |
+| Who can access Assess? | Team members and [roles](/roles) |
+| Hiring squads (Growth+) | Sub-teams for filtering assessments and pipelines |
+
+You **cannot** change roles or run checkout through the Public API. Role capabilities: [Team roles](/roles).
+
+Invite quota rules: [Plan limits](/plan-limits).
+
+## For engineers
+
+Prefer paths under `/org/…`. Live/Test mode: [Authentication](/authentication#live-and-test-mode).
+
+| Method | Path | Scope | Mode |
+|--------|------|-------|------|
+| GET | `/org/` | `organisation:read` | Org-global |
+| PATCH | `/org/` | `organisation:write` | Org-global (allowlisted fields) |
+| GET | `/org/billing/` | `organisation:read` | Org-global entitlements |
+| GET | `/org/usage/` | `organisation:read` | Mode-scoped (Starter+) |
+| GET | `/org/stats/` | `organisation:read` | Mode-scoped |
+| GET | `/org/developer/health/` | `organisation:read` | Mode-scoped (Starter+) |
+| GET | `/org/team/` | `organisation:read` | Org-global |
+| GET | `/org/member-invites/` | `organisation:read` | Org-global (pending member invites) |
+| GET | `/org/audit-log/` | `organisation:read` | Mode-scoped (Starter+) |
+| GET | `/org/audit-log/export/` | `organisation:read` | Mode-scoped CSV/JSON via `export_format` (Starter+) |
+| GET/POST | `/org/squads/` | read / `organisation:write` | Org-global (Growth+) |
+| GET/PATCH/DELETE | `/org/squads/{id}/` | read / write | Growth+ |
+| GET/POST/DELETE | `/org/squads/{id}/members/` | read / write | Growth+ |
+
+### Profile and quota
+
+```bash
+curl -sS https://assess.praxicraft.com/api/v1/public/org/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+Useful fields: `name`, `slug`, `plan`, `squads_enabled`, `invite_limit`, `invites_used`, `invites_remaining`.
+
+### Billing entitlements (no checkout)
+
+```bash
+curl -sS https://assess.praxicraft.com/api/v1/public/org/billing/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+Returns plan, seats used/remaining, invite and assessment quotas, interview monthly usage. No Stripe/Paystack IDs. Test-mode activity does **not** consume live invite quota.
+
+### Usage time series (Starter+)
+
+Mode-scoped daily series (`start` / `end` as YYYY-MM-DD; default last 30 days, max 180).
+
+```bash
+curl -sS "https://assess.praxicraft.com/api/v1/public/org/usage/?start=2026-08-01&end=2026-08-23" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+### Developer health (Starter+)
+
+Alerts and SLA for destinations / API errors in the key's Live or Test mode. No secrets.
+
+### Limited PATCH
+
+Allowlisted only: `name`, `notify_on_candidate_completion`. Unknown fields → **400**. Requires `organisation:write`.
+
+### Member invites vs candidate invites
+
+`GET /org/member-invites/` lists pending **org member** invitations (no tokens). Candidate assessment invites remain under `GET /invites/`.
+
+### Hiring squads (Growth+)
+
+Create / rename / delete squads and add/remove members with `organisation:write`. Below Growth → **403** `PLAN_REQUIRED`.
+
+### After a plan upgrade
+
+Expect up to ~60 seconds before `GET /org/` shows the new plan.
+
+## Next
+
+[Plan limits](/plan-limits) · [Scopes](/scopes) · [API changelog](/api-changelog) · [Errors](/errors)

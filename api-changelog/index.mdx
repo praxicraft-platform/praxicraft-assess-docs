@@ -1,0 +1,34 @@
+---
+title: "API changelog"
+description: "Public API release notes — additive changes, deprecations, and breaking changes."
+---
+
+This feed covers the **Assess Public API** under `/api/v1/public/`. Product and marketing releases stay on the [product changelog](https://praxicraft.com/changelog).
+
+## Versioning
+
+| Layer | Rule |
+|-------|------|
+| URL prefix | Stays `/api/v1/public/` until a true path v2 |
+| OpenAPI `info.version` | SemVer — minor for additive endpoints/fields; major only for breaks |
+| These pages | One entry per OpenAPI version, newest first in the sidebar |
+
+Live and Test mode (`ct_live_…` / `ct_test_…`) apply unless an entry says an endpoint is **org-global**. Details: [Authentication — Live and Test mode](/authentication#live-and-test-mode).
+
+## Entries
+
+- [1.5.0 — CLI Ask AI assistant](/api-changelog/1-5-0)
+- [1.4.0 — Pipeline create, stages, advance, notes](/api-changelog/1-4-0)
+- [1.3.0 — Org write, squads, member invites](/api-changelog/1-3-0)
+- [1.2.0 — Org usage, health, billing, audit export](/api-changelog/1-2-0)
+- [1.1.0 — Baseline Public API surface](/api-changelog/1-1-0)
+
+## Upcoming (tracked)
+
+- `GET /org/developer/events/` — org-wide delivery event list next to health
+- Interview counts on `/org/usage/`
+- Assessment archive via Public API
+
+## Next
+
+[API Reference](/api-reference) · [Organisation](/organisation) · [Scopes](/scopes)

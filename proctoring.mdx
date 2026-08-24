@@ -1,0 +1,57 @@
+---
+title: "Proctoring"
+description: "Integrity signals for review — they never auto-fail a candidate."
+---
+
+While a candidate takes an assessment, Assess can record events like leaving fullscreen, copy/paste, or focus loss, plus optional recordings.
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Turn signals on when you build the assessment">
+    In the assessment settings, enable the options you need (fullscreen, copy/paste, session/screen/webcam recording — some need Starter or Growth).
+  </Step>
+  <Step title="Invite as usual">
+    Candidates see the rules in the product experience. No extra API setup for reviewers.
+  </Step>
+  <Step title="Read the result">
+    Open the candidate’s result in the dashboard. Look at violation counts and, if recordings were enabled, review media there.
+  </Step>
+  <Step title="Decide with context">
+    One accidental focus loss is different from a repeated pattern. Combine score + role bar + signals before deciding.
+  </Step>
+</Steps>
+
+If engineering listens for `candidate.violation` webhooks, they can alert you in Slack — see [Webhooks](/webhooks).
+
+## Assessment flags (engineers)
+
+Set via create/update assessment (`assessments:write`):
+
+| Flag | Notes |
+|------|--------|
+| `enforce_fullscreen` | Track fullscreen exits |
+| `copy_paste_disabled` | Track copy/paste attempts |
+| `session_recording_enabled` | Starter+ |
+| `screen_recording_enabled` | Growth+ |
+| `webcam_recording_enabled` | Requires screen recording |
+| `violation_review_threshold` | 1–99 — when totals trigger review |
+
+## Count fields on results
+
+| Field | Type key |
+|-------|----------|
+| `fullscreen_violations` | `fullscreen` |
+| `copy_paste_violations` | `copy_paste` |
+| `screen_share_violations` | `screen_share` |
+| `webcam_violations` | `webcam` |
+| `focus_loss_violations` | `focus_loss` |
+| `total_violations` | Sum |
+
+Also: `integrity_review_status` (for example `flagged`) and `violation_events[]` (`id`, `violation_type`, `case_order`, `created_at`).
+
+The Public API returns counts and events; deeper media review is dashboard-side.
+
+## Next
+
+[Results](/results) · [Assessments](/assessments) · [Webhooks](/webhooks)

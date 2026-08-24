@@ -1,0 +1,104 @@
+---
+title: "Pipelines"
+description: "Multi-stage hiring funnels — design in the dashboard or Public API, enroll from the UI or API."
+---
+
+A pipeline is a sequence of stages (for example assessment → interview → manual review). Candidates advance when they pass, or stop when they fail — unless you hold or reject them.
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Design the funnel">
+    Open [Assess](https://assess.praxicraft.com/assess) → Pipelines, **or** ask eng to create a linear pipeline via the Public API (`POST /pipelines/create/`, Growth+). Branching / join nodes are not available yet.
+  </Step>
+  <Step title="Know your stage types">
+    - **Assessment** — candidate gets an invite; pass advances, fail rejects  
+    - **Interview** — room is prepared from a template; you usually still send/confirm the invite  
+    - **Manual review** — waits for a human decision
+  </Step>
+  <Step title="Enroll candidates">
+    Add people from the pipeline UI (or ask eng to enroll via API / n8n). Re-adding the same email is safe — they won’t get a duplicate enrollment.
+  </Step>
+  <Step title="Hold, unhold, reject, or advance">
+    Pause with **Hold**, resume with **Unhold**, **Reject** with an optional reason, or **Advance** past the current stage. Held candidates do not auto-advance.
+  </Step>
+</Steps>
+
+<Warning>
+Each **assessment** stage uses a separate invitation against your monthly invite quota. A 3-assessment pipeline for 10 people can use up to 30 invites if everyone progresses.
+</Warning>
+
+**Success status name:** when someone finishes the whole funnel, status is **`passed`** (not `completed`).
+
+## For engineers
+
+Mode follows the API key (`ct_live_…` / `ct_test_…`). Stages must reference assessments/templates in the **same** mode.
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/pipelines/` | `pipelines:read` |
+| POST | `/pipelines/create/` | `pipelines:write` (Growth+) |
+| GET / PATCH | `/pipelines/{slug}/` | read / write (PATCH: title, description, `stages` replace) |
+| POST | `/pipelines/{slug}/enroll/` | `pipelines:write` |
+| POST | `/pipelines/{slug}/enroll/bulk/` | `pipelines:write` |
+| GET | `/pipelines/{slug}/enrollments/` | `pipelines:read` |
+| GET | `/pipelines/enrollments/{id}/` | `pipelines:read` |
+| POST | reject / hold / unhold / advance | `pipelines:write` |
+| GET / POST | `/pipelines/enrollments/{id}/notes/` | read / write |
+
+Growth+: filter with `team_id` / `team_slug`.
+
+### Create (linear stages)
+
+```bash
+curl -sS -X POST https://assess.praxicraft.com/api/v1/public/pipelines/create/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Grad 2026",
+    "stages": [
+      {"stage_type": "assessment", "assessment_id": "ASSESSMENT_UUID", "order": 0},
+      {"stage_type": "manual_review", "label": "HM review", "order": 1}
+    ]
+  }'
+```
+
+After enrollments exist, stage changes are **append-only** (cannot remove/reorder existing stages) — same as the dashboard.
+
+### Enroll
+
+Creates the enrollment and, if stage 0 is an assessment, the first invite in one step.
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/pipelines/grad-2025/enroll/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alex@example.com",
+    "name": "Alex Lee",
+    "send_email": true
+  }'
+```
+
+- Same email again → **200** (idempotent)
+- Out of invites → **403** `INVITE_QUOTA_EXCEEDED` (nothing created)
+- `send_email` defaults to **true** for enroll
+- Response: `enrollment_id`, `status`, `current_stage` (0-based)
+
+Bulk enroll: JSON `candidates[]` or CSV (`email` required). Also limited to **20 requests/hour**.
+
+### Status values you will see
+
+List with `?status=in_progress|on_hold|passed|rejected`.
+
+| Action | Effect |
+|--------|--------|
+| Reject | End of road for that candidate |
+| Hold | `on_hold` — auto-advance skips them |
+| Unhold | Back to `in_progress` |
+| Advance | Board override past the current stage |
+
+## Next
+
+[Organisation](/organisation) · [Webhooks](/webhooks) · [API changelog](/api-changelog) · [Scopes](/scopes)

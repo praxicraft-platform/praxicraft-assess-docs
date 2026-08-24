@@ -1,0 +1,81 @@
+---
+title: ".NET"
+description: "Install and use the `Praxicraft.Assess` .NET client."
+---
+
+NuGet package: [`Praxicraft.Assess`](https://www.nuget.org/packages/Praxicraft.Assess) (when published). Source: [praxicraft-dotnet](https://github.com/praxicraft-platform/praxicraft-dotnet). Requires **.NET 8+**.
+
+## Install
+
+```bash
+dotnet add package Praxicraft.Assess
+```
+
+Until NuGet publish, reference the project or a local pack:
+
+```bash
+git clone https://github.com/praxicraft-platform/praxicraft-dotnet.git
+cd praxicraft-dotnet && dotnet pack
+```
+
+## Authentication
+
+```bash
+export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
+```
+
+```csharp
+using Praxicraft.Assess;
+
+var client = new Client(); // reads PRAXICRAFT_API_KEY
+// or new Client(new ClientOptions { ApiKey = "ct_live_…", BaseUrl = "https://assess.praxicraft.com" });
+```
+
+## Quickstart
+
+```csharp
+using System.Text.Json;
+using Praxicraft.Assess;
+
+var client = new Client();
+
+JsonElement page = await client.Assessments.ListAsync();
+foreach (var assessment in page.GetProperty("results").EnumerateArray())
+{
+    Console.WriteLine($"{assessment.GetProperty("slug")} {assessment.GetProperty("status")}");
+}
+
+JsonElement invite = await client.Invites.CreateAsync(
+    "senior-backend-screen",
+    new Dictionary<string, object?>
+    {
+        ["email"] = "candidate@example.com",
+        ["name"] = "Jane Doe",
+        ["send_email"] = true,
+    });
+
+string token = invite.GetProperty("invite_token").GetString()!;
+JsonElement result = await client.Results.RetrieveAsync(token);
+```
+
+Responses are flat JSON (no `{ "data": … }` wrapper).
+
+## Resources
+
+| Resource | Common methods |
+|----------|----------------|
+| `client.Org` | `RetrieveAsync()`, `StatsAsync()` |
+| `client.Assessments` | `ListAsync()`, `RetrieveAsync()`, `CreateAsync()`, `UpdateAsync()`, `ActivateAsync()`, `ListCasesAsync()`, `AttachCasesAsync()`, `ReplaceCasesAsync()`, `RemoveCaseAsync()` |
+| `client.Invites` | `CreateAsync()`, `BulkCreateAsync()`, `ListAsync()`, `RetrieveAsync()`, `RemindAsync()`, `CancelAsync()` |
+| `client.Results` | `ListAsync()`, `RetrieveAsync()`, `IterAllAsync()` |
+| `client.Webhooks` | `ListAsync()`, `CreateAsync()`, `RetrieveAsync()`, `UpdateAsync()`, `DeleteAsync()`, `TestAsync()`, `DeliveriesAsync()` |
+| `client.Pipelines` | `ListAsync()`, `RetrieveAsync()`, `EnrollAsync()`, `BulkEnrollAsync()`, `ListEnrollmentsAsync()`, `GetEnrollmentAsync()` |
+| `Webhooks.VerifySignature` | Webhook HMAC helper |
+
+## Verify webhooks
+
+See [Verify webhooks](/sdks/webhooks).
+
+## Next
+
+[Authentication](/authentication) · [API Reference](/api-reference) · [Verify webhooks](/sdks/webhooks)

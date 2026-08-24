@@ -1,0 +1,32 @@
+---
+title: "Zoho Recruit"
+description: "Connect Zoho Recruit for AI interview rooms with optional stage filtering."
+---
+
+Zoho Recruit’s **native** connector (Growth+) creates an AI interview room and can write an unstructured note back. Inbound webhooks usually need Zoho **Professional+** — Forever Free often cannot fire inbound events.
+
+## Native connector (Growth+)
+
+<Steps>
+  <Step title="Open Integrations">
+    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+  </Step>
+  <Step title="Connect Zoho Recruit">
+    Use OAuth / API token (optional `api_domain`). Optionally set `stage_name`.
+  </Step>
+  <Step title="Confirm">
+    Credential verify + score/note push still work on lower tiers. Inbound stage → room needs the ATS paid webhook tier. Stage filter applies when Stage is present.
+  </Step>
+</Steps>
+
+| Setup | Stage filter |
+|-------|----------------|
+| OAuth/API token (+ optional `api_domain`). Optional `stage_name` | **Yes** when Stage is present — inbound needs Zoho Professional+ |
+
+## Assessment invites
+
+Native connectors do **not** send take-home invites. Use [Zapier](/zapier), [n8n](/n8n), or [Make](/make), or the [via webhooks](/integrations/via-webhooks) pattern if Zoho outbound is limited.
+
+## Next
+
+[Integrations](/integrations) · [Via webhooks](/integrations/via-webhooks) · [Automations](/automations)

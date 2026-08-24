@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /cdn-cgi/
+Allow: /_next/image
+Disallow: /_next/
+Disallow: /mintlify-assets/
+Disallow: /*.md$
+Sitemap: https://docs.praxicraft.com/sitemap.xml

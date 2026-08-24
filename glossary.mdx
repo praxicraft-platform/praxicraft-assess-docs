@@ -1,0 +1,51 @@
+---
+title: "Glossary"
+description: "Plain-language definitions for dashboard and API terms."
+---
+
+Use this when a field name or status word shows up in the UI or an API response.
+
+## Everyday hiring terms
+
+| Term | Meaning |
+|------|---------|
+| Developer | Dashboard role that can mint API keys and manage webhooks without billing or team admin. See [Team roles](/roles) |
+| Assessment | A take-home / timed test candidates open from a link |
+| Active | Assessment status that allows invites |
+| Invitation | One candidate’s unique link |
+| Result | That candidate’s score and pass/fail after finishing |
+| Pipeline | Multi-stage funnel (several assessments/interviews in a row) |
+| Interview | Live AI, human, or hybrid session |
+| Proctoring | Integrity signals (not an automatic fail) |
+| Dashboard | [assess.praxicraft.com/assess](https://assess.praxicraft.com/assess) — no API key needed for normal hiring |
+
+## API & automation terms
+
+| Term | Meaning |
+|------|---------|
+| Public API | HTTPS API under `/api/v1/public/` |
+| `ct_live_…` | Live organisation API key (Bearer). Starter+ |
+| `ct_test_…` | Test-mode API key. Isolated from live hiring data |
+| Livemode | `true` = live environment, `false` = test. Set by key prefix or dashboard toggle |
+| Scope | Permission on a key (for example `invitations:write`) |
+| Flat JSON | Success bodies without `{ status, data }` wrapper |
+| `invite_token` | Invitation id in API responses |
+| Assessment slug | URL id for an assessment (UUID also works) |
+| `whsec_…` | Webhook signing secret |
+| `X-Praxicraft-Signature` | `sha256=<hex>` HMAC of the raw webhook body |
+| Webhook | Assess calls your HTTPS URL when an event happens |
+| n8n node | `@praxicraft/n8n-nodes-assess` — visual automations |
+| MCP | Lets coding agents call Assess tools |
+| Hosted MCP | `https://assess.praxicraft.com/mcp` with browser OAuth |
+
+## Status words that confuse people
+
+| You might say | API / product value |
+|---------------|---------------------|
+| “They finished the pipeline” | Enrollment status **`passed`** |
+| “Invite not opened” | Invitation **`pending`** |
+| “Paused in the funnel” | Enrollment **`on_hold`** |
+
+## MCP OAuth note (engineers)
+
+When using key-based MCP OAuth flows, `client_id` is the key **prefix** (first 12 characters) and `client_secret` is the full key. Access tokens are short-lived after auth.

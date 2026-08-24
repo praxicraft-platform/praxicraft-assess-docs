@@ -1,0 +1,67 @@
+---
+title: "Errors"
+description: "Machine-readable `error.code` values — and what to do when you see them."
+---
+
+When something fails in an automation, ask for the **code**, not only the red message text.
+
+## If you are recruiting / ops
+
+Most hiring work happens in the dashboard. Common failure codes:
+
+| What you see | Likely code | What to do |
+|--------------|-------------|------------|
+| “Out of invites” | `INVITE_QUOTA_EXCEEDED` | Wait for monthly reset or upgrade — [Plan limits](/plan-limits) |
+| “Assessment not active” | `ASSESSMENT_NOT_ACTIVE` | Set the assessment to **Active** |
+| “Key not allowed” | `INSUFFICIENT_SCOPE` / `INVALID_API_KEY` / `IP_NOT_ALLOWED` | Fix the API key or its CIDR list — [Authentication](/authentication) |
+| “Too many requests” | `RATE_LIMITED` | Slow down automations — [Rate limits](/rate-limits) |
+| “Need a higher plan” | `PLAN_REQUIRED` | Upgrade for that feature |
+
+## For engineers
+
+Public API errors use one envelope. Branch on **`error.code`** — messages may change.
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Human-readable explanation",
+    "details": {}
+  }
+}
+```
+
+Some plan gates also include `required_plan`.
+
+Do **not** expect the session/dashboard `{ "status", "code", "data" }` shape on Public API routes.
+
+### Codes by HTTP status
+
+**400:** `VALIDATION_ERROR`, `MISSING_EMAIL`, `INVALID_INPUT`, `REMINDER_COOLDOWN`, `ASSESSMENT_NOT_ACTIVE`, `ALREADY_STARTED`, `ALREADY_COMPLETED`, `INVITATION_EXPIRED`, `WEBHOOK_REQUEST_FAILED`, `WEBHOOK_ENDPOINT_ERROR`, `NOT_VERIFIED`
+
+**401:** `INVALID_API_KEY`, `EXPIRED_API_KEY`
+
+**403:** `INSUFFICIENT_SCOPE`, `IP_NOT_ALLOWED`, `INVITE_QUOTA_EXCEEDED`, `PLAN_REQUIRED`, `ASSESSMENT_LIMIT_REACHED`, `LIMIT_REACHED`
+
+**404:** `NOT_FOUND`, `CASE_NOT_FOUND`
+
+**409:** `TASKS_LOCKED`
+
+**429:** `RATE_LIMITED`
+
+**500:** `INTERNAL_ERROR`
+
+### Retry guidance
+
+| Situation | Retry? |
+|-----------|--------|
+| Most 4xx | No |
+| 429 | Yes — wait `Retry-After` |
+| 5xx / transport | Yes — backoff (SDKs default 2 retries) |
+| Invite create | Safe — email idempotent |
+
+SDKs raise typed errors with the same codes.
+
+## Next
+
+[Authentication](/authentication) · [Rate limits](/rate-limits) · [Plan limits](/plan-limits)

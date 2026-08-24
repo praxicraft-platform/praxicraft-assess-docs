@@ -1,0 +1,49 @@
+---
+title: "Team roles"
+description: "What each Assess role can do in the dashboard — including the developer role for API keys and webhooks."
+---
+
+Roles are dashboard membership, not API key scopes. A **developer** can mint keys; the **key’s scopes** still decide what software can do.
+
+Invite and change roles under [Team](https://assess.praxicraft.com/assess/team). Only **owners** and **admins** can do that. You cannot assign `owner` — there is one owner per organisation.
+
+## If you are recruiting / ops
+
+| Role | Hiring | Team & billing | Developer tools |
+|------|--------|----------------|-----------------|
+| **Owner** | Full | Full, including billing | Full |
+| **Admin** | Full | Invite/remove members, org settings. Not billing. | Full |
+| **Developer** | View assessments and results (to debug integrations). Cannot invite candidates or edit assessments. | No | API keys, webhooks, events, logs, MCP, ATS connectors |
+| **Recruiter** | Invite candidates, run interviews, enroll pipelines | No | No |
+| **Reviewer** | View and grade results. Cannot invite or edit assessments. | No | No |
+| **Member** | View assessments only. No candidate results. | No | No |
+
+There is no `viewer` role. Read-only hiring access is **reviewer** (results and grading) or **member** (assessments only, no candidate results).
+
+Reviewers can open assessment results and grade free-text responses. They cannot create assessments, edit the Library, send invites, or open Insights.
+
+## If you are an engineer
+
+Give integrators **developer**, not **admin**, unless they also manage people and org settings.
+
+Developers can:
+
+- Open **Developer → API Keys / Webhooks / Events / Logs / Health**
+- Switch **Live / Test** and mint `ct_live_…` or `ct_test_…` keys
+- Connect hosted [MCP](/assess-mcp) OAuth
+- Connect [ATS integrations](/integrations) (Growth+)
+
+Developers cannot:
+
+- Change billing, SSO, or org profile
+- Invite or remove teammates, or promote themselves to admin
+- Create assessments, send candidate emails, or edit pipelines
+- Open the organisation [audit log](/organisation) (use **Logs** for API traffic)
+
+A developer-minted key with `invitations:write` can still invite candidates **via the Public API**. Hosted [MCP](/assess-mcp) consent also issues a **live** session with full Public API scopes. Use [least-privilege scopes](/scopes) on stored keys.
+
+`organisation:write` can update org name, notification prefs, and Growth+ squads. It **cannot** change member roles, invite/remove org members, or touch billing/SSO — those stay in the dashboard.
+
+## Next
+
+[Authentication](/authentication) · [Scopes](/scopes) · [Organisation](/organisation)

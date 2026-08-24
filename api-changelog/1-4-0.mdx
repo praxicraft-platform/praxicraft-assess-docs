@@ -1,0 +1,29 @@
+---
+title: "1.4.0 — Pipeline create, stages, advance, notes"
+description: "Linear pipeline authoring via Public API plus enrollment advance and notes."
+---
+
+**Shipped:** 2026-08-23 · **OpenAPI:** `1.4.0` · **Prefix:** `/api/v1/public/`
+
+## Added
+
+- `POST /pipelines/create/` — linear pipeline + stages (Growth+, mode-scoped)
+- `PATCH /pipelines/{slug}/` — metadata and stages replace (append-only after enrollments)
+- `POST /pipelines/enrollments/{id}/advance/`
+- `GET` / `POST /pipelines/enrollments/{id}/notes/`
+
+## Changed
+
+- `pipelines:write` now covers structure writes and advance/notes (in addition to enroll/hold/reject)
+
+## Deprecated
+
+- None
+
+## Breaking
+
+- None
+
+## Related guides
+
+[Pipelines](/pipelines) · [Scopes](/scopes) · [API Reference](/api-reference)

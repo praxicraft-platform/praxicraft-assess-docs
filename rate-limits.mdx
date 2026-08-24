@@ -1,0 +1,40 @@
+---
+title: "Rate limits"
+description: "How many Public API requests your organisation can make per hour."
+---
+
+Limits apply **per organisation** (all keys share one bucket) on a rolling **1-hour** window.
+
+## If you are recruiting / ops
+
+You only hit these if automations or custom software call the API too often. Dashboard clicks are separate. If an engineer says they got **429 / rate limited**, wait a minute or upgrade plan — see the table below.
+
+Bulk inviting (API) is also capped at **20 bulk requests per hour**.
+
+## Limits by plan
+
+| Plan | GET / hour | POST / PATCH / DELETE / hour |
+|------|------------|------------------------------|
+| Starter | 500 | 100 |
+| Growth | 2,000 | 400 |
+| Enterprise | 10,000 | 2,000 |
+
+Free orgs cannot create API keys, so they have no Public API rate tier.
+
+## For engineers
+
+### Response headers
+
+| Header | Meaning |
+|--------|---------|
+| `X-RateLimit-Limit` | Max requests in the current window |
+| `X-RateLimit-Remaining` | Remaining requests |
+| `X-RateLimit-Reset` | Unix timestamp when the oldest request ages out |
+
+### When limited
+
+HTTP **429** with `error.code: RATE_LIMITED`. Honour `Retry-After`. Official SDKs retry `429` / `5xx` by default.
+
+## Next
+
+[Plan limits](/plan-limits) · [Errors](/errors)

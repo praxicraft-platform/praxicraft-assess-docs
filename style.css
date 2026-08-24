@@ -1,0 +1,28 @@
+/* Navbar wordmark — Mintlify element selector is `nav-logo` */
+nav-logo img {
+  height: 1.75rem;
+  width: auto;
+  max-width: 11rem;
+  object-fit: contain;
+}
+
+a.postman-collection-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0 1rem;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #0d41ff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+a.postman-collection-download:hover {
+  background: #0a2fcc;
+  color: #fff;
+  text-decoration: none;
+}

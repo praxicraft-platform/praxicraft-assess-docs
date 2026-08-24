@@ -1,0 +1,32 @@
+---
+title: "Breezy HR"
+description: "Connect Breezy HR for AI interview rooms with optional stage filtering."
+---
+
+Breezy HR’s **native** connector (Growth+) creates an AI interview room and can write an unstructured note back. Inbound webhooks usually need Breezy **Pro** — Bootstrap often cannot fire inbound events.
+
+## Native connector (Growth+)
+
+<Steps>
+  <Step title="Open Integrations">
+    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+  </Step>
+  <Step title="Connect Breezy">
+    Provide an API token and `company_id`. Optionally set `stage_name`.
+  </Step>
+  <Step title="Confirm">
+    Credential verify + score/note push still work on lower tiers. Inbound stage → room needs Breezy Pro. Stage filter applies when stage is present.
+  </Step>
+</Steps>
+
+| Setup | Stage filter |
+|-------|----------------|
+| API token + `company_id`. Optional `stage_name` | **Yes** when stage is present — inbound needs Breezy Pro |
+
+## Assessment invites
+
+Native connectors do **not** send take-home invites. Use [Zapier](/zapier), [n8n](/n8n), [Make](/make), or [via webhooks](/integrations/via-webhooks).
+
+## Next
+
+[Integrations](/integrations) · [Via webhooks](/integrations/via-webhooks) · [Automations](/automations)

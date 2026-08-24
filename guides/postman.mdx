@@ -28,7 +28,7 @@ A Postman Collection v2.1 is generated from the public OpenAPI snapshot. It uses
   </Step>
 </Steps>
 
-Webhook requests that need a signature still use `X-Praxicraft-Signature: sha256=<hex>` — see [Webhooks](/webhooks). Save `secret_key` from create (`whsec_…`). Invitation responses use **`invite_token`**, not `token`.
+Webhook requests that need a signature still use `X-Praxicraft-Signature: sha256=<hex>` — see [Webhooks](/guides/webhooks). Save `secret_key` from create (`whsec_…`). Invitation responses use **`invite_token`**, not `token`.
 
 Collection variables: `base_url`, `api_key` (`ct_live_…` or `ct_test_…`), `assessment_slug`, `invite_token`, `id` (webhook id), `delivery_id`.
 
@@ -45,4 +45,4 @@ Example invite body already in the collection:
 
 ## Next
 
-[API Reference](/api-reference) · [Authentication](/authentication) · [Zapier](/zapier)
+[API Reference](/guides/api-reference) · [Authentication](/guides/authentication) · [Zapier](/integrations/zapier)

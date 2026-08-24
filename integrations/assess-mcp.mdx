@@ -5,11 +5,11 @@ description: "Connect Cursor, Claude, or Codex to Assess with MCP."
 
 MCP (Model Context Protocol) lets an AI coding agent use Assess tools — create assessments, invite candidates, read results — with your permission.
 
-For docs search + skills + one-click install across agents, see [Build with agents](/build-with-agents) (Knowledge MCP is separate from this API server).
+For docs search + skills + one-click install across agents, see [Build with agents](/integrations/build-with-agents) (Knowledge MCP is separate from this API server).
 
 ## If you are not an engineer
 
-You typically **do not** need MCP. Use the [dashboard](https://assess.praxicraft.com/assess) or ask an engineer to set up [n8n](/n8n) / [Automations](/automations).
+You typically **do not** need MCP. Use the [dashboard](https://assess.praxicraft.com/assess) or ask an engineer to set up [n8n](/integrations/n8n) / [Automations](/integrations/automations).
 
 MCP is for people already working in Cursor, Claude Code, Claude Desktop, or Codex who want the agent to operate Assess safely.
 
@@ -17,12 +17,12 @@ MCP is for people already working in Cursor, Claude Code, Claude Desktop, or Cod
 
 | Mode | Best for | How you sign in |
 |------|----------|-----------------|
-| Hosted HTTP | Interactive IDE sessions | Browser OAuth at `https://assess.praxicraft.com/mcp` (always **live** mode). Owners, admins, and [developers](/roles) can consent. |
+| Hosted HTTP | Interactive IDE sessions | Browser OAuth at `https://assess.praxicraft.com/mcp` (always **live** mode). Owners, admins, and [developers](/guides/roles) can consent. |
 | Stdio package | CI / locked-down machines / Test mode | Env var `PRAXICRAFT_API_KEY` (`ct_live_…` or `ct_test_…`) via `npx -y @praxicraft/assess-mcp` |
 
 The stdio package is [`@praxicraft/assess-mcp`](https://github.com/praxicraft-platform/praxicraft-assess-mcp) on npm. Hosted HTTP still runs in the `bureau` namespace at `https://assess.praxicraft.com/mcp` (image built from the web monorepo deploy mirror).
 
-Prefer least-privilege [scopes](/scopes) on stored keys.
+Prefer least-privilege [scopes](/guides/scopes) on stored keys.
 
 IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requests only. Hosted MCP OAuth is **not** IP-restricted. If you use stdio MCP with `PRAXICRAFT_API_KEY`, leave that key's CIDR list empty (or use a dedicated MCP key).
 
@@ -71,8 +71,8 @@ IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requ
 
 Tools map to the Public API: assessments, invites, results, org/squads/audit (audit is Starter+), cases, webhooks, interviews, pipelines, integrations.
 
-Remind agents to respect plan limits and to branch on `error.code` — [Errors](/errors).
+Remind agents to respect plan limits and to branch on `error.code` — [Errors](/guides/errors).
 
 ## Next
 
-[Build with agents](/build-with-agents) · [Using docs with LLMs](/using-llms) · [Quickstart](/quickstart) · [API Reference](/api-reference)
+[Build with agents](/integrations/build-with-agents) · [Using docs with LLMs](/integrations/using-llms) · [Quickstart](/guides/quickstart) · [API Reference](/guides/api-reference)

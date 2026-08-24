@@ -10,7 +10,7 @@ Package: [`@praxicraft/n8n-nodes-assess`](https://www.npmjs.com/package/@praxicr
 ## Prerequisites
 
 - An n8n Cloud or self-hosted instance
-- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/authentication)
+- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/guides/authentication)
 
 ## Setup guide
 
@@ -108,10 +108,10 @@ Assessment, Case, Invitation, Pipeline (Reject / Hold / Unhold), Webhook (includ
 |---------|-----|
 | Credential test fails | Add `organisation:read` or use full-access scopes |
 | Trigger never fires | Workflow must be **Active**; webhook must verify |
-| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/scopes) |
+| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/guides/scopes) |
 | Signature failures | Do not rewrite the raw request body in a proxy |
 | Node missing in search | Install `@praxicraft/n8n-nodes-assess` and refresh / restart n8n |
 
 ## Next
 
-[Automations](/automations) · [Zapier](/zapier) · [Webhooks](/webhooks) · [Scopes](/scopes) · [Authentication](/authentication)
+[Automations](/integrations/automations) · [Zapier](/integrations/zapier) · [Webhooks](/guides/webhooks) · [Scopes](/guides/scopes) · [Authentication](/guides/authentication)

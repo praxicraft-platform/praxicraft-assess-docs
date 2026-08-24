@@ -5,7 +5,7 @@ description: "Plan, seats, usage, team, squads, and audit log for your Assess wo
 
 Engineers can read org profile, quotas, usage, billing entitlements, and developer health over the Public API. Checkout and role changes stay dashboard-only.
 
-Event destinations (HTTPS, [Slack](/integrations/slack), [Teams](/integrations/teams)) are managed under [Webhooks](/webhooks) — same as **Developer → Destinations** in the dashboard.
+Event destinations (HTTPS, [Slack](/integrations/slack), [Teams](/integrations/teams)) are managed under [Webhooks](/guides/webhooks) — same as **Developer → Destinations** in the dashboard.
 
 ## If you are recruiting / ops
 
@@ -15,16 +15,16 @@ Open settings / billing / team in the [dashboard](https://assess.praxicraft.com/
 |----------|----------------|
 | What plan are we on? | Billing, or ask eng to call `GET /org/` / `GET /org/billing/` |
 | How many invites / seats left? | `GET /org/billing/` (or invite fields on `GET /org/`) |
-| Who can access Assess? | Team members and [roles](/roles) |
+| Who can access Assess? | Team members and [roles](/guides/roles) |
 | Hiring squads (Growth+) | Sub-teams for filtering assessments and pipelines |
 
-You **cannot** change roles or run checkout through the Public API. Role capabilities: [Team roles](/roles).
+You **cannot** change roles or run checkout through the Public API. Role capabilities: [Team roles](/guides/roles).
 
-Invite quota rules: [Plan limits](/plan-limits).
+Invite quota rules: [Plan limits](/guides/plan-limits).
 
 ## For engineers
 
-Prefer paths under `/org/…`. Live/Test mode: [Authentication](/authentication#live-and-test-mode).
+Prefer paths under `/org/…`. Live/Test mode: [Authentication](/guides/authentication#live-and-test-mode).
 
 | Method | Path | Scope | Mode |
 |--------|------|-------|------|
@@ -91,4 +91,4 @@ Expect up to ~60 seconds before `GET /org/` shows the new plan.
 
 ## Next
 
-[Plan limits](/plan-limits) · [Scopes](/scopes) · [API changelog](/api-changelog) · [Errors](/errors)
+[Plan limits](/guides/plan-limits) · [Scopes](/guides/scopes) · [API changelog](/api-changelog) · [Errors](/guides/errors)

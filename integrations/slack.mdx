@@ -23,11 +23,11 @@ For “candidate passed → hiring channel”, add a **Slack** destination under
 Connecting a workspace is a one-time dashboard step. After that, `POST /webhooks/create/` can use `slack_channel_id` with no `url`.
 </Note>
 
-Prefer a Slack destination in Assess for simple pass/fail alerts. Use [Zapier](/zapier) / [n8n](/n8n) / [Make](/make) Slack steps when you need extra routing (email, ATS, spreadsheets).
+Prefer a Slack destination in Assess for simple pass/fail alerts. Use [Zapier](/integrations/zapier) / [n8n](/integrations/n8n) / [Make](/integrations/make) Slack steps when you need extra routing (email, ATS, spreadsheets).
 
 ## For engineers
 
-Destinations use the same Public API as HTTPS webhooks: `/webhooks/`. There is no separate `/destinations/` path. See [Webhooks](/webhooks) for create, test, deliveries, and retry.
+Destinations use the same Public API as HTTPS webhooks: `/webhooks/`. There is no separate `/destinations/` path. See [Webhooks](/guides/webhooks) for create, test, deliveries, and retry.
 
 After Slack is connected in the dashboard:
 
@@ -42,4 +42,4 @@ HTTPS destinations still use `whsec_…` and `X-Praxicraft-Signature`. Slack des
 
 ## Next
 
-[Teams](/integrations/teams) · [Webhooks](/webhooks) · [Automations](/automations) · [Integrations](/integrations)
+[Teams](/integrations/teams) · [Webhooks](/guides/webhooks) · [Automations](/integrations/automations) · [Integrations](/integrations/overview)

@@ -50,25 +50,25 @@ Native connectors need **Growth+**. Long-tail ATS use webhooks + the Public API.
 ## Automations & agents
 
 <CardGroup cols={2}>
-  <Card title="Automations overview" icon="workflow" href="/automations">
+  <Card title="Automations overview" icon="workflow" href="/integrations/automations">
     When to use Zapier, n8n, Make, or a custom worker
   </Card>
-  <Card title="n8n" icon="boxes" href="/n8n">
+  <Card title="n8n" icon="boxes" href="/integrations/n8n">
     Verified community node
   </Card>
-  <Card title="Zapier" icon="zap" href="/zapier">
+  <Card title="Zapier" icon="zap" href="/integrations/zapier">
     Assess app — events, invites, pipelines
   </Card>
-  <Card title="Make" icon="workflow" href="/make">
+  <Card title="Make" icon="workflow" href="/integrations/make">
     Custom App — Watch Assess Event + modules
   </Card>
-  <Card title="Build with agents" icon="bot" href="/build-with-agents">
+  <Card title="Build with agents" icon="bot" href="/integrations/build-with-agents">
     Knowledge MCP, API MCP, and hiring skills for Cursor / Claude / Codex
   </Card>
-  <Card title="MCP / agents" icon="bot" href="/assess-mcp">
+  <Card title="MCP / agents" icon="bot" href="/integrations/assess-mcp">
     Coding agents that call Assess API tools
   </Card>
-  <Card title="Webhooks" icon="webhook" href="/webhooks">
+  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
     HTTPS destinations, signatures, delivery logs
   </Card>
 </CardGroup>
@@ -100,4 +100,4 @@ Providers post into Assess at:
 https://assess.praxicraft.com/api/v1/integrations/webhooks/{provider}/?org={organisation_uuid}
 ```
 
-Those inbound webhooks create **interview rooms**, not assessment invites. Destinations (HTTPS / Slack / Teams) use `/webhooks/` — see [Webhooks](/webhooks).
+Those inbound webhooks create **interview rooms**, not assessment invites. Destinations (HTTPS / Slack / Teams) use `/webhooks/` — see [Webhooks](/guides/webhooks).

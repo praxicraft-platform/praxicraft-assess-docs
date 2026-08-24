@@ -10,7 +10,7 @@ Setup docs live here. The integration source is [github.com/praxicraft-platform/
 ## Prerequisites
 
 - A Zapier account
-- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/authentication)
+- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/guides/authentication)
 
 ## Setup guide
 
@@ -103,11 +103,11 @@ On enable: `POST /webhooks/create/` with Zapier’s hook URL and the selected ev
 
 Assess still signs bodies (`X-Praxicraft-Signature`). Zapier owns the hook URL — treat it as a trusted destination. You do not need to verify HMAC inside the Zap.
 
-High-value events: `assessment.completed`, `candidate.passed` / `failed`, `pipeline.advanced` / `completed` / `rejected`, `interview.completed` / `analysis_ready`. Full list: [Webhooks](/webhooks).
+High-value events: `assessment.completed`, `candidate.passed` / `failed`, `pipeline.advanced` / `completed` / `rejected`, `interview.completed` / `analysis_ready`. Full list: [Webhooks](/guides/webhooks).
 
 ### Actions
 
-Assessment, Case, Invitation, Pipeline, Webhook (including **Retry delivery**), Organisation, Interview, Integration — matching the [n8n node](/n8n) and the Public API. Creates are writes; searches are GET / list. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
+Assessment, Case, Invitation, Pipeline, Webhook (including **Retry delivery**), Organisation, Interview, Integration — matching the [n8n node](/integrations/n8n) and the Public API. Creates are writes; searches are GET / list. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
 
 Optional `external_id` on **Invite Candidate** stores your ATS candidate id so retries do not create a second invite.
 
@@ -117,9 +117,9 @@ Optional `external_id` on **Invite Candidate** stores your ATS candidate id so r
 |---------|-----|
 | Connection test fails | Add `organisation:read` or use full-access scopes |
 | Trigger never fires | The Zap must be **on**; the webhook must verify |
-| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/scopes) |
+| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/guides/scopes) |
 | App missing in Zapier search | Email [support@praxicraft.com](mailto:support@praxicraft.com) |
 
 ## Next
 
-[Automations](/automations) · [n8n](/n8n) · [Webhooks](/webhooks) · [Authentication](/authentication)
+[Automations](/integrations/automations) · [n8n](/integrations/n8n) · [Webhooks](/guides/webhooks) · [Authentication](/guides/authentication)

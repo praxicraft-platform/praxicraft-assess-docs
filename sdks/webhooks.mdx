@@ -15,7 +15,7 @@ Assess signs outbound webhook bodies with your endpoint secret (`whsec_…`). Ve
 
 Do not re-serialize JSON before verifying. A `null` or missing body is treated as empty bytes in the official helpers.
 
-Event catalog: [Webhooks](/webhooks).
+Event catalog: [Webhooks](/guides/webhooks).
 
 ## Python
 
@@ -83,4 +83,4 @@ bool ok = Webhooks.VerifySignature(secret, rawBody, signatureHeader);
 
 ## Next
 
-[Webhooks guide](/webhooks) · [n8n trigger](/n8n) (verifies signatures for you)
+[Webhooks guide](/guides/webhooks) · [n8n trigger](/integrations/n8n) (verifies signatures for you)

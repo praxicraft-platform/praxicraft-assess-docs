@@ -12,8 +12,8 @@ A webhook is an HTTPS URL Assess calls when something happens. Your tool (n8n, Z
 You usually do **not** configure webhooks by hand. Instead:
 
 1. Ask engineering to register your automation URL, **or**
-2. Use the [n8n Assess node](/n8n), [Zapier](/zapier), or [Make](/make) app — they register the webhook when the scenario/workflow is active, **or**
-3. Follow [Automations](/automations) for a custom catch hook
+2. Use the [n8n Assess node](/integrations/n8n), [Zapier](/integrations/zapier), or [Make](/integrations/make) app — they register the webhook when the scenario/workflow is active, **or**
+3. Follow [Automations](/integrations/automations) for a custom catch hook
 
 Useful events to ask for:
 
@@ -29,7 +29,7 @@ Useful events to ask for:
 
 Register an HTTPS endpoint. You receive a `whsec_…` secret **once** to verify `X-Praxicraft-Signature`.
 
-Live destinations only receive live events. Create a separate destination in **Test** mode (or with a `ct_test_` key) while you debug — test `candidate.passed` never hits a live URL. See [Live and Test mode](/authentication#live-and-test-mode).
+Live destinations only receive live events. Create a separate destination in **Test** mode (or with a `ct_test_` key) while you debug — test `candidate.passed` never hits a live URL. See [Live and Test mode](/guides/authentication#live-and-test-mode).
 
 ### Endpoints
 
@@ -117,4 +117,4 @@ Failed rows live in **Developer → Events** (filter **Failed**) and on each des
 
 ## Next
 
-[SDK verification](/sdks/webhooks) · [Slack](/integrations/slack) · [Teams](/integrations/teams) · [Integrations](/integrations) · [Automations](/automations)
+[SDK verification](/sdks/webhooks) · [Slack](/integrations/slack) · [Teams](/integrations/teams) · [Integrations](/integrations/overview) · [Automations](/integrations/automations)

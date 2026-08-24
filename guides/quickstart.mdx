@@ -24,7 +24,7 @@ No API key. No terminal.
   </Step>
 </Steps>
 
-Want Greenhouse, Slack, or spreadsheets to update themselves? Ask an engineer to follow Path B, or use [n8n](/n8n) / [Automations](/automations).
+Want Greenhouse, Slack, or spreadsheets to update themselves? Ask an engineer to follow Path B, or use [n8n](/integrations/n8n) / [Automations](/integrations/automations).
 
 ---
 
@@ -35,14 +35,14 @@ Create an API key, list assessments, invite a candidate, and fetch their result.
 ### Prerequisites
 
 - Organisation on **Starter** or above (Free cannot create API keys)
-- An owner, admin, or [developer](/roles) role (recruiters cannot mint keys)
-- An **active** assessment (dashboard or [Assessments](/assessments) API)
+- An owner, admin, or [developer](/guides/roles) role (recruiters cannot mint keys)
+- An **active** assessment (dashboard or [Assessments](/guides/assessments) API)
 
 <Steps>
   <Step title="Create an API key">
     Open [Assess → Developer → API Keys](https://assess.praxicraft.com/assess/api), create a key, and copy it (shown once). Live keys start with `ct_live_`; switch the dashboard to **Test** to mint `ct_test_…`.
 
-    Prefer least-privilege [scopes](/scopes). Empty scopes grant full access (legacy).
+    Prefer least-privilege [scopes](/guides/scopes). Empty scopes grant full access (legacy).
   </Step>
 
   <Step title="Set your environment">
@@ -198,7 +198,7 @@ fmt.Println(result)
 
 </CodeGroup>
 
-    In production, prefer [webhooks](/webhooks) (`assessment.completed`) instead of polling.
+    In production, prefer [webhooks](/guides/webhooks) (`assessment.completed`) instead of polling.
   </Step>
 </Steps>
 
@@ -225,16 +225,16 @@ More: [SDKs](/sdks/introduction).
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/authentication">
+  <Card title="Authentication" icon="key" href="/guides/authentication">
     Keys, scopes, and safe rotation.
   </Card>
-  <Card title="Invitations" icon="mail" href="/invitations">
+  <Card title="Invitations" icon="mail" href="/guides/invitations">
     Bulk invites, reminders, cancel.
   </Card>
-  <Card title="Automations" icon="workflow" href="/automations">
+  <Card title="Automations" icon="workflow" href="/integrations/automations">
     n8n / Zapier without a custom app.
   </Card>
-  <Card title="Webhooks" icon="webhook" href="/webhooks">
+  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
     Get notified when candidates finish.
   </Card>
 </CardGroup>

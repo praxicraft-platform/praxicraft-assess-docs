@@ -1,94 +1,131 @@
 # Praxicraft Assess Documentation
 
-Official Mintlify docs for [Praxicraft Assess](https://assess.praxicraft.com) — technical hiring assessments, live interviews, Public API, SDKs, MCP, and ATS automations.
+<p align="center">
+  <img src="./images/og/docs.png" alt="Praxicraft Assess documentation" width="720"/>
+</p>
 
-**Live site:** [docs.praxicraft.com](https://docs.praxicraft.com)
+<div align="center">
+
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" />
+  </a>
+  <a href="https://docs.praxicraft.com">
+    <img src="https://img.shields.io/badge/docs-live-brightgreen.svg" alt="Live Documentation" />
+  </a>
+
+</div>
 
 ## Overview
 
-This repository is the **source of truth** for customer-facing Assess documentation. It is built with [Mintlify](https://mintlify.com) and published independently of the product monorepo.
+Welcome to the official documentation repository for [Praxicraft Assess](https://assess.praxicraft.com) — technical assessments, live interviews, and hiring automations for engineering teams. This documentation is built with [Mintlify](https://mintlify.com).
 
-### Sections
+## Documentation site
 
-| Area | Contents |
-|------|----------|
-| **Guides** | Quickstart, auth, assessments, invites, results, webhooks, interviews, integrations, MCP, agents |
-| **SDKs** | Python, Node, Go, PHP, Ruby, Java, .NET, CLI, webhook verification |
-| **API Reference** | OpenAPI playground (`openapi.json`) |
-| **API changelog** | Public API release notes under `/api-changelog` |
+Visit the live docs at [docs.praxicraft.com](https://docs.praxicraft.com)
 
-Internal writing rules: [`STYLE.md`](STYLE.md) (not in the public nav).
+## Documentation structure
 
-## Local preview
+Content is organized by section (MDX lives in folders, not at the repo root):
 
-```bash
-git clone https://github.com/praxicraft-platform/praxicraft-assess-docs.git
-cd praxicraft-assess-docs
-npx mintlify@latest dev
-```
+### 1. Guides (`guides/`)
 
-Open the URL Mintlify prints (usually http://localhost:3000).
+Getting started, authentication, assessments, invitations, results, interviews, webhooks, pipelines, organisation, scopes, errors, and API reference hub.
+
+### 2. Integrations (`integrations/`)
+
+ATS providers, Slack/Teams, n8n / Zapier / Make, MCP, and agent workflows.
+
+### 3. SDKs (`sdks/`)
+
+Official clients (Python, Node, Go, PHP, Ruby, Java, .NET), CLI, and webhook verification.
+
+### 4. API changelog (`api-changelog/`)
+
+Public API release notes.
+
+### 5. API Reference
+
+Interactive OpenAPI playground from `openapi.json`.
+
+The landing page is root [`index.mdx`](./index.mdx). Navigation is configured in [`docs.json`](./docs.json). Writing rules for contributors: [`STYLE.md`](./STYLE.md).
+
+## Development setup
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/praxicraft-platform/praxicraft-assess-docs.git
+   cd praxicraft-assess-docs
+   ```
+
+2. **Install the Mintlify CLI**
+
+   ```bash
+   npm i -g mintlify
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   mintlify dev
+   ```
+
+   Docs will be available at `http://localhost:3000`.
+
+### Configuration
+
+`docs.json` controls navigation, theme, SEO, playground settings, and redirects.
 
 ## Contributing
 
-We welcome docs PRs — fixes, clarifications, and new examples.
+Want to help improve the docs? See [CONTRIBUTING.md](./CONTRIBUTING.md) and our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+- Fix typos, clarify explanations, or add examples
+- Keep examples accurate against the live Public API and `openapi.json`
+- Preview with `mintlify dev` before opening a pull request
 
-## Refresh OpenAPI snapshot
+## Troubleshooting
 
-The Public API schema is generated from the product backend. From a checkout of the web monorepo:
+**Mintlify dev isn't running**
 
-```bash
-docker compose -f docker-compose.dev.yml run --rm --no-deps \
-  -v "/path/to/praxicraft-assess-docs:/out" backend python -c "
-import os, json
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','config.settings.dev')
-import django; django.setup()
-from django.test import RequestFactory
-from apps.assess.public_openapi import PublicSpectacularAPIView
-resp = PublicSpectacularAPIView.as_view()(RequestFactory().get('/api/v1/public/schema/', HTTP_ACCEPT='application/json'))
-data = resp.data
-for p in [k for k in data.get('paths', {}) if k.startswith('/api/v1/public/organisation')]:
-    del data['paths'][p]
-data['servers'] = [
-  {'url': 'https://assess.praxicraft.com', 'description': 'Production'},
-  {
-    'url': '{baseUrl}',
-    'description': 'Custom base URL',
-    'variables': {
-      'baseUrl': {
-        'default': 'https://assess.praxicraft.com',
-        'description': 'Full origin only (no path).',
-      }
-    },
-  },
-]
-data['security'] = [{'bearerAuth': []}]
-open('/out/openapi.json','w').write(json.dumps(data, indent=2)+chr(10))
-print('wrote', len(data['paths']), 'paths')
-"
-```
+- Run `mintlify install` to reinstall dependencies
+- Ensure you're in the directory containing `docs.json`
 
-Then regenerate Postman:
+**Page loads as 404**
 
-```bash
-node scripts/openapi-to-postman.mjs
-```
+- Confirm the file is listed in `docs.json` navigation
+- Verify the path matches the navigation entry (e.g. `guides/authentication`)
 
-## Mintlify deployment
+**Images not displaying**
 
-Connect this GitHub repo in the [Mintlify dashboard](https://app.mintlify.com). Prefer DNS: `docs.praxicraft.com` CNAME → Mintlify.
+- Keep images under `/images`
+- Use absolute paths starting with `/images/`
 
-After changing `robots.txt` or SEO fields in `docs.json`, redeploy so production picks up crawl rules.
+## Deployment
 
-## Related repos
-
-- [praxicraft-assess-cli](https://github.com/praxicraft-platform/praxicraft-assess-cli)
-- [praxicraft-assess-mcp](https://github.com/praxicraft-platform/praxicraft-assess-mcp)
-- [praxicraft-assess-agent-plugin](https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin)
-- SDKs under [praxicraft-platform](https://github.com/orgs/praxicraft-platform/repositories)
+Documentation deploys when changes land on `main` via Mintlify connected to this repository. Live site: [docs.praxicraft.com](https://docs.praxicraft.com).
 
 ## License
 
 [MIT](./LICENSE)
+
+## Support
+
+- **Documentation issues**: open an issue in this repository
+- **Product support**: [support@praxicraft.com](mailto:support@praxicraft.com)
+- **API status**: [status.praxicraft.com](https://status.praxicraft.com)
+
+## Useful links
+
+- [Assess dashboard](https://assess.praxicraft.com/assess)
+- [Quickstart](https://docs.praxicraft.com/guides/quickstart)
+- [API Reference](https://docs.praxicraft.com/guides/api-reference)
+- [CLI](https://docs.praxicraft.com/sdks/cli)
+- [API changelog](https://docs.praxicraft.com/api-changelog)

@@ -3,7 +3,7 @@ title: "API Reference"
 description: "Interactive OpenAPI playground and live ReDoc for the Public API."
 ---
 
-Use this when you are building software against Assess. Recruiters and ops can stay in the [dashboard](https://assess.praxicraft.com/assess) or start at [Quickstart](/quickstart).
+Use this when you are building software against Assess. Recruiters and ops can stay in the [dashboard](https://assess.praxicraft.com/assess) or start at [Quickstart](/guides/quickstart).
 
 ## Open the API docs
 
@@ -11,7 +11,7 @@ Use this when you are building software against Assess. Recruiters and ops can s
   <Card title="ReDoc" icon="book-open" href="https://assess.praxicraft.com/api/v1/public/redoc/">
     Live reference for every Public API endpoint — schemas, examples, try-it.
   </Card>
-  <Card title="Authentication" icon="key" href="/authentication">
+  <Card title="Authentication" icon="key" href="/guides/authentication">
     Keys, Bearer auth, and base URL before you call anything.
   </Card>
 </CardGroup>
@@ -31,7 +31,7 @@ Additive org/ops endpoints since the 1.1.0 baseline — details in the [API chan
 | Pipelines | `POST /pipelines/create/`, `PATCH /pipelines/{slug}/`, enrollments `advance` + `notes` | Linear stages; Growth+; `pipelines:write` |
 | Destinations | `/webhooks/` (+ delivery retry) | Same as Developer → Destinations; no separate `/destinations/` path |
 
-Guides with curl and Live/Test callouts: [Organisation](/organisation) · [Pipelines](/pipelines) · [Scopes](/scopes) · [Webhooks](/webhooks).
+Guides with curl and Live/Test callouts: [Organisation](/guides/organisation) · [Pipelines](/guides/pipelines) · [Scopes](/guides/scopes) · [Webhooks](/guides/webhooks).
 
 ## Playground notes
 
@@ -60,19 +60,19 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
 ## Guides
 
 <CardGroup cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
+  <Card title="Quickstart" icon="rocket" href="/guides/quickstart">
     First call in five minutes.
   </Card>
-  <Card title="Authentication" icon="key" href="/authentication">
+  <Card title="Authentication" icon="key" href="/guides/authentication">
     Keys and scopes.
   </Card>
   <Card title="API changelog" icon="scroll-text" href="/api-changelog">
     Public API release notes (separate from the product changelog).
   </Card>
-  <Card title="Organisation" icon="building" href="/organisation">
+  <Card title="Organisation" icon="building" href="/guides/organisation">
     Usage, billing, health, squads, audit export.
   </Card>
-  <Card title="Errors" icon="triangle-alert" href="/errors">
+  <Card title="Errors" icon="triangle-alert" href="/guides/errors">
     Stable `error.code` catalogue.
   </Card>
   <Card title="SDKs" icon="package" href="/sdks/introduction">

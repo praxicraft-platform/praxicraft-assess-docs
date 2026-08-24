@@ -18,7 +18,13 @@
     "library": "lucide"
   },
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "cursor"],
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor"
+    ],
     "display": "header"
   },
   "navigation": {
@@ -60,50 +66,50 @@
             "icon": "rocket",
             "pages": [
               "index",
-              "about",
-              "roles",
-              "quickstart",
-              "authentication"
+              "guides/about",
+              "guides/roles",
+              "guides/quickstart",
+              "guides/authentication"
             ]
           },
           {
             "group": "Assessments & candidates",
             "icon": "clipboard-check",
             "pages": [
-              "assessments",
-              "invitations",
-              "results",
-              "proctoring"
+              "guides/assessments",
+              "guides/invitations",
+              "guides/results",
+              "guides/proctoring"
             ]
           },
           {
             "group": "Interviews & webhooks",
             "icon": "video",
             "pages": [
-              "interviews",
-              "webhooks"
+              "guides/interviews",
+              "guides/webhooks"
             ]
           },
           {
             "group": "Content & pipelines",
             "icon": "layers",
             "pages": [
-              "custom-cases",
-              "pipelines"
+              "guides/custom-cases",
+              "guides/pipelines"
             ]
           },
           {
             "group": "Account & reference",
             "icon": "book-marked",
             "pages": [
-              "organisation",
-              "scopes",
-              "rate-limits",
-              "plan-limits",
-              "errors",
-              "api-reference",
-              "postman",
-              "glossary"
+              "guides/organisation",
+              "guides/scopes",
+              "guides/rate-limits",
+              "guides/plan-limits",
+              "guides/errors",
+              "guides/api-reference",
+              "guides/postman",
+              "guides/glossary"
             ]
           }
         ]
@@ -116,8 +122,8 @@
             "group": "Overview",
             "icon": "compass",
             "pages": [
-              "integrations",
-              "automations"
+              "integrations/overview",
+              "integrations/automations"
             ]
           },
           {
@@ -146,12 +152,12 @@
             "group": "Automations & agents",
             "icon": "workflow",
             "pages": [
-              "build-with-agents",
-              "n8n",
-              "zapier",
-              "make",
-              "assess-mcp",
-              "using-llms"
+              "integrations/build-with-agents",
+              "integrations/n8n",
+              "integrations/zapier",
+              "integrations/make",
+              "integrations/assess-mcp",
+              "integrations/using-llms"
             ]
           }
         ]
@@ -225,7 +231,13 @@
       }
     },
     "examples": {
-      "languages": ["curl", "python", "javascript", "node", "go"]
+      "languages": [
+        "curl",
+        "python",
+        "javascript",
+        "node",
+        "go"
+      ]
     }
   },
   "navbar": {
@@ -246,16 +258,334 @@
     "primary": {
       "type": "button",
       "label": "Get started",
-      "href": "https://docs.praxicraft.com/quickstart"
+      "href": "https://docs.praxicraft.com/guides/quickstart"
     }
   },
   "redirects": [
-    { "source": "/docs", "destination": "/" },
-    { "source": "/docs/overview", "destination": "/" },
-    { "source": "/docs/:slug", "destination": "/:slug" },
-    { "source": "/assess/overview", "destination": "/" },
-    { "source": "/assess/:slug", "destination": "/:slug" },
-    { "source": "/sdks", "destination": "/sdks/introduction" }
+    {
+      "source": "/docs",
+      "destination": "/"
+    },
+    {
+      "source": "/docs/overview",
+      "destination": "/"
+    },
+    {
+      "source": "/assess/overview",
+      "destination": "/"
+    },
+    {
+      "source": "/sdks",
+      "destination": "/sdks/introduction"
+    },
+    {
+      "source": "/integrations",
+      "destination": "/integrations/overview"
+    },
+    {
+      "source": "/about",
+      "destination": "/guides/about"
+    },
+    {
+      "source": "/docs/about",
+      "destination": "/guides/about"
+    },
+    {
+      "source": "/assess/about",
+      "destination": "/guides/about"
+    },
+    {
+      "source": "/api-reference",
+      "destination": "/guides/api-reference"
+    },
+    {
+      "source": "/docs/api-reference",
+      "destination": "/guides/api-reference"
+    },
+    {
+      "source": "/assess/api-reference",
+      "destination": "/guides/api-reference"
+    },
+    {
+      "source": "/assessments",
+      "destination": "/guides/assessments"
+    },
+    {
+      "source": "/docs/assessments",
+      "destination": "/guides/assessments"
+    },
+    {
+      "source": "/assess/assessments",
+      "destination": "/guides/assessments"
+    },
+    {
+      "source": "/authentication",
+      "destination": "/guides/authentication"
+    },
+    {
+      "source": "/docs/authentication",
+      "destination": "/guides/authentication"
+    },
+    {
+      "source": "/assess/authentication",
+      "destination": "/guides/authentication"
+    },
+    {
+      "source": "/custom-cases",
+      "destination": "/guides/custom-cases"
+    },
+    {
+      "source": "/docs/custom-cases",
+      "destination": "/guides/custom-cases"
+    },
+    {
+      "source": "/assess/custom-cases",
+      "destination": "/guides/custom-cases"
+    },
+    {
+      "source": "/errors",
+      "destination": "/guides/errors"
+    },
+    {
+      "source": "/docs/errors",
+      "destination": "/guides/errors"
+    },
+    {
+      "source": "/assess/errors",
+      "destination": "/guides/errors"
+    },
+    {
+      "source": "/glossary",
+      "destination": "/guides/glossary"
+    },
+    {
+      "source": "/docs/glossary",
+      "destination": "/guides/glossary"
+    },
+    {
+      "source": "/assess/glossary",
+      "destination": "/guides/glossary"
+    },
+    {
+      "source": "/interviews",
+      "destination": "/guides/interviews"
+    },
+    {
+      "source": "/docs/interviews",
+      "destination": "/guides/interviews"
+    },
+    {
+      "source": "/assess/interviews",
+      "destination": "/guides/interviews"
+    },
+    {
+      "source": "/invitations",
+      "destination": "/guides/invitations"
+    },
+    {
+      "source": "/docs/invitations",
+      "destination": "/guides/invitations"
+    },
+    {
+      "source": "/assess/invitations",
+      "destination": "/guides/invitations"
+    },
+    {
+      "source": "/organisation",
+      "destination": "/guides/organisation"
+    },
+    {
+      "source": "/docs/organisation",
+      "destination": "/guides/organisation"
+    },
+    {
+      "source": "/assess/organisation",
+      "destination": "/guides/organisation"
+    },
+    {
+      "source": "/pipelines",
+      "destination": "/guides/pipelines"
+    },
+    {
+      "source": "/docs/pipelines",
+      "destination": "/guides/pipelines"
+    },
+    {
+      "source": "/assess/pipelines",
+      "destination": "/guides/pipelines"
+    },
+    {
+      "source": "/plan-limits",
+      "destination": "/guides/plan-limits"
+    },
+    {
+      "source": "/docs/plan-limits",
+      "destination": "/guides/plan-limits"
+    },
+    {
+      "source": "/assess/plan-limits",
+      "destination": "/guides/plan-limits"
+    },
+    {
+      "source": "/postman",
+      "destination": "/guides/postman"
+    },
+    {
+      "source": "/docs/postman",
+      "destination": "/guides/postman"
+    },
+    {
+      "source": "/assess/postman",
+      "destination": "/guides/postman"
+    },
+    {
+      "source": "/proctoring",
+      "destination": "/guides/proctoring"
+    },
+    {
+      "source": "/docs/proctoring",
+      "destination": "/guides/proctoring"
+    },
+    {
+      "source": "/assess/proctoring",
+      "destination": "/guides/proctoring"
+    },
+    {
+      "source": "/quickstart",
+      "destination": "/guides/quickstart"
+    },
+    {
+      "source": "/docs/quickstart",
+      "destination": "/guides/quickstart"
+    },
+    {
+      "source": "/assess/quickstart",
+      "destination": "/guides/quickstart"
+    },
+    {
+      "source": "/rate-limits",
+      "destination": "/guides/rate-limits"
+    },
+    {
+      "source": "/docs/rate-limits",
+      "destination": "/guides/rate-limits"
+    },
+    {
+      "source": "/assess/rate-limits",
+      "destination": "/guides/rate-limits"
+    },
+    {
+      "source": "/results",
+      "destination": "/guides/results"
+    },
+    {
+      "source": "/docs/results",
+      "destination": "/guides/results"
+    },
+    {
+      "source": "/assess/results",
+      "destination": "/guides/results"
+    },
+    {
+      "source": "/roles",
+      "destination": "/guides/roles"
+    },
+    {
+      "source": "/docs/roles",
+      "destination": "/guides/roles"
+    },
+    {
+      "source": "/assess/roles",
+      "destination": "/guides/roles"
+    },
+    {
+      "source": "/scopes",
+      "destination": "/guides/scopes"
+    },
+    {
+      "source": "/docs/scopes",
+      "destination": "/guides/scopes"
+    },
+    {
+      "source": "/assess/scopes",
+      "destination": "/guides/scopes"
+    },
+    {
+      "source": "/webhooks",
+      "destination": "/guides/webhooks"
+    },
+    {
+      "source": "/docs/webhooks",
+      "destination": "/guides/webhooks"
+    },
+    {
+      "source": "/assess/webhooks",
+      "destination": "/guides/webhooks"
+    },
+    {
+      "source": "/assess-mcp",
+      "destination": "/integrations/assess-mcp"
+    },
+    {
+      "source": "/docs/assess-mcp",
+      "destination": "/integrations/assess-mcp"
+    },
+    {
+      "source": "/automations",
+      "destination": "/integrations/automations"
+    },
+    {
+      "source": "/docs/automations",
+      "destination": "/integrations/automations"
+    },
+    {
+      "source": "/build-with-agents",
+      "destination": "/integrations/build-with-agents"
+    },
+    {
+      "source": "/docs/build-with-agents",
+      "destination": "/integrations/build-with-agents"
+    },
+    {
+      "source": "/make",
+      "destination": "/integrations/make"
+    },
+    {
+      "source": "/docs/make",
+      "destination": "/integrations/make"
+    },
+    {
+      "source": "/n8n",
+      "destination": "/integrations/n8n"
+    },
+    {
+      "source": "/docs/n8n",
+      "destination": "/integrations/n8n"
+    },
+    {
+      "source": "/using-llms",
+      "destination": "/integrations/using-llms"
+    },
+    {
+      "source": "/docs/using-llms",
+      "destination": "/integrations/using-llms"
+    },
+    {
+      "source": "/zapier",
+      "destination": "/integrations/zapier"
+    },
+    {
+      "source": "/docs/zapier",
+      "destination": "/integrations/zapier"
+    },
+    {
+      "source": "/docs/:slug",
+      "destination": "/:slug"
+    },
+    {
+      "source": "/assess/:slug",
+      "destination": "/:slug"
+    }
   ],
   "footer": {
     "socials": {
@@ -314,13 +644,13 @@
     "indexing": "navigable",
     "metatags": {
       "title": "Praxicraft Assess API for Technical Hiring",
-      "description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
       "keywords": "Assess API, technical hiring API, assessment webhooks, ATS integration, MCP, Praxicraft",
       "robots": "index, follow",
       "canonical": "https://docs.praxicraft.com",
       "og:site_name": "Praxicraft Assess Docs",
       "og:title": "Praxicraft Assess API for Technical Hiring",
-      "og:description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "og:description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
       "og:type": "website",
       "og:url": "https://docs.praxicraft.com",
       "og:locale": "en_US",
@@ -329,7 +659,7 @@
       "twitter:card": "summary_large_image",
       "twitter:site": "@praxicraft",
       "twitter:title": "Praxicraft Assess API for Technical Hiring",
-      "twitter:description": "Praxicraft Assess API — authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "twitter:description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
       "twitter:image": "/images/og/docs.png",
       "twitter:image:alt": "Praxicraft Assess API documentation"
     },

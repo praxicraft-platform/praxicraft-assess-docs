@@ -16,6 +16,8 @@ npx mintlify@latest dev
 
 4. Open a pull request with a clear description of the change.
 
+Put new guide pages under `guides/`, integration pages under `integrations/`, SDK pages under `sdks/`, and changelog entries under `api-changelog/`. Register them in `docs.json`. Keep the repo root free of guide MDX except `index.mdx`.
+
 ## What to contribute
 
 - Clarifications and typo fixes

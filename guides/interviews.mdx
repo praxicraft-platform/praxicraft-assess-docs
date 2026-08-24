@@ -23,7 +23,7 @@ Use the [Assess dashboard](https://assess.praxicraft.com/assess):
   </Step>
 </Steps>
 
-Connecting interviews to your ATS? See [Integrations](/integrations) (Growth+) or ask engineering to wire [Webhooks](/webhooks) (`interview.completed`, `interview.analysis_ready`).
+Connecting interviews to your ATS? See [Integrations](/integrations/overview) (Growth+) or ask engineering to wire [Webhooks](/guides/webhooks) (`interview.completed`, `interview.analysis_ready`).
 
 ## Interview modes (reference)
 
@@ -49,7 +49,7 @@ Scopes: `interviews:read` / `interviews:write`. Base path: `/api/v1/public/inter
 | Analytics | Interview analytics endpoint |
 | Org coding cases | List org cases available for interviews |
 
-Full schemas: [API Reference](/api-reference) or [ReDoc](https://assess.praxicraft.com/api/v1/public/redoc/).
+Full schemas: [API Reference](/guides/api-reference) or [ReDoc](https://assess.praxicraft.com/api/v1/public/redoc/).
 
 ### Create example
 
@@ -83,15 +83,15 @@ List responses include quota fields such as `used`, `limit`, and `remaining`.
 
 ## Pipelines
 
-If an interview is a **stage inside a pipeline**, Assess creates a room shell from an interview template. Email invites are **not** auto-sent for that stage. AI-only can auto-advance when the session ends; human/hybrid need a recruiter to advance. Details: [Pipelines](/pipelines).
+If an interview is a **stage inside a pipeline**, Assess creates a room shell from an interview template. Email invites are **not** auto-sent for that stage. AI-only can auto-advance when the session ends; human/hybrid need a recruiter to advance. Details: [Pipelines](/guides/pipelines).
 
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Integrations" icon="plug" href="/integrations">
+  <Card title="Integrations" icon="plug" href="/integrations/overview">
     Push outcomes into your ATS.
   </Card>
-  <Card title="Webhooks" icon="webhook" href="/webhooks">
+  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
     Notify Slack or your backend.
   </Card>
 </CardGroup>

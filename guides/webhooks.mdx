@@ -25,6 +25,8 @@ Useful events to ask for:
 | `pipeline.enrolled` / `advanced` / `held` / `unheld` | Funnel movement |
 | `interview.completed` / `no_show` | Live interview ended or expired |
 
+Sample JSON for each event: [Webhook events](/guides/webhook-events).
+
 ## For engineers
 
 Register an HTTPS endpoint. You receive a `whsec_…` secret **once** to verify `X-Praxicraft-Signature`.
@@ -107,6 +109,10 @@ Failed rows live in **Developer → Events** (filter **Failed**) and on each des
 
 ### Full event list
 
+Every event name and a **sample JSON body**: [Webhook events](/guides/webhook-events).
+
+Subscribe with any of:
+
 `assessment.started`, `assessment.completed`, `candidate.passed`, `candidate.failed`, `candidate.violation`, `invitation.created`, `invitation.expired`, `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`, `interview.scheduled`, `interview.started`, `interview.completed`, `interview.cancelled`, `interview.no_show`, `interview.analysis_ready`, `webhook.test`.
 
 ### Delivery behaviour
@@ -117,4 +123,4 @@ Failed rows live in **Developer → Events** (filter **Failed**) and on each des
 
 ## Next
 
-[SDK verification](/sdks/webhooks) · [Slack](/integrations/slack) · [Teams](/integrations/teams) · [Integrations](/integrations/overview) · [Automations](/integrations/automations)
+[Webhook event samples](/guides/webhook-events) · [SDK verification](/sdks/webhooks) · [Slack](/integrations/slack) · [Teams](/integrations/teams) · [Integrations](/integrations/overview) · [Automations](/integrations/automations)

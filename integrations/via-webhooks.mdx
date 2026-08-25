@@ -27,7 +27,7 @@ flowchart LR
 ```
 
 1. Create a destination in **Developer → Destinations** (or Public API `POST /webhooks/create/`).
-2. Subscribe to the events you need — at minimum `candidate.passed`, `candidate.failed`, and for funnels `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`.
+2. Subscribe to the events you need — at minimum `candidate.passed`, `candidate.failed`, and for funnels `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`. See [sample payloads](/guides/webhook-events).
 3. When a candidate hits your ATS screen stage, call:
    - `POST /api/v1/public/pipelines/{slug}/enroll/` **or**
    - `POST /api/v1/public/assessments/{slug}/invites/`
@@ -41,4 +41,4 @@ Indeed is primarily a **job board / apply feed**, not a full ATS note-push API. 
 
 ## Next
 
-[Webhooks](/guides/webhooks) · [Integrations](/integrations/overview) · [Pipelines](/guides/pipelines) · [n8n](/integrations/n8n) · [Make](/integrations/make)
+[Webhooks](/guides/webhooks) · [Webhook event samples](/guides/webhook-events) · [Integrations](/integrations/overview) · [Pipelines](/guides/pipelines) · [n8n](/integrations/n8n) · [Make](/integrations/make)

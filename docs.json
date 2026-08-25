@@ -87,7 +87,8 @@
             "icon": "video",
             "pages": [
               "guides/interviews",
-              "guides/webhooks"
+              "guides/webhooks",
+              "guides/webhook-events"
             ]
           },
           {

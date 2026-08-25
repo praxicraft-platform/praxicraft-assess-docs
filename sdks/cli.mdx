@@ -24,10 +24,10 @@ The interactive TUI requires [Bun](https://bun.sh) ≥ 1.1 on your `PATH` (the p
 ### Binary installer
 
 ```bash
-curl -fsSL https://praxicraft.com/install.sh | sh
+curl -fsSL https://praxicraft.com/install.sh | sh && export PATH="$HOME/.local/bin:$PATH"
 ```
 
-That installs the latest GitHub Release binary (with SHA-256 check) as `praxicraft-assess` to `~/.local/bin` or `/usr/local/bin`.
+That installs the latest GitHub Release binary (with SHA-256 check) as `praxicraft-assess` to `~/.local/bin` or `/usr/local/bin`. The trailing `export` activates PATH in the **current** terminal — `curl | sh` alone cannot change your parent shell's environment.
 
 Optional:
 

@@ -6,29 +6,29 @@ description: "Import the Praxicraft Assess Public API collection into Postman or
 A Postman Collection v2.1 is generated from the public OpenAPI snapshot. It uses Bearer `ct_live_…` or `ct_test_…`, flat JSON bodies, and `invite_token`.
 
 <a
-  className="postman-collection-download"
-  href="/praxicraft-assess.postman_collection.json"
-  download="praxicraft-assess.postman_collection.json"
-  data-postman-collection="true"
+ className="postman-collection-download"
+ href="/praxicraft-assess.postman_collection.json"
+ download="praxicraft-assess.postman_collection.json"
+ data-postman-collection="true"
 >
-  Download Postman collection
+ Download Postman collection
 </a>
 
 ## Import
 
 <Steps>
-  <Step title="Download the collection">
-    Click **Download Postman collection** on this page. That saves `praxicraft-assess.postman_collection.json` to your computer.
-  </Step>
-  <Step title="Postman">
-    **Import** → select the file. Set collection variables `base_url` (`https://assess.praxicraft.com`) and `api_key` (`ct_live_…` or `ct_test_…`).
-  </Step>
-  <Step title="Bruno">
-    Bruno can import a Postman collection. Use the same variables. Do not commit your live key.
-  </Step>
+ <Step title="Download the collection">
+ Click **Download Postman collection** on this page. That saves `praxicraft-assess.postman_collection.json` to your computer.
+ </Step>
+ <Step title="Postman">
+ **Import** → select the file. Set collection variables `base_url` (`https://assess.praxicraft.com`) and `api_key` (`ct_live_…` or `ct_test_…`).
+ </Step>
+ <Step title="Bruno">
+ Bruno can import a Postman collection. Use the same variables. Do not commit your live key.
+ </Step>
 </Steps>
 
-Webhook requests that need a signature still use `X-Praxicraft-Signature: sha256=<hex>` — see [Webhooks](/guides/webhooks). Save `secret_key` from create (`whsec_…`). Invitation responses use **`invite_token`**, not `token`.
+Webhook requests that need a signature still use `X-Praxicraft-Signature: sha256=<hex>`; see [Webhooks](/guides/webhooks). Save `secret_key` from create (`whsec_…`). Invitation responses use **`invite_token`**, not `token`.
 
 Collection variables: `base_url`, `api_key` (`ct_live_…` or `ct_test_…`), `assessment_slug`, `invite_token`, `id` (webhook id), `delivery_id`.
 
@@ -36,10 +36,10 @@ Example invite body already in the collection:
 
 ```json
 {
-  "email": "ada@example.com",
-  "name": "Ada Lovelace",
-  "send_email": true,
-  "external_id": "gh_cand_123"
+ "email": "ada@example.com",
+ "name": "Ada Lovelace",
+ "send_email": true,
+ "external_id": "gh_cand_123"
 }
 ```
 

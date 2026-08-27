@@ -33,13 +33,13 @@ $client = new Client();
 
 $page = $client->assessments->list();
 foreach ($page['results'] as $assessment) {
-    echo $assessment['slug'], ' ', $assessment['status'], PHP_EOL;
+ echo $assessment['slug'], ' ', $assessment['status'], PHP_EOL;
 }
 
 $invite = $client->invites->create('senior-backend-screen', [
-    'email' => 'candidate@example.com',
-    'name' => 'Jane Doe',
-    'send_email' => true,
+ 'email' => 'candidate@example.com',
+ 'name' => 'Jane Doe',
+ 'send_email' => true,
 ]);
 
 echo $invite['invite_token'], PHP_EOL;

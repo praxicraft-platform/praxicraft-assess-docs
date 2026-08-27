@@ -1,6 +1,6 @@
 ---
 title: "Live interviews"
-description: "AI, human, or hybrid interview rooms — from the dashboard or the Public API."
+description: "AI, human, or hybrid interview rooms from the dashboard or the Public API."
 ---
 
 Live interviews are real-time sessions (not take-home assessments). Candidates join from an email link and never see your API key.
@@ -10,17 +10,17 @@ Live interviews are real-time sessions (not take-home assessments). Candidates j
 Use the [Assess dashboard](https://assess.praxicraft.com/assess):
 
 <Steps>
-  <Step title="Choose the interview style">
-    - **Human only** — you (or a teammate) lead the call  
-    - **AI only** — Assess runs the interview (needs a job description and resume text)  
-    - **Hybrid** — AI + human (Growth plan)
-  </Step>
-  <Step title="Schedule and invite">
-    Create the interview, add the candidate’s email, and send the invite. They join from the magic link in email.
-  </Step>
-  <Step title="Review afterwards">
-    Open analysis and replay in the dashboard when the session is done. Share a link with hiring managers if needed.
-  </Step>
+ <Step title="Choose the interview style">
+ - **Human only**: you (or a teammate) lead the call 
+ - **AI only**: Assess runs the interview (needs a job description and resume text) 
+ - **Hybrid**: AI + human (Growth plan)
+ </Step>
+ <Step title="Schedule and invite">
+ Create the interview, add the candidate’s email, and send the invite. They join from the magic link in email.
+ </Step>
+ <Step title="Review afterwards">
+ Open analysis and replay in the dashboard when the session is done. Share a link with hiring managers if needed.
+ </Step>
 </Steps>
 
 Connecting interviews to your ATS? See [Integrations](/integrations/overview) (Growth+) or ask engineering to wire [Webhooks](/guides/webhooks) (`interview.completed`, `interview.analysis_ready`).
@@ -47,7 +47,7 @@ Scopes: `interviews:read` / `interviews:write`. Base path: `/api/v1/public/inter
 | Analysis / replay / share | `/interviews/{id}/analysis/`, `/replay/`, share link |
 | Templates | CRUD under `/interviews/templates/…` |
 | Analytics | Interview analytics endpoint |
-| Org coding cases | List org cases available for interviews |
+| Org coding tasks | List org tasks available for interviews (`GET /interviews/org-tasks/`) |
 
 Full schemas: [API Reference](/guides/api-reference) or [ReDoc](https://assess.praxicraft.com/api/v1/public/redoc/).
 
@@ -55,18 +55,18 @@ Full schemas: [API Reference](/guides/api-reference) or [ReDoc](https://assess.p
 
 ```bash
 curl -sS -X POST https://assess.praxicraft.com/api/v1/public/interviews/create/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Staff backend screen",
-    "interviewer_mode": "ai_only",
-    "interview_type": "technical",
-    "candidate_email": "candidate@example.com",
-    "candidate_name": "Jane Doe",
-    "job_description": "…",
-    "resume_text": "…",
-    "send_invite": true
-  }'
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "title": "Staff backend screen",
+ "interviewer_mode": "ai_only",
+ "interview_type": "technical",
+ "candidate_email": "candidate@example.com",
+ "candidate_name": "Jane Doe",
+ "job_description": "…",
+ "resume_text": "…",
+ "send_invite": true
+ }'
 ```
 
 List responses include quota fields such as `used`, `limit`, and `remaining`.
@@ -88,10 +88,10 @@ If an interview is a **stage inside a pipeline**, Assess creates a room shell fr
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Integrations" icon="plug" href="/integrations/overview">
-    Push outcomes into your ATS.
-  </Card>
-  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
-    Notify Slack or your backend.
-  </Card>
+ <Card title="Integrations" icon="plug" href="/integrations/overview">
+ Push outcomes into your ATS.
+ </Card>
+ <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
+ Notify Slack or your backend.
+ </Card>
 </CardGroup>

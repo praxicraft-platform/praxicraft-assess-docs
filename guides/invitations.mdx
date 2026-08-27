@@ -8,21 +8,21 @@ An invitation is one candidate’s link to an **active** assessment.
 ## If you are recruiting / ops
 
 <Steps>
-  <Step title="Confirm the assessment is Active">
-    Draft assessments cannot be invited to. Open it in the [dashboard](https://assess.praxicraft.com/assess) and activate if needed.
-  </Step>
-  <Step title="Invite">
-    Use **Invite** (single or bulk). Enter email and name. Choose whether Assess should send the email.
-  </Step>
-  <Step title="Track status">
-    - **Pending** — not opened yet  
-    - **Started** — in progress  
-    - **Completed** — submitted or timed out  
-    - **Expired** — unused after the expiry window (default 7 days)
-  </Step>
-  <Step title="Remind or cancel">
-    Send a reminder if they have not finished (limits apply). Cancel only works before they start.
-  </Step>
+ <Step title="Confirm the assessment is Active">
+ Draft assessments cannot be invited to. Open it in the [dashboard](https://assess.praxicraft.com/assess) and activate if needed.
+ </Step>
+ <Step title="Invite">
+ Use **Invite** (single or bulk). Enter email and name. Choose whether Assess should send the email.
+ </Step>
+ <Step title="Track status">
+ - **Pending**: not opened yet 
+ - **Started**: in progress 
+ - **Completed**: submitted or timed out 
+ - **Expired**: unused after the expiry window (default 7 days)
+ </Step>
+ <Step title="Remind or cancel">
+ Send a reminder if they have not finished (limits apply). Cancel only works before they start.
+ </Step>
 </Steps>
 
 Monthly invite caps: [Plan limits](/guides/plan-limits). Re-inviting the **same email** to the **same** assessment does not use another invite.
@@ -51,15 +51,15 @@ Idempotent on email: first create → **201**; repeat → **200** with the exist
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "candidate@example.com",
-    "name": "Jane Doe",
-    "send_email": true,
-    "external_id": "ats_cand_123"
-  }'
+ "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "email": "candidate@example.com",
+ "name": "Jane Doe",
+ "send_email": true,
+ "external_id": "ats_cand_123"
+ }'
 ```
 
 | Field | Notes |
@@ -78,16 +78,16 @@ Response includes `invite_token`, `invite_url`, `expires_at`, `status`, and `ext
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/bulk/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "candidates": [
-      { "email": "a@example.com", "name": "Alex" },
-      { "email": "b@example.com", "name": "Blair" }
-    ],
-    "send_email": true
-  }'
+ "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/bulk/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "candidates": [
+ { "email": "a@example.com", "name": "Alex" },
+ { "email": "b@example.com", "name": "Blair" }
+ ],
+ "send_email": true
+ }'
 ```
 
 Returns `invited[]` and `skipped[{ "email", "reason" }]`. Also limited to **20 bulk requests/hour**.

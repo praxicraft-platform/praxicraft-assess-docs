@@ -3,9 +3,9 @@ title: "Webhook events"
 description: "Every Assess outbound webhook event with a sample JSON payload."
 ---
 
-HTTPS destinations receive a signed JSON **envelope**. Slack and Teams destinations get a formatted chat card instead — see [Slack](/integrations/slack) and [Teams](/integrations/teams).
+HTTPS destinations receive a signed JSON **envelope**; Slack and Teams destinations get a formatted chat card instead; see [Slack](/integrations/slack) and [Teams](/integrations/teams).
 
-Register events with `POST /webhooks/create/` (`events` array). Verify `X-Praxicraft-Signature` before parsing — [SDK helpers](/sdks/webhooks). Setup overview: [Webhooks](/guides/webhooks).
+Register events with `POST /webhooks/create/` (`events` array). Verify `X-Praxicraft-Signature` before parsing. [SDK helpers](/sdks/webhooks). Setup overview: [Webhooks](/guides/webhooks).
 
 ## Envelope
 
@@ -13,10 +13,10 @@ Every HTTPS delivery looks like this:
 
 ```json
 {
-  "id": "evt_a1b2c3d4e5f6789012345678abcdef01",
-  "event": "candidate.passed",
-  "created_at": "2026-08-25T12:34:56.789012+00:00",
-  "data": {}
+ "id": "evt_a1b2c3d4e5f6789012345678abcdef01",
+ "event": "candidate.passed",
+ "created_at": "2026-08-25T12:34:56.789012+00:00",
+ "data": {}
 }
 ```
 
@@ -52,39 +52,39 @@ Candidate begins a session.
 
 ```json
 {
-  "id": "evt_11111111111111111111111111111111",
-  "event": "assessment.started",
-  "created_at": "2026-08-25T12:00:00.000000+00:00",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440001",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_title": "Backend screen",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "started_at": "2026-08-25T12:00:00.000000+00:00"
-  }
+ "id": "evt_11111111111111111111111111111111",
+ "event": "assessment.started",
+ "created_at": "2026-08-25T12:00:00.000000+00:00",
+ "data": {
+ "session_id": "550e8400-e29b-41d4-a716-446655440001",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_title": "Backend screen",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "started_at": "2026-08-25T12:00:00.000000+00:00"
+ }
 }
 ```
 
 ### `assessment.completed`
 
-Candidate submitted (or timer finalized) the assessment. Scores may still be calculating — use `candidate.passed` / `candidate.failed` for scored outcomes.
+Candidate submitted (or timer finalized) the assessment. Scores may still be calculating. use `candidate.passed` / `candidate.failed` for scored outcomes.
 
 ```json
 {
-  "id": "evt_22222222222222222222222222222222",
-  "event": "assessment.completed",
-  "created_at": "2026-08-25T12:45:00.000000+00:00",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440001",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "invite_token": "inv_tok_abc123",
-    "external_id": "gh_cand_42"
-  }
+ "id": "evt_22222222222222222222222222222222",
+ "event": "assessment.completed",
+ "created_at": "2026-08-25T12:45:00.000000+00:00",
+ "data": {
+ "session_id": "550e8400-e29b-41d4-a716-446655440001",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "invite_token": "inv_tok_abc123",
+ "external_id": "gh_cand_42"
+ }
 }
 ```
 
@@ -96,21 +96,21 @@ Score meets or exceeds the assessment passing threshold (after grading).
 
 ```json
 {
-  "id": "evt_33333333333333333333333333333333",
-  "event": "candidate.passed",
-  "created_at": "2026-08-25T12:46:10.000000+00:00",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440001",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "score": 82,
-    "max_score": 100,
-    "passed": true,
-    "invite_token": "inv_tok_abc123",
-    "external_id": "gh_cand_42"
-  }
+ "id": "evt_33333333333333333333333333333333",
+ "event": "candidate.passed",
+ "created_at": "2026-08-25T12:46:10.000000+00:00",
+ "data": {
+ "session_id": "550e8400-e29b-41d4-a716-446655440001",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "score": 82,
+ "max_score": 100,
+ "passed": true,
+ "invite_token": "inv_tok_abc123",
+ "external_id": "gh_cand_42"
+ }
 }
 ```
 
@@ -120,21 +120,21 @@ Same `data` shape as `candidate.passed`, with `passed: false` and a failing `sco
 
 ```json
 {
-  "id": "evt_44444444444444444444444444444444",
-  "event": "candidate.failed",
-  "created_at": "2026-08-25T12:46:10.000000+00:00",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440001",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "score": 41,
-    "max_score": 100,
-    "passed": false,
-    "invite_token": "inv_tok_abc123",
-    "external_id": "gh_cand_42"
-  }
+ "id": "evt_44444444444444444444444444444444",
+ "event": "candidate.failed",
+ "created_at": "2026-08-25T12:46:10.000000+00:00",
+ "data": {
+ "session_id": "550e8400-e29b-41d4-a716-446655440001",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "score": 41,
+ "max_score": 100,
+ "passed": false,
+ "invite_token": "inv_tok_abc123",
+ "external_id": "gh_cand_42"
+ }
 }
 ```
 
@@ -144,31 +144,31 @@ Proctoring signal recorded (fullscreen exit, copy/paste, screen share, webcam, o
 
 ```json
 {
-  "id": "evt_55555555555555555555555555555555",
-  "event": "candidate.violation",
-  "created_at": "2026-08-25T12:20:00.000000+00:00",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440001",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "violation_type": "fullscreen",
-    "occurred_at": "2026-08-25T12:20:00.000000+00:00",
-    "case_order": 1,
-    "violation_counts": {
-      "fullscreen": 1,
-      "copy_paste": 0,
-      "screen_share": 0,
-      "webcam": 0,
-      "focus_loss": 0
-    },
-    "fullscreen_violations": 1,
-    "copy_paste_violations": 0,
-    "screen_share_violations": 0,
-    "webcam_violations": 0,
-    "focus_loss_violations": 0
-  }
+ "id": "evt_55555555555555555555555555555555",
+ "event": "candidate.violation",
+ "created_at": "2026-08-25T12:20:00.000000+00:00",
+ "data": {
+ "session_id": "550e8400-e29b-41d4-a716-446655440001",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "violation_type": "fullscreen",
+ "occurred_at": "2026-08-25T12:20:00.000000+00:00",
+ "task_order": 1,
+ "violation_counts": {
+ "fullscreen": 1,
+ "copy_paste": 0,
+ "screen_share": 0,
+ "webcam": 0,
+ "focus_loss": 0
+ },
+ "fullscreen_violations": 1,
+ "copy_paste_violations": 0,
+ "screen_share_violations": 0,
+ "webcam_violations": 0,
+ "focus_loss_violations": 0
+ }
 }
 ```
 
@@ -180,24 +180,24 @@ A new assessment invitation was created (email may or may not have been sent).
 
 ```json
 {
-  "id": "evt_66666666666666666666666666666666",
-  "event": "invitation.created",
-  "created_at": "2026-08-25T11:00:00.000000+00:00",
-  "data": {
-    "invitation_id": "550e8400-e29b-41d4-a716-446655440020",
-    "invite_token": "inv_tok_abc123",
-    "email": "ada@example.com",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "assessment_title": "Backend screen",
-    "status": "pending",
-    "livemode": true,
-    "expires_at": "2026-09-01T11:00:00.000000+00:00",
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030"
-  }
+ "id": "evt_66666666666666666666666666666666",
+ "event": "invitation.created",
+ "created_at": "2026-08-25T11:00:00.000000+00:00",
+ "data": {
+ "invitation_id": "550e8400-e29b-41d4-a716-446655440020",
+ "invite_token": "inv_tok_abc123",
+ "email": "ada@example.com",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "assessment_title": "Backend screen",
+ "status": "pending",
+ "livemode": true,
+ "expires_at": "2026-09-01T11:00:00.000000+00:00",
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030"
+ }
 }
 ```
 
@@ -209,16 +209,16 @@ Pending invitation expired before the candidate started.
 
 ```json
 {
-  "id": "evt_77777777777777777777777777777777",
-  "event": "invitation.expired",
-  "created_at": "2026-09-01T11:05:00.000000+00:00",
-  "data": {
-    "invitation_id": "550e8400-e29b-41d4-a716-446655440020",
-    "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
-    "assessment_slug": "backend-screen",
-    "candidate_email": "ada@example.com",
-    "expired_at": "2026-09-01T11:05:00.000000+00:00"
-  }
+ "id": "evt_77777777777777777777777777777777",
+ "event": "invitation.expired",
+ "created_at": "2026-09-01T11:05:00.000000+00:00",
+ "data": {
+ "invitation_id": "550e8400-e29b-41d4-a716-446655440020",
+ "assessment_id": "550e8400-e29b-41d4-a716-446655440010",
+ "assessment_slug": "backend-screen",
+ "candidate_email": "ada@example.com",
+ "expired_at": "2026-09-01T11:05:00.000000+00:00"
+ }
 }
 ```
 
@@ -228,16 +228,16 @@ Shared enrollment fields (`pipeline.enrolled`, `pipeline.completed`, `pipeline.r
 
 ```json
 {
-  "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-  "livemode": true,
-  "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-  "pipeline_slug": "eng-funnel",
-  "email": "ada@example.com",
-  "candidate_name": "Ada Lovelace",
-  "status": "active",
-  "current_stage": 1,
-  "rejected_at_stage": null,
-  "reject_reason": ""
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "active",
+ "current_stage": 1,
+ "rejected_at_stage": null,
+ "reject_reason": ""
 }
 ```
 
@@ -245,21 +245,21 @@ Shared enrollment fields (`pipeline.enrolled`, `pipeline.completed`, `pipeline.r
 
 ```json
 {
-  "id": "evt_88888888888888888888888888888888",
-  "event": "pipeline.enrolled",
-  "created_at": "2026-08-25T10:00:00.000000+00:00",
-  "data": {
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "livemode": true,
-    "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-    "pipeline_slug": "eng-funnel",
-    "email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "status": "active",
-    "current_stage": 1,
-    "rejected_at_stage": null,
-    "reject_reason": ""
-  }
+ "id": "evt_88888888888888888888888888888888",
+ "event": "pipeline.enrolled",
+ "created_at": "2026-08-25T10:00:00.000000+00:00",
+ "data": {
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "active",
+ "current_stage": 1,
+ "rejected_at_stage": null,
+ "reject_reason": ""
+ }
 }
 ```
 
@@ -269,24 +269,24 @@ Enrollment moved to a later stage. Includes `from_stage`, `to_stage`, and `next_
 
 ```json
 {
-  "id": "evt_99999999999999999999999999999999",
-  "event": "pipeline.advanced",
-  "created_at": "2026-08-25T13:00:00.000000+00:00",
-  "data": {
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "livemode": true,
-    "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-    "pipeline_slug": "eng-funnel",
-    "email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "status": "active",
-    "current_stage": 2,
-    "rejected_at_stage": null,
-    "reject_reason": "",
-    "from_stage": 1,
-    "to_stage": 2,
-    "next_stage_type": "interview"
-  }
+ "id": "evt_99999999999999999999999999999999",
+ "event": "pipeline.advanced",
+ "created_at": "2026-08-25T13:00:00.000000+00:00",
+ "data": {
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "active",
+ "current_stage": 2,
+ "rejected_at_stage": null,
+ "reject_reason": "",
+ "from_stage": 1,
+ "to_stage": 2,
+ "next_stage_type": "interview"
+ }
 }
 ```
 
@@ -296,21 +296,21 @@ Enrollment status became `passed`.
 
 ```json
 {
-  "id": "evt_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  "event": "pipeline.completed",
-  "created_at": "2026-08-25T15:00:00.000000+00:00",
-  "data": {
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "livemode": true,
-    "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-    "pipeline_slug": "eng-funnel",
-    "email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "status": "passed",
-    "current_stage": 3,
-    "rejected_at_stage": null,
-    "reject_reason": ""
-  }
+ "id": "evt_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+ "event": "pipeline.completed",
+ "created_at": "2026-08-25T15:00:00.000000+00:00",
+ "data": {
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "passed",
+ "current_stage": 3,
+ "rejected_at_stage": null,
+ "reject_reason": ""
+ }
 }
 ```
 
@@ -318,21 +318,21 @@ Enrollment status became `passed`.
 
 ```json
 {
-  "id": "evt_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-  "event": "pipeline.rejected",
-  "created_at": "2026-08-25T15:00:00.000000+00:00",
-  "data": {
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "livemode": true,
-    "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-    "pipeline_slug": "eng-funnel",
-    "email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "status": "rejected",
-    "current_stage": 2,
-    "rejected_at_stage": 2,
-    "reject_reason": "Failed screen"
-  }
+ "id": "evt_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+ "event": "pipeline.rejected",
+ "created_at": "2026-08-25T15:00:00.000000+00:00",
+ "data": {
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "rejected",
+ "current_stage": 2,
+ "rejected_at_stage": 2,
+ "reject_reason": "Failed screen"
+ }
 }
 ```
 
@@ -342,21 +342,21 @@ Same shared enrollment fields. On hold, `status` is `on_hold`. After unhold, `st
 
 ```json
 {
-  "id": "evt_cccccccccccccccccccccccccccccccc",
-  "event": "pipeline.held",
-  "created_at": "2026-08-25T14:00:00.000000+00:00",
-  "data": {
-    "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "livemode": true,
-    "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
-    "pipeline_slug": "eng-funnel",
-    "email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "status": "on_hold",
-    "current_stage": 2,
-    "rejected_at_stage": null,
-    "reject_reason": ""
-  }
+ "id": "evt_cccccccccccccccccccccccccccccccc",
+ "event": "pipeline.held",
+ "created_at": "2026-08-25T14:00:00.000000+00:00",
+ "data": {
+ "enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "livemode": true,
+ "pipeline_id": "550e8400-e29b-41d4-a716-446655440040",
+ "pipeline_slug": "eng-funnel",
+ "email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "status": "on_hold",
+ "current_stage": 2,
+ "rejected_at_stage": null,
+ "reject_reason": ""
+ }
 }
 ```
 
@@ -379,23 +379,23 @@ Shared interview room fields:
 
 ```json
 {
-  "id": "evt_dddddddddddddddddddddddddddddddd",
-  "event": "interview.scheduled",
-  "created_at": "2026-08-25T09:00:00.000000+00:00",
-  "data": {
-    "interview_id": "550e8400-e29b-41d4-a716-446655440050",
-    "title": "AI screen — Ada",
-    "status": "scheduled",
-    "interview_type": "ai",
-    "interviewer_mode": "ai",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "scheduled_at": "2026-08-26T15:00:00.000000+00:00",
-    "started_at": null,
-    "ended_at": null,
-    "livemode": true,
-    "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030"
-  }
+ "id": "evt_dddddddddddddddddddddddddddddddd",
+ "event": "interview.scheduled",
+ "created_at": "2026-08-25T09:00:00.000000+00:00",
+ "data": {
+ "interview_id": "550e8400-e29b-41d4-a716-446655440050",
+ "title": "AI screen. Ada",
+ "status": "scheduled",
+ "interview_type": "ai",
+ "interviewer_mode": "ai",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "scheduled_at": "2026-08-26T15:00:00.000000+00:00",
+ "started_at": null,
+ "ended_at": null,
+ "livemode": true,
+ "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030"
+ }
 }
 ```
 
@@ -421,26 +421,26 @@ Room fields plus analysis summary:
 
 ```json
 {
-  "id": "evt_eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  "event": "interview.analysis_ready",
-  "created_at": "2026-08-26T16:10:00.000000+00:00",
-  "data": {
-    "interview_id": "550e8400-e29b-41d4-a716-446655440050",
-    "title": "AI screen — Ada",
-    "status": "completed",
-    "interview_type": "ai",
-    "interviewer_mode": "ai",
-    "candidate_email": "ada@example.com",
-    "candidate_name": "Ada Lovelace",
-    "scheduled_at": "2026-08-26T15:00:00.000000+00:00",
-    "started_at": "2026-08-26T15:02:00.000000+00:00",
-    "ended_at": "2026-08-26T15:45:00.000000+00:00",
-    "livemode": true,
-    "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
-    "overall_score": 78,
-    "hire_recommendation": "lean_hire",
-    "report_status": "ready"
-  }
+ "id": "evt_eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+ "event": "interview.analysis_ready",
+ "created_at": "2026-08-26T16:10:00.000000+00:00",
+ "data": {
+ "interview_id": "550e8400-e29b-41d4-a716-446655440050",
+ "title": "AI screen. Ada",
+ "status": "completed",
+ "interview_type": "ai",
+ "interviewer_mode": "ai",
+ "candidate_email": "ada@example.com",
+ "candidate_name": "Ada Lovelace",
+ "scheduled_at": "2026-08-26T15:00:00.000000+00:00",
+ "started_at": "2026-08-26T15:02:00.000000+00:00",
+ "ended_at": "2026-08-26T15:45:00.000000+00:00",
+ "livemode": true,
+ "pipeline_enrollment_id": "550e8400-e29b-41d4-a716-446655440030",
+ "overall_score": 78,
+ "hire_recommendation": "lean_hire",
+ "report_status": "ready"
+ }
 }
 ```
 
@@ -452,13 +452,13 @@ Connectivity ping from `POST /webhooks/{id}/test/` (or health probes).
 
 ```json
 {
-  "id": "evt_ffffffffffffffffffffffffffffffff",
-  "event": "webhook.test",
-  "created_at": "2026-08-25T08:00:00.000000+00:00",
-  "data": {
-    "message": "Praxicraft Assess webhook test",
-    "test_id": "a1b2c3d4"
-  }
+ "id": "evt_ffffffffffffffffffffffffffffffff",
+ "event": "webhook.test",
+ "created_at": "2026-08-25T08:00:00.000000+00:00",
+ "data": {
+ "message": "Praxicraft Assess webhook test",
+ "test_id": "a1b2c3d4"
+ }
 }
 ```
 
@@ -470,8 +470,8 @@ HTTP 2xx on this ping sets `is_verified` and activates the destination.
 |-------|-------------|
 | `assessment.started` | Candidate began |
 | `assessment.completed` | Submitted / timed out (pre-score) |
-| `candidate.passed` | Scored pass — ATS score-back |
-| `candidate.failed` | Scored fail — ATS score-back |
+| `candidate.passed` | Scored pass. ATS score-back |
+| `candidate.failed` | Scored fail. ATS score-back |
 | `candidate.violation` | Integrity signal |
 | `invitation.created` | Invite issued |
 | `invitation.expired` | Unused invite expired |

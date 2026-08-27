@@ -18,19 +18,19 @@ Free ATS plans often **cannot** fire outbound webhooks to Assess. In that case, 
 
 ```mermaid
 flowchart LR
-  ATS[ATS stage change] --> Auto[n8n or Make]
-  Auto --> Enroll[POST pipelines enroll or invites]
-  Enroll --> Cand[Candidate completes work]
-  Cand --> WH[Assess webhook]
-  WH --> Auto2[n8n]
-  Auto2 --> Note[Note or stage in ATS]
+ ATS[ATS stage change] --> Auto[n8n or Make]
+ Auto --> Enroll[POST pipelines enroll or invites]
+ Enroll --> Cand[Candidate completes work]
+ Cand --> WH[Assess webhook]
+ WH --> Auto2[n8n]
+ Auto2 --> Note[Note or stage in ATS]
 ```
 
 1. Create a destination in **Developer → Destinations** (or Public API `POST /webhooks/create/`).
-2. Subscribe to the events you need — at minimum `candidate.passed`, `candidate.failed`, and for funnels `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`. See [sample payloads](/guides/webhook-events).
+2. Subscribe to the events you need. at minimum `candidate.passed`, `candidate.failed`, and for funnels `pipeline.enrolled`, `pipeline.advanced`, `pipeline.completed`, `pipeline.rejected`, `pipeline.held`, `pipeline.unheld`. See [sample payloads](/guides/webhook-events).
 3. When a candidate hits your ATS screen stage, call:
-   - `POST /api/v1/public/pipelines/{slug}/enroll/` **or**
-   - `POST /api/v1/public/assessments/{slug}/invites/`
+ - `POST /api/v1/public/pipelines/{slug}/enroll/` **or**
+ - `POST /api/v1/public/assessments/{slug}/invites/`
 4. On Assess webhook delivery, write a note / move the stage in your ATS using their API.
 
 Store the ATS candidate id as `external_id` on invite when available so score-back can join records.

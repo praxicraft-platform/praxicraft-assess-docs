@@ -1,11 +1,11 @@
 ---
 title: "Team roles"
-description: "What each Assess role can do in the dashboard — including the developer role for API keys and webhooks."
+description: "What each Assess role can do in the dashboard. including the developer role for API keys and webhooks."
 ---
 
 Roles are dashboard membership, not API key scopes. A **developer** can mint keys; the **key’s scopes** still decide what software can do.
 
-Invite and change roles under [Team](https://assess.praxicraft.com/assess/team). Only **owners** and **admins** can do that. You cannot assign `owner` — there is one owner per organisation.
+Invite and change roles under [Team](https://assess.praxicraft.com/assess/team). Only **owners** and **admins** can do that. You cannot assign `owner`. there is one owner per organisation.
 
 ## If you are recruiting / ops
 
@@ -42,7 +42,7 @@ Developers cannot:
 
 A developer-minted key with `invitations:write` can still invite candidates **via the Public API**. Hosted [MCP](/integrations/assess-mcp) consent also issues a **live** session with full Public API scopes. Use [least-privilege scopes](/guides/scopes) on stored keys.
 
-`organisation:write` can update org name, notification prefs, and Growth+ squads. It **cannot** change member roles, invite/remove org members, or touch billing/SSO — those stay in the dashboard.
+`organisation:write` can update org name, notification prefs, and Growth+ squads. It **cannot** change member roles, invite/remove org members, or touch billing/SSO. those stay in the dashboard.
 
 ## Next
 

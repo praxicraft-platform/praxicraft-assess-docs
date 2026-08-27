@@ -1,6 +1,6 @@
 ---
 title: "Scopes"
-description: "API key permissions — and which set to pick for common hiring automations."
+description: "API key permissions and which set to pick for common hiring automations."
 ---
 
 Scopes limit what software can do with a key. Prefer the smallest set that matches the workflow.
@@ -19,13 +19,13 @@ Create keys: [Authentication](/guides/authentication).
 |-------|--------|
 | `organisation:read` | Org profile, billing summary, usage, team, member invites list, squads read, stats, audit log/export, developer health, integrations status |
 | `organisation:write` | Limited `PATCH /org/`; create/update/delete hiring squads and squad members |
-| `assessments:read` | List/get assessments and attached cases; browse platform cases |
-| `assessments:write` | Create/update/duplicate assessments; attach/replace/remove cases |
+| `assessments:read` | List/get assessments and attached tasks; browse platform tasks |
+| `assessments:write` | Create/update/duplicate assessments; attach/replace/remove tasks |
 | `invitations:read` | List/get invitations |
 | `invitations:write` | Create, remind, cancel invitations |
 | `candidates:read` | Assessment results and per-invite result detail |
-| `cases:read` | List/get org custom cases |
-| `cases:write` | Create/update/delete org custom cases |
+| `tasks:read` | List/get org custom tasks |
+| `tasks:write` | Create/update/delete org custom tasks |
 | `pipelines:read` | List pipelines, enrollment status, notes |
 | `pipelines:write` | Create/update pipelines & stages; enroll, reject, hold, unhold, advance; add notes |
 | `webhooks:read` | List webhooks and deliveries |
@@ -41,7 +41,7 @@ Missing scope → **403** `INSUFFICIENT_SCOPE`.
 | Use case | Scopes |
 |----------|--------|
 | Invite + read results | `assessments:read`, `invitations:write`, `candidates:read` |
-| Build assessments via API | `assessments:read`, `assessments:write`, `cases:read` |
+| Build assessments via API | `assessments:read`, `assessments:write`, `tasks:read` |
 | Webhooks only | `webhooks:read`, `webhooks:write` |
 | Pipeline automation | `pipelines:read`, `pipelines:write`, `webhooks:write` |
 | Live interviews | `interviews:read`, `interviews:write` |

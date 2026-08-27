@@ -1,27 +1,27 @@
 ---
 title: "Pipelines"
-description: "Multi-stage hiring funnels — design in the dashboard or Public API, enroll from the UI or API."
+description: "Multi-stage hiring funnels. design in the dashboard or Public API, enroll from the UI or API."
 ---
 
-A pipeline is a sequence of stages (for example assessment → interview → manual review). Candidates advance when they pass, or stop when they fail — unless you hold or reject them.
+A pipeline is a sequence of stages (for example assessment → interview → manual review). Candidates advance when they pass, or stop when they fail. unless you hold or reject them.
 
 ## If you are recruiting / ops
 
 <Steps>
-  <Step title="Design the funnel">
-    Open [Assess](https://assess.praxicraft.com/assess) → Pipelines, **or** ask eng to create a linear pipeline via the Public API (`POST /pipelines/create/`, Growth+). Branching / join nodes are not available yet.
-  </Step>
-  <Step title="Know your stage types">
-    - **Assessment** — candidate gets an invite; pass advances, fail rejects  
-    - **Interview** — room is prepared from a template; you usually still send/confirm the invite  
-    - **Manual review** — waits for a human decision
-  </Step>
-  <Step title="Enroll candidates">
-    Add people from the pipeline UI (or ask eng to enroll via API / n8n). Re-adding the same email is safe — they won’t get a duplicate enrollment.
-  </Step>
-  <Step title="Hold, unhold, reject, or advance">
-    Pause with **Hold**, resume with **Unhold**, **Reject** with an optional reason, or **Advance** past the current stage. Held candidates do not auto-advance.
-  </Step>
+ <Step title="Design the funnel">
+ Open [Assess](https://assess.praxicraft.com/assess) → Pipelines, **or** ask eng to create a linear pipeline via the Public API (`POST /pipelines/create/`, Growth+). Branching / join nodes are not available yet.
+ </Step>
+ <Step title="Know your stage types">
+ - **Assessment**: candidate gets an invite; pass advances, fail rejects 
+ - **Interview**: room is prepared from a template; you usually still send/confirm the invite 
+ - **Manual review**: waits for a human decision
+ </Step>
+ <Step title="Enroll candidates">
+ Add people from the pipeline UI (or ask eng to enroll via API / n8n). Re-adding the same email is safe. they won’t get a duplicate enrollment.
+ </Step>
+ <Step title="Hold, unhold, reject, or advance">
+ Pause with **Hold**, resume with **Unhold**, **Reject** with an optional reason, or **Advance** past the current stage. Held candidates do not auto-advance.
+ </Step>
 </Steps>
 
 <Warning>
@@ -52,18 +52,18 @@ Growth+: filter with `team_id` / `team_slug`.
 
 ```bash
 curl -sS -X POST https://assess.praxicraft.com/api/v1/public/pipelines/create/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Grad 2026",
-    "stages": [
-      {"stage_type": "assessment", "assessment_id": "ASSESSMENT_UUID", "order": 0},
-      {"stage_type": "manual_review", "label": "HM review", "order": 1}
-    ]
-  }'
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "title": "Grad 2026",
+ "stages": [
+ {"stage_type": "assessment", "assessment_id": "ASSESSMENT_UUID", "order": 0},
+ {"stage_type": "manual_review", "label": "HM review", "order": 1}
+ ]
+ }'
 ```
 
-After enrollments exist, stage changes are **append-only** (cannot remove/reorder existing stages) — same as the dashboard.
+After enrollments exist, stage changes are **append-only** (cannot remove/reorder existing stages). same as the dashboard.
 
 ### Enroll
 
@@ -71,14 +71,14 @@ Creates the enrollment and, if stage 0 is an assessment, the first invite in one
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/pipelines/grad-2025/enroll/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "alex@example.com",
-    "name": "Alex Lee",
-    "send_email": true
-  }'
+ "https://assess.praxicraft.com/api/v1/public/pipelines/grad-2025/enroll/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "email": "alex@example.com",
+ "name": "Alex Lee",
+ "send_email": true
+ }'
 ```
 
 - Same email again → **200** (idempotent)
@@ -95,7 +95,7 @@ List with `?status=in_progress|on_hold|passed|rejected`.
 | Action | Effect |
 |--------|--------|
 | Reject | End of road for that candidate |
-| Hold | `on_hold` — auto-advance skips them |
+| Hold | `on_hold`. auto-advance skips them |
 | Unhold | Back to `in_progress` |
 | Advance | Board override past the current stage |
 

@@ -8,28 +8,28 @@ An assessment is a timed (or untimed) test: tasks, a passing score, and optional
 ## If you are recruiting / ops
 
 <Steps>
-  <Step title="Create the assessment">
-    In the [dashboard](https://assess.praxicraft.com/assess), create a new assessment. Give it a clear title hiring managers will recognise.
-  </Step>
-  <Step title="Add tasks">
-    Attach platform tasks and/or your org’s [custom tasks](/guides/custom-cases). Order them the way candidates should see them.
-  </Step>
-  <Step title="Set rules">
-    Time limit, passing score (default 70%), and proctoring options. See [Proctoring](/guides/proctoring).
-  </Step>
-  <Step title="Set status to Active">
-    Drafts cannot receive invites. Activate when you are ready to send candidates.
-  </Step>
-  <Step title="Invite">
-    Continue on [Invitations](/guides/invitations) (UI or API).
-  </Step>
+ <Step title="Create the assessment">
+ In the [dashboard](https://assess.praxicraft.com/assess), create a new assessment. Give it a clear title hiring managers will recognise.
+ </Step>
+ <Step title="Add tasks">
+ Attach platform tasks and/or your org's [custom tasks](/guides/custom-tasks). Order them the way candidates should see them.
+ </Step>
+ <Step title="Set rules">
+ Time limit, passing score (default 70%), and proctoring options. See [Proctoring](/guides/proctoring).
+ </Step>
+ <Step title="Set status to Active">
+ Drafts cannot receive invites. Activate when you are ready to send candidates.
+ </Step>
+ <Step title="Invite">
+ Continue on [Invitations](/guides/invitations) (UI or API).
+ </Step>
 </Steps>
 
 Archive assessments you no longer use instead of deleting them (there is no Public API delete).
 
 ## For engineers
 
-Path ids accept **slug** or UUID — never the human title alone.
+Path ids accept **slug** or UUID. Never use the human title alone.
 
 ### Lifecycle
 
@@ -48,10 +48,10 @@ Path ids accept **slug** or UUID — never the human title alone.
 | GET | `/assessments/{slug}/` | `assessments:read` |
 | PATCH | `/assessments/{slug}/update/` | `assessments:write` |
 | POST | `/assessments/{slug}/duplicate/` | `assessments:write` |
-| GET | `/assessments/{slug}/cases/` | `assessments:read` |
-| POST | `/assessments/{slug}/cases/attach/` | `assessments:write` |
-| PUT | `/assessments/{slug}/cases/replace/` | `assessments:write` |
-| DELETE | `/assessments/{slug}/cases/remove/` | `assessments:write` → `204` |
+| GET | `/assessments/{slug}/tasks/` | `assessments:read` |
+| POST | `/assessments/{slug}/tasks/attach/` | `assessments:write` |
+| PUT | `/assessments/{slug}/tasks/replace/` | `assessments:write` |
+| DELETE | `/assessments/{slug}/tasks/remove/` | `assessments:write` → `204` |
 
 List query: `status` (`active` \| `draft` \| `archived` \| `all`), `search`, `team_slug` / `team_id`, `cursor`, `page_size`.
 
@@ -59,23 +59,23 @@ List query: `status` (`active` \| `draft` \| `archived` \| `all`), `search`, `te
 
 ```bash
 curl -sS -X POST https://assess.praxicraft.com/api/v1/public/assessments/create/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Senior backend screen",
-    "time_limit_minutes": 90,
-    "passing_score": 70
-  }'
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "title": "Senior backend screen",
+ "time_limit_minutes": 90,
+ "passing_score": 70
+ }'
 ```
 
 Always starts as `draft`. Then attach tasks (`source`: `platform` or `org`):
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/assessments/senior-backend-screen/cases/attach/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{ "cases": [{ "case_id": "CASE_UUID", "source": "platform" }] }'
+ "https://assess.praxicraft.com/api/v1/public/assessments/senior-backend-screen/tasks/attach/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{ "tasks": [{ "task_id": "TASK_UUID", "source": "platform" }] }'
 ```
 
 After candidates have started, the lineup locks → **409** `TASKS_LOCKED`.
@@ -84,10 +84,10 @@ Activate:
 
 ```bash
 curl -sS -X PATCH \
-  "https://assess.praxicraft.com/api/v1/public/assessments/senior-backend-screen/update/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{ "status": "active" }'
+ "https://assess.praxicraft.com/api/v1/public/assessments/senior-backend-screen/update/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{ "status": "active" }'
 ```
 
 Send **only** fields you mean to change on PATCH.
@@ -99,10 +99,10 @@ SDK helpers: [SDKs](/sdks/introduction).
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Invitations" icon="mail" href="/guides/invitations">
-    Send candidate links.
-  </Card>
-  <Card title="Custom tasks" icon="puzzle" href="/guides/custom-cases">
-    Build your own question library.
-  </Card>
+ <Card title="Invitations" icon="mail" href="/guides/invitations">
+ Send candidate links.
+ </Card>
+ <Card title="Custom tasks" icon="puzzle" href="/guides/custom-tasks">
+ Build your own question library.
+ </Card>
 </CardGroup>

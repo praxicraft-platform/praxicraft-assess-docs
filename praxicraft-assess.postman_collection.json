@@ -40,7 +40,7 @@
       "value": ""
     },
     {
-      "key": "case_id",
+      "key": "task_id",
       "value": ""
     },
     {
@@ -108,10 +108,10 @@
               ],
               "variable": []
             },
-            "description": "Creates a new assessment in **draft** status. Attach tasks with `POST /assessments/{slug}/cases/attach/`, then set `status: active` via `PATCH /assessments/{slug}/update/` before inviting candidates.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | — | Draft assessment created |\n| `400` | `VALIDATION_ERROR` | Missing title or invalid fields |\n| `403` | `ASSESSMENT_LIMIT_REACHED` | Plan assessment quota exhausted |\n| `403` | `PLAN_REQUIRED` | Recording feature needs a higher plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "description": "Creates a new assessment in **draft** status. Attach tasks with `POST /assessments/{slug}/tasks/attach/`, then set `status: active` via `PATCH /assessments/{slug}/update/` before inviting candidates.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | — | Draft assessment created |\n| `400` | `VALIDATION_ERROR` | Missing title or invalid fields |\n| `403` | `ASSESSMENT_LIMIT_REACHED` | Plan assessment quota exhausted |\n| `403` | `PLAN_REQUIRED` | Recording feature needs a higher plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Backend take-home\",\n  \"description\": \"Draft assessment. Attach cases, then PATCH status to active before inviting.\"\n}",
+              "raw": "{\n  \"title\": \"Backend take-home\",\n  \"description\": \"Draft assessment. Attach tasks, then PATCH status to active before inviting.\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -231,11 +231,11 @@
                 }
               ]
             },
-            "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/cases/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Attach assessment cases",
+          "name": "Attach assessment tasks",
           "request": {
             "method": "POST",
             "header": [
@@ -249,7 +249,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/cases/attach/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/attach/",
               "host": [
                 "{{base_url}}"
               ],
@@ -259,7 +259,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "cases",
+                "tasks",
                 "attach",
                 ""
               ],
@@ -270,10 +270,10 @@
                 }
               ]
             },
-            "description": "Appends one or more tasks to an assessment. Pass `{ cases: [...] }` or a single `{ case_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | — | Cases attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `CASE_NOT_FOUND` | Platform or org case id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "description": "Appends one or more tasks to an assessment. Pass `{ tasks: [...] }` or a single `{ task_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | — | Tasks attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Platform or org task id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"cases\": [\n    {\n      \"case_id\": \"{{case_id}}\",\n      \"source\": \"platform\"\n    }\n  ]\n}",
+              "raw": "{\n  \"tasks\": [\n    {\n      \"task_id\": \"{{task_id}}\",\n      \"source\": \"platform\"\n    }\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -283,7 +283,7 @@
           }
         },
         {
-          "name": "Replace assessment cases",
+          "name": "Replace assessment tasks",
           "request": {
             "method": "PUT",
             "header": [
@@ -297,7 +297,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/cases/replace/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/replace/",
               "host": [
                 "{{base_url}}"
               ],
@@ -307,7 +307,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "cases",
+                "tasks",
                 "replace",
                 ""
               ],
@@ -318,10 +318,10 @@
                 }
               ]
             },
-            "description": "Atomically replaces the full task lineup with `{ cases: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `CASE_NOT_FOUND` | Unknown case id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "description": "Atomically replaces the full task lineup with `{ tasks: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Unknown task id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"cases\": [\n    {\n      \"case_id\": \"{{case_id}}\",\n      \"source\": \"platform\"\n    }\n  ]\n}",
+              "raw": "{\n  \"tasks\": [\n    {\n      \"task_id\": \"{{task_id}}\",\n      \"source\": \"platform\"\n    }\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -331,7 +331,7 @@
           }
         },
         {
-          "name": "Remove assessment case",
+          "name": "Remove assessment task",
           "request": {
             "method": "DELETE",
             "header": [
@@ -341,7 +341,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/cases/remove/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/remove/",
               "host": [
                 "{{base_url}}"
               ],
@@ -351,7 +351,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "cases",
+                "tasks",
                 "remove",
                 ""
               ],
@@ -362,11 +362,11 @@
                 }
               ]
             },
-            "description": "Removes one attached task by `assessment_case_id` (the join-row id from the cases list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Removes one attached task by `assessment_task_id` (the join-row id from the tasks list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "List assessment cases",
+          "name": "List assessment tasks",
           "request": {
             "method": "GET",
             "header": [
@@ -376,7 +376,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/cases/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/",
               "host": [
                 "{{base_url}}"
               ],
@@ -386,7 +386,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "cases",
+                "tasks",
                 ""
               ],
               "variable": [
@@ -396,7 +396,7 @@
                 }
               ]
             },
-            "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_case_id`, `id`, `title`, `type`, …) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated task summaries (`assessment_task_id`, `id`, `title`, `type`, …) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         }
       ]
@@ -469,7 +469,7 @@
                 }
               ]
             },
-            "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-case `cases[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         }
       ]
@@ -1250,10 +1250,10 @@
       ]
     },
     {
-      "name": "Public API — Cases",
+      "name": "Public API — Tasks",
       "item": [
         {
-          "name": "List platform cases",
+          "name": "List platform tasks",
           "request": {
             "method": "GET",
             "header": [
@@ -1263,7 +1263,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/platform-cases/",
+              "raw": "{{base_url}}/api/v1/public/platform-tasks/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1271,16 +1271,16 @@
                 "api",
                 "v1",
                 "public",
-                "platform-cases",
+                "platform-tasks",
                 ""
               ],
               "variable": []
             },
-            "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform case summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform task summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "List custom cases",
+          "name": "List custom tasks",
           "request": {
             "method": "GET",
             "header": [
@@ -1290,7 +1290,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/",
+              "raw": "{{base_url}}/api/v1/public/tasks/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1298,16 +1298,16 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 ""
               ],
               "variable": []
             },
-            "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom task objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Create custom case",
+          "name": "Create custom task",
           "request": {
             "method": "POST",
             "header": [
@@ -1317,7 +1317,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/create/",
+              "raw": "{{base_url}}/api/v1/public/tasks/create/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1325,17 +1325,17 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 "create",
                 ""
               ],
               "variable": []
             },
-            "description": "Adds a new custom task to your organisation library. Field requirements depend on `case_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Task created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Retrieve custom case",
+          "name": "Retrieve custom task",
           "request": {
             "method": "GET",
             "header": [
@@ -1345,7 +1345,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/:id/",
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1353,7 +1353,7 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 ":id",
                 ""
               ],
@@ -1364,11 +1364,11 @@
                 }
               ]
             },
-            "description": "Returns a single custom case by UUID.\n\n> **Required scope:** `cases:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Case detail |\n| `404` | Case not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns a single custom task by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Task detail |\n| `404` | Task not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Replace custom case",
+          "name": "Replace custom task",
           "request": {
             "method": "PUT",
             "header": [
@@ -1378,7 +1378,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/:id/",
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1386,7 +1386,7 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 ":id",
                 ""
               ],
@@ -1397,11 +1397,11 @@
                 }
               ]
             },
-            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `cases:read` (route) · `cases:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated task returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Update custom case",
+          "name": "Update custom task",
           "request": {
             "method": "PATCH",
             "header": [
@@ -1411,7 +1411,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/:id/",
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1419,7 +1419,7 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 ":id",
                 ""
               ],
@@ -1430,11 +1430,11 @@
                 }
               ]
             },
-            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `cases:read` (route) · `cases:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated task returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "Delete custom case",
+          "name": "Delete custom task",
           "request": {
             "method": "DELETE",
             "header": [
@@ -1444,7 +1444,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/cases/:id/",
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1452,7 +1452,7 @@
                 "api",
                 "v1",
                 "public",
-                "cases",
+                "tasks",
                 ":id",
                 ""
               ],
@@ -1463,7 +1463,7 @@
                 }
               ]
             },
-            "description": "Soft-deletes a custom case (`is_active=false`).\n\n> **Required scope:** `cases:read` (route) · `cases:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Case deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Soft-deletes a custom task (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Task deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         }
       ]
@@ -2389,6 +2389,39 @@
       ]
     },
     {
+      "name": "Public API — Assistant",
+      "item": [
+        {
+          "name": "CLI Ask AI chat turn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/assistant/chat/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "assistant",
+                "chat",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "One chat-completion turn for the Assess CLI assistant (Ask AI). Authenticated with an organisation API key. Requires Starter+ (`capabilities.cli_assistant`) and scope `assistant:write` (empty scopes = full access).\n\nOptional OpenAI-format `tools` enable a client-side tool loop (MCP). Dedicated throttle scope `public_api_assistant` (default 30/hour) — separate from public write quotas."
+          }
+        }
+      ]
+    },
+    {
       "name": "Public API — Interviews",
       "item": [
         {
@@ -2503,7 +2536,7 @@
           }
         },
         {
-          "name": "List org coding cases for interviews",
+          "name": "List org coding tasks for interviews",
           "request": {
             "method": "GET",
             "header": [
@@ -2513,7 +2546,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/org-cases/",
+              "raw": "{{base_url}}/api/v1/public/interviews/org-tasks/",
               "host": [
                 "{{base_url}}"
               ],
@@ -2522,12 +2555,12 @@
                 "v1",
                 "public",
                 "interviews",
-                "org-cases",
+                "org-tasks",
                 ""
               ],
               "variable": []
             },
-            "description": "List org coding cases for interviews"
+            "description": "List org coding tasks for interviews"
           }
         },
         {

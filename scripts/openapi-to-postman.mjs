@@ -23,7 +23,7 @@ const jsonBody = (obj) => ({
 const EXAMPLES = {
   "POST /api/v1/public/assessments/create/": {
     title: "Backend take-home",
-    description: "Draft assessment. Attach cases, then PATCH status to active before inviting.",
+    description: "Draft assessment. Attach tasks, then PATCH status to active before inviting.",
   },
   "POST /api/v1/public/assessments/{slug}/invites/": {
     email: "ada@example.com",
@@ -46,11 +46,11 @@ const EXAMPLES = {
   "PATCH /api/v1/public/webhooks/{id}/": {
     events: ["assessment.completed", "candidate.passed"],
   },
-  "POST /api/v1/public/assessments/{slug}/cases/attach/": {
-    cases: [{ case_id: "{{case_id}}", source: "platform" }],
+  "POST /api/v1/public/assessments/{slug}/tasks/attach/": {
+    tasks: [{ task_id: "{{task_id}}", source: "platform" }],
   },
-  "PUT /api/v1/public/assessments/{slug}/cases/replace/": {
-    cases: [{ case_id: "{{case_id}}", source: "platform" }],
+  "PUT /api/v1/public/assessments/{slug}/tasks/replace/": {
+    tasks: [{ task_id: "{{task_id}}", source: "platform" }],
   },
   "PATCH /api/v1/public/assessments/{slug}/update/": {
     status: "active",
@@ -67,7 +67,7 @@ const PATH_VARS = {
   token: "invite_token",
   id: "id",
   delivery_id: "delivery_id",
-  case_id: "case_id",
+  task_id: "task_id",
   provider: "provider",
 };
 
@@ -177,7 +177,7 @@ function main() {
       { key: "invite_token", value: "" },
       { key: "id", value: "" },
       { key: "delivery_id", value: "" },
-      { key: "case_id", value: "" },
+      { key: "task_id", value: "" },
       { key: "provider", value: "greenhouse" },
     ],
     item: [...groups.entries()].map(([name, item]) => ({ name, item })),

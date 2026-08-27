@@ -32,40 +32,40 @@ Transient `429` / `5xx` / transport failures retry automatically (default 2). Di
 package main
 
 import (
-    "fmt"
-    "log"
+ "fmt"
+ "log"
 
-    praxicraft "github.com/praxicraft-platform/praxicraft-go"
+ praxicraft "github.com/praxicraft-platform/praxicraft-go"
 )
 
 func main() {
-    client, err := praxicraft.New()
-    if err != nil {
-        log.Fatal(err)
-    }
+ client, err := praxicraft.New()
+ if err != nil {
+ log.Fatal(err)
+ }
 
-    org, err := client.Org.Retrieve()
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(org.Name, org.Plan, org.InvitesRemaining)
+ org, err := client.Org.Retrieve()
+ if err != nil {
+ log.Fatal(err)
+ }
+ fmt.Println(org.Name, org.Plan, org.InvitesRemaining)
 
-    send := true
-    invite, err := client.Invites.Create("senior-backend-screen", praxicraft.InviteCreateParams{
-        Email:     "candidate@example.com",
-        Name:      "Jane Doe",
-        SendEmail: &send,
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(invite.InviteToken, invite.InviteURL)
+ send := true
+ invite, err := client.Invites.Create("senior-backend-screen", praxicraft.InviteCreateParams{
+ Email: "candidate@example.com",
+ Name: "Jane Doe",
+ SendEmail: &send,
+ })
+ if err != nil {
+ log.Fatal(err)
+ }
+ fmt.Println(invite.InviteToken, invite.InviteURL)
 
-    result, err := client.Results.Retrieve(invite.InviteToken)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(result)
+ result, err := client.Results.Retrieve(invite.InviteToken)
+ if err != nil {
+ log.Fatal(err)
+ }
+ fmt.Println(result)
 }
 ```
 
@@ -89,14 +89,14 @@ Resource methods return typed structs. Use `client.Do` / `DoAs` for forward-comp
 
 ```go
 hook, err := client.Webhooks.Create(
-    "https://example.com/hooks/praxicraft",
-    []string{"assessment.completed", "candidate.passed"},
-    nil,
+ "https://example.com/hooks/praxicraft",
+ []string{"assessment.completed", "candidate.passed"},
+ nil,
 )
 if err != nil {
-    log.Fatal(err)
+ log.Fatal(err)
 }
-// Store hook.SecretKey (whsec_…) — shown once
+// Store hook.SecretKey (whsec_…). shown once
 _, _ = client.Webhooks.Test(hook.ID)
 _, _ = client.Webhooks.Update(hook.ID, map[string]any{"is_active": true})
 ```
@@ -106,8 +106,8 @@ _, _ = client.Webhooks.Update(hook.ID, map[string]any{"is_active": true})
 ```go
 pageSize := 50
 err = client.Results.IterAll("senior-backend-screen", &pageSize, nil, func(row praxicraft.ResultRow) error {
-    fmt.Println(row.Email, row.Score, row.Passed)
-    return nil
+ fmt.Println(row.Email, row.Score, row.Passed)
+ return nil
 })
 ```
 
@@ -116,26 +116,26 @@ err = client.Results.IterAll("senior-backend-screen", &pageSize, nil, func(row p
 ```go
 _, err := client.Invites.Create("demo", praxicraft.InviteCreateParams{Email: "candidate@example.com"})
 var (
-    ve    *praxicraft.ValidationError
-    scope *praxicraft.InsufficientScopeError
-    auth  *praxicraft.AuthenticationError
-    rl    *praxicraft.RateLimitError
+ ve *praxicraft.ValidationError
+ scope *praxicraft.InsufficientScopeError
+ auth *praxicraft.AuthenticationError
+ rl *praxicraft.RateLimitError
 )
 switch {
 case errors.As(err, &ve):
-    fmt.Println(ve.ErrCode, ve.Details)
+ fmt.Println(ve.ErrCode, ve.Details)
 case errors.As(err, &scope):
-    fmt.Println(scope.ErrCode, scope.RequiredPlan)
+ fmt.Println(scope.ErrCode, scope.RequiredPlan)
 case errors.As(err, &auth):
-    fmt.Println(auth.ErrCode)
+ fmt.Println(auth.ErrCode)
 case errors.As(err, &rl):
-    fmt.Println(rl.RetryAfter)
+ fmt.Println(rl.RetryAfter)
 default:
-    log.Fatal(err)
+ log.Fatal(err)
 }
 ```
 
-`403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP — branch on `ErrCode`. Catalogue: [Errors](/guides/errors).
+`403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP. branch on `ErrCode`. Catalogue: [Errors](/guides/errors).
 
 ## Verify webhooks
 

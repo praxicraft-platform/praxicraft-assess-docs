@@ -20,7 +20,7 @@ export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
 ```python
 from praxicraft import Client
 
-client = Client()  # reads PRAXICRAFT_API_KEY
+client = Client() # reads PRAXICRAFT_API_KEY
 # or Client(api_key="ct_live_…", base_url="https://assess.praxicraft.com")
 ```
 
@@ -33,13 +33,13 @@ client = Client()
 
 page = client.assessments.list()
 for assessment in page["results"]:
-    print(assessment["slug"], assessment["status"])
+ print(assessment["slug"], assessment["status"])
 
 invite = client.invites.create(
-    "senior-backend-screen",
-    email="candidate@example.com",
-    name="Jane Doe",
-    send_email=True,
+ "senior-backend-screen",
+ email="candidate@example.com",
+ name="Jane Doe",
+ send_email=True,
 )
 print(invite["invite_token"], invite.get("invite_url"))
 
@@ -54,7 +54,7 @@ Responses are flat JSON (no `{ "data": … }` wrapper).
 | Resource | Common methods |
 |----------|----------------|
 | `client.org` | `retrieve()`, `stats()` |
-| `client.assessments` | `list()`, `retrieve()`, `create()`, `update()`, `activate()`, `list_cases()`, `attach_cases()`, `replace_cases()`, `remove_case()` |
+| `client.assessments` | `list()`, `retrieve()`, `create()`, `update()`, `activate()`, `list_tasks()`, `attach_tasks()`, `replace_tasks()`, `remove_task()` |
 | `client.invites` | `create()`, `bulk_create()`, `list()`, `retrieve()`, `remind()`, `cancel()` |
 | `client.results` | `list()`, `retrieve()`, `iter_all()` |
 | `client.webhooks` | `list()`, `create()`, `retrieve()`, `update()`, `delete()`, `test()`, `deliveries()` |
@@ -68,16 +68,16 @@ Responses are flat JSON (no `{ "data": … }` wrapper).
 ```python
 org = client.org.retrieve()
 if (org.get("invites_remaining") or 0) < len(candidates):
-    raise SystemExit("Not enough invites remaining this month")
+ raise SystemExit("Not enough invites remaining this month")
 ```
 
 ### Build and activate an assessment
 
 ```python
 assessment = client.assessments.create(title="Backend screen")
-client.assessments.attach_cases(
-    assessment["slug"],
-    cases=[{"case_id": "<uuid>", "source": "platform"}],
+client.assessments.attach_tasks(
+ assessment["slug"],
+ tasks=[{"task_id": "<uuid>", "source": "platform"}],
 )
 client.assessments.activate(assessment["slug"])
 ```
@@ -86,10 +86,10 @@ client.assessments.activate(assessment["slug"])
 
 ```python
 hook = client.webhooks.create(
-    url="https://example.com/hooks/praxicraft",
-    events=["assessment.completed", "candidate.passed"],
+ url="https://example.com/hooks/praxicraft",
+ events=["assessment.completed", "candidate.passed"],
 )
-# Store hook["secret_key"] (whsec_…) — shown once
+# Store hook["secret_key"] (whsec_…). shown once
 client.webhooks.test(hook["id"])
 client.webhooks.update(hook["id"], is_active=True)
 ```
@@ -98,29 +98,29 @@ client.webhooks.update(hook["id"], is_active=True)
 
 ```python
 for row in client.results.iter_all("senior-backend-screen", page_size=50):
-    print(row.get("email"), row.get("score_percentage"), row.get("passed"))
+ print(row.get("email"), row.get("score_percentage"), row.get("passed"))
 ```
 
 ## Errors
 
 ```python
 from praxicraft import (
-    AuthenticationError,
-    InsufficientScopeError,
-    RateLimitError,
-    ValidationError,
+ AuthenticationError,
+ InsufficientScopeError,
+ RateLimitError,
+ ValidationError,
 )
 
 try:
-    client.invites.create("demo", email="candidate@example.com")
+ client.invites.create("demo", email="candidate@example.com")
 except ValidationError as exc:
-    print(exc.code, exc.details)
+ print(exc.code, exc.details)
 except InsufficientScopeError as exc:
-    print(exc.code)
+ print(exc.code)
 except AuthenticationError as exc:
-    print(exc.code)
+ print(exc.code)
 except RateLimitError as exc:
-    print(exc.retry_after)
+ print(exc.retry_after)
 ```
 
 Branch on `exc.code`. `403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP. Catalogue: [Errors](/guides/errors).

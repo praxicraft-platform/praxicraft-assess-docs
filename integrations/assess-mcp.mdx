@@ -3,7 +3,7 @@ title: "MCP (Coding Agents)"
 description: "Connect Cursor, Claude, or Codex to Assess with MCP."
 ---
 
-MCP (Model Context Protocol) lets an AI coding agent use Assess tools — create assessments, invite candidates, read results — with your permission.
+MCP (Model Context Protocol) lets an AI coding agent use Assess tools. create assessments, invite candidates, read results. with your permission.
 
 For docs search + skills + one-click install across agents, see [Build with agents](/integrations/build-with-agents) (Knowledge MCP is separate from this API server).
 
@@ -30,11 +30,11 @@ IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requ
 
 ```json
 {
-  "mcpServers": {
-    "praxicraft-assess": {
-      "url": "https://assess.praxicraft.com/mcp"
-    }
-  }
+ "mcpServers": {
+ "praxicraft-assess": {
+ "url": "https://assess.praxicraft.com/mcp"
+ }
+ }
 }
 ```
 
@@ -42,12 +42,12 @@ IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requ
 
 ```json
 {
-  "mcpServers": {
-    "praxicraft-assess": {
-      "type": "http",
-      "url": "https://assess.praxicraft.com/mcp"
-    }
-  }
+ "mcpServers": {
+ "praxicraft-assess": {
+ "type": "http",
+ "url": "https://assess.praxicraft.com/mcp"
+ }
+ }
 }
 ```
 
@@ -55,23 +55,23 @@ IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requ
 
 ```json
 {
-  "mcpServers": {
-    "praxicraft-assess": {
-      "command": "npx",
-      "args": ["-y", "@praxicraft/assess-mcp"],
-      "env": {
-        "PRAXICRAFT_API_KEY": "ct_live_xxxxxxxxxxxxxxxx"
-      }
-    }
-  }
+ "mcpServers": {
+ "praxicraft-assess": {
+ "command": "npx",
+ "args": ["-y", "@praxicraft/assess-mcp"],
+ "env": {
+ "PRAXICRAFT_API_KEY": "ct_live_xxxxxxxxxxxxxxxx"
+ }
+ }
+ }
 }
 ```
 
 ## What agents can do
 
-Tools map to the Public API: assessments, invites, results, org/squads/audit (audit is Starter+), cases, webhooks, interviews, pipelines, integrations.
+Tools map to the Public API: assessments, invites, results, org/squads/audit (audit is Starter+), tasks, webhooks, interviews, pipelines, integrations.
 
-Remind agents to respect plan limits and to branch on `error.code` — [Errors](/guides/errors).
+Remind agents to respect plan limits and to branch on `error.code`. [Errors](/guides/errors).
 
 ## Next
 

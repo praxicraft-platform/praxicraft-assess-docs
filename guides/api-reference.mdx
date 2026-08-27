@@ -8,12 +8,12 @@ Use this when you are building software against Assess. Recruiters and ops can s
 ## Open the API docs
 
 <CardGroup cols={2}>
-  <Card title="ReDoc" icon="book-open" href="https://assess.praxicraft.com/api/v1/public/redoc/">
-    Live reference for every Public API endpoint — schemas, examples, try-it.
-  </Card>
-  <Card title="Authentication" icon="key" href="/guides/authentication">
-    Keys, Bearer auth, and base URL before you call anything.
-  </Card>
+ <Card title="ReDoc" icon="book-open" href="https://assess.praxicraft.com/api/v1/public/redoc/">
+ Live reference for every Public API endpoint. schemas, examples, try-it.
+ </Card>
+ <Card title="Authentication" icon="key" href="/guides/authentication">
+ Keys, Bearer auth, and base URL before you call anything.
+ </Card>
 </CardGroup>
 
 Direct link: [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/)
@@ -22,7 +22,7 @@ Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground 
 
 ## Current surface (1.4.0)
 
-Additive org/ops endpoints since the 1.1.0 baseline — details in the [API changelog](/api-changelog):
+Additive org/ops endpoints since the 1.1.0 baseline. details in the [API changelog](/api-changelog):
 
 | Area | Paths | Notes |
 |------|-------|--------|
@@ -55,27 +55,27 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
 - Errors: `{ "error": { "code", "message", "details?" } }`
 - Invitation id: **`invite_token`**
 - Cursor pagination: `cursor`, `page_size` (default 20, max 100)
-- Audit export format query: **`export_format`** (`csv` \| `json`) — not `?format=` (DRF renderer)
+- Audit export format query: **`export_format`** (`csv` \| `json`). not `?format=` (DRF renderer)
 
 ## Guides
 
 <CardGroup cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/guides/quickstart">
-    First call in five minutes.
-  </Card>
-  <Card title="Authentication" icon="key" href="/guides/authentication">
-    Keys and scopes.
-  </Card>
-  <Card title="API changelog" icon="scroll-text" href="/api-changelog">
-    Public API release notes (separate from the product changelog).
-  </Card>
-  <Card title="Organisation" icon="building" href="/guides/organisation">
-    Usage, billing, health, squads, audit export.
-  </Card>
-  <Card title="Errors" icon="triangle-alert" href="/guides/errors">
-    Stable `error.code` catalogue.
-  </Card>
-  <Card title="SDKs" icon="package" href="/sdks/introduction">
-    Python, Node.js, Go.
-  </Card>
+ <Card title="Quickstart" icon="rocket" href="/guides/quickstart">
+ First call in five minutes.
+ </Card>
+ <Card title="Authentication" icon="key" href="/guides/authentication">
+ Keys and scopes.
+ </Card>
+ <Card title="API changelog" icon="scroll-text" href="/api-changelog">
+ Public API release notes (separate from the product changelog).
+ </Card>
+ <Card title="Organisation" icon="building" href="/guides/organisation">
+ Usage, billing, health, squads, audit export.
+ </Card>
+ <Card title="Errors" icon="triangle-alert" href="/guides/errors">
+ Stable `error.code` catalogue.
+ </Card>
+ <Card title="SDKs" icon="package" href="/sdks/introduction">
+ Python, Node.js, Go.
+ </Card>
 </CardGroup>

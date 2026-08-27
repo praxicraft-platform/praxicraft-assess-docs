@@ -5,30 +5,30 @@ description: "Invite your first candidate from the dashboard, or with the Public
 
 Two paths. Pick the one that matches your role.
 
-## Path A — Dashboard only (recruiting / ops)
+## Path A: Dashboard only (recruiting / ops) (recruiting / ops)
 
 No API key. No terminal.
 
 <Steps>
-  <Step title="Sign in to Assess">
-    Open the [Assess dashboard](https://assess.praxicraft.com/assess).
-  </Step>
-  <Step title="Create or open an assessment">
-    Add tasks, set time limit and passing score, then set status to **Active**. Invites fail if the assessment is still a draft.
-  </Step>
-  <Step title="Invite a candidate">
-    Use **Invite** on that assessment. Enter email and name. Assess can send the email for you.
-  </Step>
-  <Step title="Watch for completion">
-    When they finish, open **Results** on the assessment. Share the report with the hiring manager from the dashboard.
-  </Step>
+ <Step title="Sign in to Assess">
+ Open the [Assess dashboard](https://assess.praxicraft.com/assess).
+ </Step>
+ <Step title="Create or open an assessment">
+ Add tasks, set time limit and passing score, then set status to **Active**. Invites fail if the assessment is still a draft.
+ </Step>
+ <Step title="Invite a candidate">
+ Use **Invite** on that assessment. Enter email and name. Assess can send the email for you.
+ </Step>
+ <Step title="Watch for completion">
+ When they finish, open **Results** on the assessment. Share the report with the hiring manager from the dashboard.
+ </Step>
 </Steps>
 
 Want Greenhouse, Slack, or spreadsheets to update themselves? Ask an engineer to follow Path B, or use [n8n](/integrations/n8n) / [Automations](/integrations/automations).
 
 ---
 
-## Path B — Public API (engineers)
+## Path B: Public API (engineers)
 
 Create an API key, list assessments, invite a candidate, and fetch their result.
 
@@ -39,35 +39,35 @@ Create an API key, list assessments, invite a candidate, and fetch their result.
 - An **active** assessment (dashboard or [Assessments](/guides/assessments) API)
 
 <Steps>
-  <Step title="Create an API key">
-    Open [Assess → Developer → API Keys](https://assess.praxicraft.com/assess/api), create a key, and copy it (shown once). Live keys start with `ct_live_`; switch the dashboard to **Test** to mint `ct_test_…`.
+ <Step title="Create an API key">
+ Open [Assess → Developer → API Keys](https://assess.praxicraft.com/assess/api), create a key, and copy it (shown once). Live keys start with `ct_live_`; switch the dashboard to **Test** to mint `ct_test_…`.
 
-    Prefer least-privilege [scopes](/guides/scopes). Empty scopes grant full access (legacy).
-  </Step>
+ Prefer least-privilege [scopes](/guides/scopes). Empty scopes grant full access (legacy).
+ </Step>
 
-  <Step title="Set your environment">
+ <Step title="Set your environment">
 ```bash
 export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
 # Optional override (default: https://assess.praxicraft.com)
 # export PRAXICRAFT_API_BASE_URL="https://assess.praxicraft.com"
 ```
-  </Step>
+ </Step>
 
-  <Step title="List assessments">
+ <Step title="List assessments">
 <CodeGroup>
 
 ```bash curl
 curl -sS https://assess.praxicraft.com/api/v1/public/assessments/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 ```python Python
 from praxicraft import Client
 
-client = Client()  # reads PRAXICRAFT_API_KEY
+client = Client() # reads PRAXICRAFT_API_KEY
 page = client.assessments.list()
 for a in page["results"]:
-    print(a["slug"], a["status"])
+ print(a["slug"], a["status"])
 ```
 
 ```ts Node
@@ -75,10 +75,10 @@ import { Client } from "@praxicraft/assess";
 
 const client = new Client();
 const page = (await client.assessments.list()) as {
-  results: Array<{ slug: string; status: string }>;
+ results: Array<{ slug: string; status: string }>;
 };
 for (const a of page.results) {
-  console.log(a.slug, a.status);
+ console.log(a.slug, a.status);
 }
 ```
 
@@ -86,64 +86,64 @@ for (const a of page.results) {
 package main
 
 import (
-    "fmt"
-    "log"
+ "fmt"
+ "log"
 
-    praxicraft "github.com/praxicraft-platform/praxicraft-go"
+ praxicraft "github.com/praxicraft-platform/praxicraft-go"
 )
 
 func main() {
-    client, err := praxicraft.New()
-    if err != nil {
-        log.Fatal(err)
-    }
-    page, err := client.Assessments.List(nil)
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, a := range page.Results {
-        fmt.Println(a.Slug, a.Status)
-    }
+ client, err := praxicraft.New()
+ if err != nil {
+ log.Fatal(err)
+ }
+ page, err := client.Assessments.List(nil)
+ if err != nil {
+ log.Fatal(err)
+ }
+ for _, a := range page.Results {
+ fmt.Println(a.Slug, a.Status)
+ }
 }
 ```
 
 </CodeGroup>
 
-    Pick an assessment with `"status": "active"`. Use its **`slug`** in the next step (not the display title).
-  </Step>
+ Pick an assessment with `"status": "active"`. Use its **`slug`** in the next step (not the display title).
+ </Step>
 
-  <Step title="Invite a candidate">
-    Safe to retry: same email on the same assessment returns the existing invite. Default `send_email` is `false` — set `true` to have Assess email them.
+ <Step title="Invite a candidate">
+ Safe to retry: same email on the same assessment returns the existing invite. Default `send_email` is `false`. set `true` to have Assess email them.
 
 <CodeGroup>
 
 ```bash curl
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "candidate@example.com",
-    "name": "Jane Doe",
-    "send_email": true
-  }'
+ "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "email": "candidate@example.com",
+ "name": "Jane Doe",
+ "send_email": true
+ }'
 ```
 
 ```python Python
 invite = client.invites.create(
-    "YOUR_SLUG",
-    email="candidate@example.com",
-    name="Jane Doe",
-    send_email=True,
+ "YOUR_SLUG",
+ email="candidate@example.com",
+ name="Jane Doe",
+ send_email=True,
 )
 print(invite["invite_token"], invite.get("invite_url"))
 ```
 
 ```ts Node
 const invite = (await client.invites.create("YOUR_SLUG", {
-  email: "candidate@example.com",
-  name: "Jane Doe",
-  send_email: true,
+ email: "candidate@example.com",
+ name: "Jane Doe",
+ send_email: true,
 })) as { invite_token: string; invite_url?: string };
 
 console.log(invite.invite_token, invite.invite_url);
@@ -152,30 +152,30 @@ console.log(invite.invite_token, invite.invite_url);
 ```go Go
 send := true
 invite, err := client.Invites.Create("YOUR_SLUG", praxicraft.InviteCreateParams{
-    Email:     "candidate@example.com",
-    Name:      "Jane Doe",
-    SendEmail: &send,
+ Email: "candidate@example.com",
+ Name: "Jane Doe",
+ SendEmail: &send,
 })
 if err != nil {
-    log.Fatal(err)
+ log.Fatal(err)
 }
 fmt.Println(invite.InviteToken, invite.InviteURL)
 ```
 
 </CodeGroup>
 
-    Save **`invite_token`** from the response that is how you look up status and results later.
-  </Step>
+ Save **`invite_token`** from the response that is how you look up status and results later.
+ </Step>
 
-  <Step title="Fetch the result">
-    Before they finish you get a short status message. After completion you get scores and pass/fail.
+ <Step title="Fetch the result">
+ Before they finish you get a short status message. After completion you get scores and pass/fail.
 
 <CodeGroup>
 
 ```bash curl
 curl -sS \
-  "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 ```python Python
@@ -191,15 +191,15 @@ console.log(result);
 ```go Go
 result, err := client.Results.Retrieve(invite.InviteToken)
 if err != nil {
-    log.Fatal(err)
+ log.Fatal(err)
 }
 fmt.Println(result)
 ```
 
 </CodeGroup>
 
-    In production, prefer [webhooks](/guides/webhooks) (`assessment.completed`) instead of polling.
-  </Step>
+ In production, prefer [webhooks](/guides/webhooks) (`assessment.completed`) instead of polling.
+ </Step>
 </Steps>
 
 ### Install an SDK (optional)
@@ -225,16 +225,16 @@ More: [SDKs](/sdks/introduction).
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/guides/authentication">
-    Keys, scopes, and safe rotation.
-  </Card>
-  <Card title="Invitations" icon="mail" href="/guides/invitations">
-    Bulk invites, reminders, cancel.
-  </Card>
-  <Card title="Automations" icon="workflow" href="/integrations/automations">
-    n8n / Zapier without a custom app.
-  </Card>
-  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
-    Get notified when candidates finish.
-  </Card>
+ <Card title="Authentication" icon="key" href="/guides/authentication">
+ Keys, scopes, and safe rotation.
+ </Card>
+ <Card title="Invitations" icon="mail" href="/guides/invitations">
+ Bulk invites, reminders, cancel.
+ </Card>
+ <Card title="Automations" icon="workflow" href="/integrations/automations">
+ n8n / Zapier without a custom app.
+ </Card>
+ <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
+ Get notified when candidates finish.
+ </Card>
 </CardGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Errors"
-description: "Machine-readable `error.code` values — and what to do when you see them."
+description: "Machine-readable `error.code` values and what to do when you see them."
 ---
 
 When something fails in an automation, ask for the **code**, not only the red message text.
@@ -11,23 +11,23 @@ Most hiring work happens in the dashboard. Common failure codes:
 
 | What you see | Likely code | What to do |
 |--------------|-------------|------------|
-| “Out of invites” | `INVITE_QUOTA_EXCEEDED` | Wait for monthly reset or upgrade — [Plan limits](/guides/plan-limits) |
-| “Assessment not active” | `ASSESSMENT_NOT_ACTIVE` | Set the assessment to **Active** |
-| “Key not allowed” | `INSUFFICIENT_SCOPE` / `INVALID_API_KEY` / `IP_NOT_ALLOWED` | Fix the API key or its CIDR list — [Authentication](/guides/authentication) |
-| “Too many requests” | `RATE_LIMITED` | Slow down automations — [Rate limits](/guides/rate-limits) |
-| “Need a higher plan” | `PLAN_REQUIRED` | Upgrade for that feature |
+| "Out of invites" | `INVITE_QUOTA_EXCEEDED` | Wait for monthly reset or upgrade. See [Plan limits](/guides/plan-limits) |
+| "Assessment not active" | `ASSESSMENT_NOT_ACTIVE` | Set the assessment to **Active** |
+| "Key not allowed" | `INSUFFICIENT_SCOPE` / `INVALID_API_KEY` / `IP_NOT_ALLOWED` | Fix the API key or its CIDR list. See [Authentication](/guides/authentication) |
+| "Too many requests" | `RATE_LIMITED` | Slow down automations. See [Rate limits](/guides/rate-limits) |
+| "Need a higher plan" | `PLAN_REQUIRED` | Upgrade for that feature |
 
 ## For engineers
 
-Public API errors use one envelope. Branch on **`error.code`** — messages may change.
+Public API errors use one envelope. Branch on **`error.code`**. Messages may change.
 
 ```json
 {
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Human-readable explanation",
-    "details": {}
-  }
+ "error": {
+ "code": "VALIDATION_ERROR",
+ "message": "Human-readable explanation",
+ "details": {}
+ }
 }
 ```
 
@@ -43,7 +43,7 @@ Do **not** expect the session/dashboard `{ "status", "code", "data" }` shape on 
 
 **403:** `INSUFFICIENT_SCOPE`, `IP_NOT_ALLOWED`, `INVITE_QUOTA_EXCEEDED`, `PLAN_REQUIRED`, `ASSESSMENT_LIMIT_REACHED`, `LIMIT_REACHED`
 
-**404:** `NOT_FOUND`, `CASE_NOT_FOUND`
+**404:** `NOT_FOUND`, `TASK_NOT_FOUND`
 
 **409:** `TASKS_LOCKED`
 
@@ -56,9 +56,9 @@ Do **not** expect the session/dashboard `{ "status", "code", "data" }` shape on 
 | Situation | Retry? |
 |-----------|--------|
 | Most 4xx | No |
-| 429 | Yes — wait `Retry-After` |
-| 5xx / transport | Yes — backoff (SDKs default 2 retries) |
-| Invite create | Safe — email idempotent |
+| 429 | Yes. Wait `Retry-After` |
+| 5xx / transport | Yes. Backoff (SDKs default 2 retries) |
+| Invite create | Safe. Email idempotent |
 
 SDKs raise typed errors with the same codes.
 

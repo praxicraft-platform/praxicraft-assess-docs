@@ -5,7 +5,7 @@ description: "Plan, seats, usage, team, squads, and audit log for your Assess wo
 
 Engineers can read org profile, quotas, usage, billing entitlements, and developer health over the Public API. Checkout and role changes stay dashboard-only.
 
-Event destinations (HTTPS, [Slack](/integrations/slack), [Teams](/integrations/teams)) are managed under [Webhooks](/guides/webhooks) — same as **Developer → Destinations** in the dashboard.
+Event destinations (HTTPS, [Slack](/integrations/slack), [Teams](/integrations/teams)) are managed under [Webhooks](/guides/webhooks). same as **Developer → Destinations** in the dashboard.
 
 ## If you are recruiting / ops
 
@@ -46,7 +46,7 @@ Prefer paths under `/org/…`. Live/Test mode: [Authentication](/guides/authenti
 
 ```bash
 curl -sS https://assess.praxicraft.com/api/v1/public/org/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 Useful fields: `name`, `slug`, `plan`, `squads_enabled`, `invite_limit`, `invites_used`, `invites_remaining`.
@@ -55,7 +55,7 @@ Useful fields: `name`, `slug`, `plan`, `squads_enabled`, `invite_limit`, `invite
 
 ```bash
 curl -sS https://assess.praxicraft.com/api/v1/public/org/billing/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 Returns plan, seats used/remaining, invite and assessment quotas, interview monthly usage. No Stripe/Paystack IDs. Test-mode activity does **not** consume live invite quota.
@@ -66,7 +66,7 @@ Mode-scoped daily series (`start` / `end` as YYYY-MM-DD; default last 30 days, m
 
 ```bash
 curl -sS "https://assess.praxicraft.com/api/v1/public/org/usage/?start=2026-08-01&end=2026-08-23" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 ### Developer health (Starter+)

@@ -32,16 +32,16 @@ import { Client } from "@praxicraft/assess";
 const client = new Client();
 
 const page = (await client.assessments.list()) as {
-  results: Array<{ slug: string; status: string }>;
+ results: Array<{ slug: string; status: string }>;
 };
 for (const assessment of page.results) {
-  console.log(assessment.slug, assessment.status);
+ console.log(assessment.slug, assessment.status);
 }
 
 const invite = (await client.invites.create("senior-backend-screen", {
-  email: "candidate@example.com",
-  name: "Jane Doe",
-  send_email: true,
+ email: "candidate@example.com",
+ name: "Jane Doe",
+ send_email: true,
 })) as { invite_token: string; invite_url?: string };
 
 console.log(invite.invite_token, invite.invite_url);
@@ -71,7 +71,7 @@ Responses are flat JSON (no `{ data: … }` wrapper).
 ```ts
 const org = (await client.org.retrieve()) as { invites_remaining?: number };
 if ((org.invites_remaining ?? 0) < candidates.length) {
-  throw new Error("Not enough invites remaining this month");
+ throw new Error("Not enough invites remaining this month");
 }
 ```
 
@@ -79,11 +79,11 @@ if ((org.invites_remaining ?? 0) < candidates.length) {
 
 ```ts
 const hook = (await client.webhooks.create({
-  url: "https://example.com/hooks/praxicraft",
-  events: ["assessment.completed", "candidate.passed"],
+ url: "https://example.com/hooks/praxicraft",
+ events: ["assessment.completed", "candidate.passed"],
 })) as { id: string; secret_key: string };
 
-// Store hook.secret_key (whsec_…) — shown once
+// Store hook.secret_key (whsec_…). shown once
 await client.webhooks.test(hook.id);
 await client.webhooks.update(hook.id, { is_active: true });
 ```
@@ -92,9 +92,9 @@ await client.webhooks.update(hook.id, { is_active: true });
 
 ```ts
 for await (const row of client.results.iterAll("senior-backend-screen", {
-  page_size: 50,
+ page_size: 50,
 })) {
-  console.log(row);
+ console.log(row);
 }
 ```
 
@@ -102,30 +102,30 @@ for await (const row of client.results.iterAll("senior-backend-screen", {
 
 ```ts
 import {
-  AuthenticationError,
-  InsufficientScopeError,
-  RateLimitError,
-  ValidationError,
+ AuthenticationError,
+ InsufficientScopeError,
+ RateLimitError,
+ ValidationError,
 } from "@praxicraft/assess";
 
 try {
-  await client.invites.create("demo", { email: "candidate@example.com" });
+ await client.invites.create("demo", { email: "candidate@example.com" });
 } catch (err) {
-  if (err instanceof ValidationError) {
-    console.log(err.code, err.details);
-  } else if (err instanceof InsufficientScopeError) {
-    console.log(err.code, err.requiredPlan);
-  } else if (err instanceof AuthenticationError) {
-    console.log(err.code);
-  } else if (err instanceof RateLimitError) {
-    console.log(err.retryAfter);
-  } else {
-    throw err;
-  }
+ if (err instanceof ValidationError) {
+ console.log(err.code, err.details);
+ } else if (err instanceof InsufficientScopeError) {
+ console.log(err.code, err.requiredPlan);
+ } else if (err instanceof AuthenticationError) {
+ console.log(err.code);
+ } else if (err instanceof RateLimitError) {
+ console.log(err.retryAfter);
+ } else {
+ throw err;
+ }
 }
 ```
 
-`403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP — branch on `err.code`. Catalogue: [Errors](/guides/errors).
+`403` `IP_NOT_ALLOWED` means this key's CIDR allowlist rejected the client IP. branch on `err.code`. Catalogue: [Errors](/guides/errors).
 
 ## Verify webhooks
 

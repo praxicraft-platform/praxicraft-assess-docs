@@ -3,20 +3,20 @@ title: "Slack"
 description: "Post Assess pass/fail and completion alerts into a Slack channel."
 ---
 
-For “candidate passed → hiring channel”, add a **Slack** destination under **Developer → Destinations**. Slack destinations do **not** use HMAC — Assess posts a formatted chat message.
+For “candidate passed → hiring channel”, add a **Slack** destination under **Developer → Destinations**. Slack destinations do **not** use HMAC. Assess posts a formatted chat message.
 
 ## If you are recruiting / ops
 
 <Steps>
-  <Step title="Connect Slack">
-    In **Developer → Destinations**, choose **Slack** and click **Connect Slack**. Slack asks the org to install **Praxicraft’s** bot into their workspace — they do not create a Slack app or paste a client secret. After that, pick a channel. Assess posts with `chat.postMessage`.
-  </Step>
-  <Step title="Or paste an Incoming Webhook">
-    Slack Incoming Webhook URLs (`hooks.slack.com`) still work as a fallback if **Connect Slack** is missing.
-  </Step>
-  <Step title="Subscribe and test">
-    Subscribe to `candidate.passed` (and optionally `candidate.failed`, `assessment.completed`). Send a test ping.
-  </Step>
+ <Step title="Connect Slack">
+ In **Developer → Destinations**, choose **Slack** and click **Connect Slack**. Slack asks the org to install **Praxicraft’s** bot into their workspace. They do not create a Slack app or paste a client secret. After that, pick a channel. Assess posts with `chat.postMessage`.
+ </Step>
+ <Step title="Or paste an Incoming Webhook">
+ Slack Incoming Webhook URLs (`hooks.slack.com`) still work as a fallback if **Connect Slack** is missing.
+ </Step>
+ <Step title="Subscribe and test">
+ Subscribe to `candidate.passed` (and optionally `candidate.failed`, `assessment.completed`). Send a test ping.
+ </Step>
 </Steps>
 
 <Note>
@@ -27,14 +27,14 @@ Prefer a Slack destination in Assess for simple pass/fail alerts. Use [Zapier](/
 
 ## For engineers
 
-Destinations use the same Public API as HTTPS webhooks: `/webhooks/`. There is no separate `/destinations/` path. See [Webhooks](/guides/webhooks) for create, test, deliveries, and retry.
+Destinations use the same Public API as HTTPS webhooks: `/webhooks/`: There is no separate `/destinations/` path. See [Webhooks](/guides/webhooks) for create, test, deliveries, and retry.
 
 After Slack is connected in the dashboard:
 
 ```json
 {
-  "slack_channel_id": "C01234567",
-  "events": ["candidate.passed", "candidate.failed"]
+ "slack_channel_id": "C01234567",
+ "events": ["candidate.passed", "candidate.failed"]
 }
 ```
 

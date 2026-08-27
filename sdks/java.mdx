@@ -11,16 +11,16 @@ Add the GitHub Packages repository and dependency to your `pom.xml`:
 
 ```xml
 <repositories>
-  <repository>
-    <id>github</id>
-    <url>https://maven.pkg.github.com/praxicraft-platform/praxicraft-java</url>
-  </repository>
+ <repository>
+ <id>github</id>
+ <url>https://maven.pkg.github.com/praxicraft-platform/praxicraft-java</url>
+ </repository>
 </repositories>
 
 <dependency>
-  <groupId>com.praxicraft</groupId>
-  <artifactId>assess</artifactId>
-  <version>0.1.0</version>
+ <groupId>com.praxicraft</groupId>
+ <artifactId>assess</artifactId>
+ <version>0.1.0</version>
 </dependency>
 ```
 
@@ -28,13 +28,13 @@ GitHub Packages requires authentication. In `~/.m2/settings.xml`, use a [persona
 
 ```xml
 <settings>
-  <servers>
-    <server>
-      <id>github</id>
-      <username>YOUR_GITHUB_USERNAME</username>
-      <password>YOUR_GITHUB_PAT</password>
-    </server>
-  </servers>
+ <servers>
+ <server>
+ <id>github</id>
+ <username>YOUR_GITHUB_USERNAME</username>
+ <password>YOUR_GITHUB_PAT</password>
+ </server>
+ </servers>
 </settings>
 ```
 
@@ -42,19 +42,19 @@ Gradle (`settings.gradle.kts` / `build.gradle.kts`):
 
 ```kotlin
 repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/praxicraft-platform/praxicraft-java")
-        credentials {
-            username = providers.gradleProperty("gpr.user").orNull
-                ?: System.getenv("GITHUB_ACTOR")
-            password = providers.gradleProperty("gpr.key").orNull
-                ?: System.getenv("GITHUB_TOKEN")
-        }
-    }
+ maven {
+ url = uri("https://maven.pkg.github.com/praxicraft-platform/praxicraft-java")
+ credentials {
+ username = providers.gradleProperty("gpr.user").orNull
+ ?: System.getenv("GITHUB_ACTOR")
+ password = providers.gradleProperty("gpr.key").orNull
+ ?: System.getenv("GITHUB_TOKEN")
+ }
+ }
 }
 
 dependencies {
-    implementation("com.praxicraft:assess:0.1.0")
+ implementation("com.praxicraft:assess:0.1.0")
 }
 ```
 
@@ -84,16 +84,16 @@ Map<String, Object> page = client.assessments().list(null);
 @SuppressWarnings("unchecked")
 List<Map<String, Object>> results = (List<Map<String, Object>>) page.get("results");
 for (Map<String, Object> assessment : results) {
-    System.out.println(assessment.get("slug") + " " + assessment.get("status"));
+ System.out.println(assessment.get("slug") + " " + assessment.get("status"));
 }
 
 Map<String, Object> invite = client.invites().create(
-    "senior-backend-screen",
-    Map.of(
-        "email", "candidate@example.com",
-        "name", "Jane Doe",
-        "send_email", true
-    )
+ "senior-backend-screen",
+ Map.of(
+ "email", "candidate@example.com",
+ "name", "Jane Doe",
+ "send_email", true
+ )
 );
 
 String token = (String) invite.get("invite_token");

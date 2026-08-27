@@ -3,16 +3,16 @@ title: "Webhooks"
 description: "Get notified when candidates finish, pass, or move through a pipeline."
 ---
 
-A webhook is an HTTPS URL Assess calls when something happens. Your tool (n8n, Zapier, Make, or your backend) listens and reacts — no need to refresh the dashboard.
+A webhook is an HTTPS URL Assess calls when something happens. Your tool (n8n, Zapier, Make, or your backend) listens and reacts. no need to refresh the dashboard.
 
-**Destinations** (HTTPS, Slack, Teams) are the same Public API surface: `/webhooks/`. There is no separate `/destinations/` path.
+**Destinations** (HTTPS, Slack, Teams) are the same Public API surface: `/webhooks/`: There is no separate `/destinations/` path.
 
 ## If you are recruiting / ops
 
 You usually do **not** configure webhooks by hand. Instead:
 
 1. Ask engineering to register your automation URL, **or**
-2. Use the [n8n Assess node](/integrations/n8n), [Zapier](/integrations/zapier), or [Make](/integrations/make) app — they register the webhook when the scenario/workflow is active, **or**
+2. Use the [n8n Assess node](/integrations/n8n), [Zapier](/integrations/zapier), or [Make](/integrations/make) app. they register the webhook when the scenario/workflow is active, **or**
 3. Follow [Automations](/integrations/automations) for a custom catch hook
 
 Useful events to ask for:
@@ -31,7 +31,7 @@ Sample JSON for each event: [Webhook events](/guides/webhook-events).
 
 Register an HTTPS endpoint. You receive a `whsec_…` secret **once** to verify `X-Praxicraft-Signature`.
 
-Live destinations only receive live events. Create a separate destination in **Test** mode (or with a `ct_test_` key) while you debug — test `candidate.passed` never hits a live URL. See [Live and Test mode](/guides/authentication#live-and-test-mode).
+Live destinations only receive live events. Create a separate destination in **Test** mode (or with a `ct_test_` key) while you debug. test `candidate.passed` never hits a live URL. See [Live and Test mode](/guides/authentication#live-and-test-mode).
 
 ### Endpoints
 
@@ -50,20 +50,20 @@ Body uses **`events`** (not `event_types`):
 
 ```bash
 curl -sS -X POST https://assess.praxicraft.com/api/v1/public/webhooks/create/ \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://example.com/hooks/praxicraft",
-    "events": ["assessment.completed", "candidate.passed"]
-  }'
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "url": "https://example.com/hooks/praxicraft",
+ "events": ["assessment.completed", "candidate.passed"]
+ }'
 ```
 
 Store `secret_key`. Then:
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/test/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/test/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 HTTP 2xx on the test ping sets `is_verified` and `is_active`.
@@ -72,8 +72,8 @@ HTTP 2xx on the test ping sets `is_verified` and `is_active`.
 
 For “candidate passed → hiring channel”, use a chat destination instead of a signed HTTPS URL:
 
-- [Slack](/integrations/slack) — **Connect Slack** or Incoming Webhook
-- [Microsoft Teams](/integrations/teams) — Incoming Webhook connector
+- [Slack](/integrations/slack). **Connect Slack** or Incoming Webhook
+- [Microsoft Teams](/integrations/teams). Incoming Webhook connector
 
 Assess posts a formatted chat message (not the signed JSON envelope). HTTPS destinations still use `whsec_…` and `X-Praxicraft-Signature`.
 
@@ -81,8 +81,8 @@ Failed deliveries can be resent from **Developer → Events** (filter **Failed**
 
 ```bash
 curl -sS -X POST \
-  "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/deliveries/DELIVERY_ID/retry/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ "https://assess.praxicraft.com/api/v1/public/webhooks/WEBHOOK_ID/deliveries/DELIVERY_ID/retry/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 ### Signature

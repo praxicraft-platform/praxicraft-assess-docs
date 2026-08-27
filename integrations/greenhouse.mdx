@@ -12,45 +12,45 @@ An **owner**, **admin**, or **developer** must complete browser OAuth / API setu
 </Note>
 
 <Steps>
-  <Step title="Open Integrations">
-    In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
-  </Step>
-  <Step title="Connect Greenhouse">
-    Use a Harvest API key. Subscribe Harvest webhooks for the candidate/application events you care about.
-  </Step>
-  <Step title="Confirm">
-    Use the dashboard test/connect flow. Matching webhooks can create an **interview room**; score-back is an unstructured Harvest **note**, not a scorecard field. Stage filters are **not** applied — every matching webhook can create a room.
-  </Step>
+ <Step title="Open Integrations">
+ In the [Assess dashboard](https://assess.praxicraft.com/assess), go to **Settings → Integrations**.
+ </Step>
+ <Step title="Connect Greenhouse">
+ Use a Harvest API key. Subscribe Harvest webhooks for the candidate/application events you care about.
+ </Step>
+ <Step title="Confirm">
+ Use the dashboard test/connect flow. Matching webhooks can create an **interview room**; score-back is an unstructured Harvest **note**, not a scorecard field. Stage filters are **not** applied. every matching webhook can create a room.
+ </Step>
 </Steps>
 
-## Cookbook — stage → assessment invite → score back
+## Cookbook. stage → assessment invite → score back
 
 Native connectors do **not** send invites. Use [Zapier](/integrations/zapier), [n8n](/integrations/n8n), or [Make](/integrations/make).
 
 **Golden recipe:** Harvest stage **Take-home** → invite → note + optional stage **Passed screen**.
 
 <Steps>
-  <Step title="Invite workflow">
-    1. Trigger: Greenhouse **Candidate Stage Changed** (or Harvest webhook `candidate_stage_change`).
-    2. Filter: **Stage Name** equals your take-home stage (example: `Take-home`).
-    3. Action: Praxicraft Assess **Invite Candidate**.
-  </Step>
-  <Step title="Map fields">
-    | Assess field | Greenhouse field |
-    |--------------|------------------|
-    | Assessment | Your active assessment |
-    | Email | Candidate Email |
-    | Name | Candidate First Name + Last Name |
-    | External ID | Candidate ID |
-    | Send email | `true` |
-  </Step>
-  <Step title="Score back">
-    1. Trigger: Praxicraft Assess event → `candidate.passed` (second flow for `candidate.failed`).
-    2. Action: Greenhouse **Create Candidate Note** (or Harvest `POST /applications/{id}/notes`).
-    3. Match with **Candidate ID** = `data.external_id`.
-    4. Note body example: `Praxicraft Assess: passed {{score}}/{{max_score}}. invite_token={{invite_token}}`.
-    5. Optional: **Move Candidate** to `Passed screen` / `Rejected`.
-  </Step>
+ <Step title="Invite workflow">
+ 1. Trigger: Greenhouse **Candidate Stage Changed** (or Harvest webhook `candidate_stage_change`).
+ 2. Filter: **Stage Name** equals your take-home stage (example: `Take-home`).
+ 3. Action: Praxicraft Assess **Invite Candidate**.
+ </Step>
+ <Step title="Map fields">
+ | Assess field | Greenhouse field |
+ |--------------|------------------|
+ | Assessment | Your active assessment |
+ | Email | Candidate Email |
+ | Name | Candidate First Name + Last Name |
+ | External ID | Candidate ID |
+ | Send email | `true` |
+ </Step>
+ <Step title="Score back">
+ 1. Trigger: Praxicraft Assess event → `candidate.passed` (second flow for `candidate.failed`).
+ 2. Action: Greenhouse **Create Candidate Note** (or Harvest `POST /applications/{id}/notes`).
+ 3. Match with **Candidate ID** = `data.external_id`.
+ 4. Note body example: `Praxicraft Assess: passed {{score}}/{{max_score}}. invite_token={{invite_token}}`.
+ 5. Optional: **Move Candidate** to `Passed screen` / `Rejected`.
+ </Step>
 </Steps>
 
 Retries with the same `external_id` return the existing invite (`200`) instead of creating a second one.

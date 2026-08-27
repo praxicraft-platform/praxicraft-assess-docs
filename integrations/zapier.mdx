@@ -1,6 +1,6 @@
 ---
 title: "Zapier"
-description: "Connect Praxicraft Assess to Zapier — invite candidates and react to hiring events without writing HTTP requests."
+description: "Connect Praxicraft Assess to Zapier. invite candidates and react to hiring events without writing HTTP requests."
 ---
 
 **Praxicraft Assess** is a Zapier app with a **New Assess Event** trigger and actions for invites, results, pipelines, interviews, and more.
@@ -10,7 +10,7 @@ Setup docs live here. The integration source is [github.com/praxicraft-platform/
 ## Prerequisites
 
 - A Zapier account
-- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/guides/authentication)
+- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api); see [Authentication](/guides/authentication)
 
 ## Setup guide
 
@@ -18,8 +18,8 @@ Setup docs live here. The integration source is [github.com/praxicraft-platform/
 
 In Zapier, create a Zap. Skip Copilot and click the **Trigger** step.
 
-<Frame caption="New Zap — start from the Trigger step">
-  <img src="/images/zapier/01-create-zap.png" alt="Empty Zapier editor with Copilot and a Trigger step labeled Select the event that starts your Zap" />
+<Frame caption="New Zap. start from the Trigger step">
+ <img src="/images/zapier/01-create-zap.png" alt="Empty Zapier editor with Copilot and a Trigger step labeled Select the event that starts your Zap" />
 </Frame>
 
 ### 2. Search for Praxicraft Assess
@@ -27,7 +27,7 @@ In Zapier, create a Zap. Skip Copilot and click the **Trigger** step.
 Open **Apps** and type `pr` (or `Praxicraft`). Select **Praxicraft Assess**.
 
 <Frame caption="Zapier app search showing Praxicraft Assess">
-  <img src="/images/zapier/02-search-praxicraft.png" alt="Zapier Apps search for pr with Praxicraft Assess at the top of the results" />
+ <img src="/images/zapier/02-search-praxicraft.png" alt="Zapier Apps search for pr with Praxicraft Assess at the top of the results" />
 </Frame>
 
 ### 3. Choose the trigger
@@ -35,7 +35,7 @@ Open **Apps** and type `pr` (or `Praxicraft`). Select **Praxicraft Assess**.
 Set **Trigger event** to **New Assess Event**, then **Sign In** to connect Assess.
 
 <Frame caption="Select New Assess Event and sign in">
-  <img src="/images/zapier/03-select-trigger.png" alt="Zapier setup panel for Praxicraft Assess with Trigger event empty and a Sign In button" />
+ <img src="/images/zapier/03-select-trigger.png" alt="Zapier setup panel for Praxicraft Assess with Trigger event empty and a Sign In button" />
 </Frame>
 
 ### 4. Connect your account
@@ -47,14 +47,14 @@ Zapier opens **Connect to Zapier**:
 3. Leave **Base URL** as `https://assess.praxicraft.com` unless you use a custom host.
 4. Click **Connect**. Zapier tests the connection with `GET /org/` (needs `organisation:read` or a full-access key).
 
-<Frame caption="Connect Praxicraft Assess — API Key and Base URL">
-  <img src="/images/zapier/04-connect-account.png" alt="Zapier connect form for Praxicraft Assess with API Key and Base URL fields" />
+<Frame caption="Connect Praxicraft Assess. API Key and Base URL">
+ <img src="/images/zapier/04-connect-account.png" alt="Zapier connect form for Praxicraft Assess with API Key and Base URL fields" />
 </Frame>
 
 After a successful connect, the account appears on the trigger (for example your organisation name). Click **Continue**.
 
 <Frame caption="Trigger with Assess account connected">
-  <img src="/images/zapier/05-account-connected.png" alt="Zapier New Assess Event trigger with Praxicraft Assess account connected and Continue enabled" />
+ <img src="/images/zapier/05-account-connected.png" alt="Zapier New Assess Event trigger with Praxicraft Assess account connected and Continue enabled" />
 </Frame>
 
 ### 5. Pick the Assess event
@@ -62,17 +62,17 @@ After a successful connect, the account appears on the trigger (for example your
 On **Configure**, choose one event per Zap (for example `assessment.completed` or `candidate.passed`).
 
 <Frame caption="Event dropdown for New Assess Event">
-  <img src="/images/zapier/06-configure-event.png" alt="Zapier Configure tab listing assessment.started, assessment.completed, candidate.violation, candidate.passed, and candidate.failed" />
+ <img src="/images/zapier/06-configure-event.png" alt="Zapier Configure tab listing assessment.started, assessment.completed, candidate.violation, candidate.passed, and candidate.failed" />
 </Frame>
 
 When you turn the Zap on, Assess registers Zapier’s hook URL and sends a test ping. `webhook.test` pings do not run the Zap.
 
 ### 6. Add an action
 
-Add a second step. Search **Praxicraft Assess** again to invite, enroll, or attach cases — or pick Slack, email, or your ATS.
+Add a second step. Search **Praxicraft Assess** again to invite, enroll, or attach tasks, or pick Slack, email, or your ATS.
 
 <Frame caption="Praxicraft Assess actions in Zapier">
-  <img src="/images/zapier/07-choose-action.png" alt="Zapier action event list for Praxicraft Assess including Attach Cases, Bulk Create Interviews, Bulk Enroll Candidates, and Bulk Invite Candidates" />
+ <img src="/images/zapier/07-choose-action.png" alt="Zapier action event list for Praxicraft Assess including Attach Cases, Bulk Create Interviews, Bulk Enroll Candidates, and Bulk Invite Candidates" />
 </Frame>
 
 ### 7. Turn the Zap on
@@ -90,7 +90,7 @@ You need a technical teammate once for the API key. After that, edit Zaps visual
 | Sync pipeline moves | Trigger `pipeline.advanced` → update ATS |
 
 <Frame caption="Add Slack as the Zap action">
-  <img src="/images/zapier/08-slack-action.png" alt="Zapier add-a-step modal with Slack highlighted under Your top apps" />
+ <img src="/images/zapier/08-slack-action.png" alt="Zapier add-a-step modal with Slack highlighted under Your top apps" />
 </Frame>
 
 Prefer a **Slack destination** in Assess (**Connect Slack**, or an Incoming Webhook URL) for pass/fail alerts. Use Zapier’s Slack app when you need extra Zap steps (email, ATS, spreadsheets).
@@ -99,15 +99,15 @@ Prefer a **Slack destination** in Assess (**Connect Slack**, or an Incoming Webh
 
 ### Trigger behaviour
 
-On enable: `POST /webhooks/create/` with Zapier’s hook URL and the selected event, then `POST /webhooks/{id}/test/`. On disable, the destination is deleted. `webhook.test` pings do not run the Zap.
+On enable: `POST /webhooks/create/` with Zapier’s hook URL and the selected event, then `POST /webhooks/{id}/test/`: On disable, the destination is deleted. `webhook.test` pings do not run the Zap.
 
-Assess still signs bodies (`X-Praxicraft-Signature`). Zapier owns the hook URL — treat it as a trusted destination. You do not need to verify HMAC inside the Zap.
+Assess still signs bodies (`X-Praxicraft-Signature`). Zapier owns the hook URL. treat it as a trusted destination. You do not need to verify HMAC inside the Zap.
 
 High-value events: `assessment.completed`, `candidate.passed` / `failed`, `pipeline.advanced` / `completed` / `rejected`, `interview.completed` / `analysis_ready`. Full list: [Webhooks](/guides/webhooks).
 
 ### Actions
 
-Assessment, Case, Invitation, Pipeline, Webhook (including **Retry delivery**), Organisation, Interview, Integration — matching the [n8n node](/integrations/n8n) and the Public API. Creates are writes; searches are GET / list. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
+Assessment, Case, Invitation, Pipeline, Webhook (including **Retry delivery**), Organisation, Interview, Integration. matching the [n8n node](/integrations/n8n) and the Public API. Creates are writes; searches are GET / list. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
 
 Optional `external_id` on **Invite Candidate** stores your ATS candidate id so retries do not create a second invite.
 
@@ -117,7 +117,7 @@ Optional `external_id` on **Invite Candidate** stores your ATS candidate id so r
 |---------|-----|
 | Connection test fails | Add `organisation:read` or use full-access scopes |
 | Trigger never fires | The Zap must be **on**; the webhook must verify |
-| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/guides/scopes) |
+| `403 INSUFFICIENT_SCOPE` | Widen key scopes. [Scopes](/guides/scopes) |
 | App missing in Zapier search | Email [support@praxicraft.com](mailto:support@praxicraft.com) |
 
 ## Next

@@ -23,7 +23,7 @@ Event catalog and **sample payloads**: [Webhook events](/guides/webhook-events).
 from praxicraft import verify_signature
 
 def handle_webhook(raw_body: bytes, signature_header: str, secret: str) -> bool:
-    return verify_signature(secret, raw_body, signature_header)
+ return verify_signature(secret, raw_body, signature_header)
 ```
 
 ## Node.js
@@ -32,11 +32,11 @@ def handle_webhook(raw_body: bytes, signature_header: str, secret: str) -> bool:
 import { verifySignature } from "@praxicraft/assess";
 
 function handleWebhook(
-  rawBody: Buffer,
-  signatureHeader: string,
-  secret: string,
+ rawBody: Buffer,
+ signatureHeader: string,
+ secret: string,
 ) {
-  return verifySignature(secret, rawBody, signatureHeader);
+ return verifySignature(secret, rawBody, signatureHeader);
 }
 ```
 

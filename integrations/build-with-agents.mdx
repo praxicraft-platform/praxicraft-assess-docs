@@ -1,6 +1,6 @@
 ---
 title: "Build with agents"
-description: "Install the Assess Agent Plugin — docs Knowledge MCP, API MCP, and hiring skills for Cursor, Claude, and Codex."
+description: "Install the Assess Agent Plugin. docs Knowledge MCP, API MCP, and hiring skills for Cursor, Claude, and Codex."
 ---
 
 Coding agents work best with three primitives: **docs search**, **live API tools**, and **skills** (procedural cheat sheets). Praxicraft Assess ships all three.
@@ -8,18 +8,18 @@ Coding agents work best with three primitives: **docs search**, **live API tools
 ## Pick a path
 
 <CardGroup cols={2}>
-  <Card title="Agent Plugin (recommended)" icon="puzzle" href="#agent-plugin">
-    One install → Knowledge MCP + API MCP + eight skills
-  </Card>
-  <Card title="API MCP only" icon="bot" href="/integrations/assess-mcp">
-    Call Assess tools from Cursor / Claude / Codex
-  </Card>
-  <Card title="Knowledge MCP only" icon="book-open" href="#knowledge-mcp">
-    Search docs — no API credentials
-  </Card>
-  <Card title="Skills CLI" icon="sparkles" href="#skills">
-    `npx skills add` without the full plugin
-  </Card>
+ <Card title="Agent Plugin (recommended)" icon="puzzle" href="#agent-plugin">
+ One install → Knowledge MCP + API MCP + eight skills
+ </Card>
+ <Card title="API MCP only" icon="bot" href="/integrations/assess-mcp">
+ Call Assess tools from Cursor / Claude / Codex
+ </Card>
+ <Card title="Knowledge MCP only" icon="book-open" href="#knowledge-mcp">
+ Search docs. no API credentials
+ </Card>
+ <Card title="Skills CLI" icon="sparkles" href="#skills">
+ `npx skills add` without the full plugin
+ </Card>
 </CardGroup>
 
 ## What each piece does
@@ -28,9 +28,9 @@ Coding agents work best with three primitives: **docs search**, **live API tools
 |-----------|-------------------|------|---------|
 | **Knowledge MCP** | `https://docs.praxicraft.com/mcp` | None | Semantic search + reading Assess docs |
 | **API MCP** | `https://assess.praxicraft.com/mcp` or `@praxicraft/assess-mcp` | OAuth (live) or `PRAXICRAFT_API_KEY` | Invites, webhooks, pipelines, results |
-| **Skills** | Agent Plugin / `npx skills add` | — | Correct patterns (HMAC, `external_id`, ATS loops) |
+| **Skills** | Agent Plugin / `npx skills add` |. | Correct patterns (HMAC, `external_id`, ATS loops) |
 
-Knowledge MCP cannot invite candidates. API MCP does not replace reading docs for payload shapes — use both.
+Knowledge MCP cannot invite candidates. API MCP does not replace reading docs for payload shapes. use both.
 
 ## Agent Plugin
 
@@ -40,7 +40,7 @@ Source: [praxicraft-assess-agent-plugin](https://github.com/praxicraft-platform/
 
 ```bash
 git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
-  ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
+ ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
 ```
 
 Restart Cursor. Skills load from `skills/`; MCP servers from `.mcp.json`.
@@ -85,11 +85,11 @@ Connect any MCP client (no credentials):
 
 ```json
 {
-  "mcpServers": {
-    "praxicraft-assess-knowledge": {
-      "url": "https://docs.praxicraft.com/mcp"
-    }
-  }
+ "mcpServers": {
+ "praxicraft-assess-knowledge": {
+ "url": "https://docs.praxicraft.com/mcp"
+ }
+ }
 }
 ```
 
@@ -109,7 +109,7 @@ Or install from the Agent Plugin repo:
 npx skills add praxicraft-platform/praxicraft-assess-agent-plugin
 ```
 
-Also available: [llms.txt](https://docs.praxicraft.com/llms.txt) and `.md` on every page — see [Using docs with LLMs](/integrations/using-llms).
+Also available: [llms.txt](https://docs.praxicraft.com/llms.txt) and `.md` on every page; see [Using docs with LLMs](/integrations/using-llms).
 
 ## API MCP
 

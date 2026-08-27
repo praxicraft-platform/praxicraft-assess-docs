@@ -1,0 +1,38 @@
+---
+title: "1.6.0: Case to task wire rename"
+description: "Breaking Public API rename: paths, JSON fields, scopes, and error codes now use task terminology."
+---
+
+**Shipped:** 2026-08-27 · **OpenAPI:** `1.6.0` · **Prefix:** `/api/v1/public/`
+
+## Breaking
+
+Task wire names replace the former `case` / `cases` Public API surface:
+
+| Before | After |
+|--------|--------|
+| `/cases/`, `/platform-cases/` | `/tasks/`, `/platform-tasks/` |
+| `/assessments/{key}/cases/*` | `/assessments/{key}/tasks/*` (attach, replace, remove, list) |
+| `/interviews/org-cases/` | `/interviews/org-tasks/` |
+| `cases:read`, `cases:write` | `tasks:read`, `tasks:write` |
+| `case_id`, `cases`, `case_type`, `case_count` | `task_id`, `tasks`, `task_type`, `task_count` |
+| `assessment_case_id` | `assessment_task_id` |
+| `CASE_NOT_FOUND` | `TASK_NOT_FOUND` |
+
+Update SDKs, MCP tools, Postman collections, and automations to the new paths and JSON keys before upgrading keys or redeploying integrations.
+
+## Added
+
+- None
+
+## Changed
+
+- OpenAPI summaries and examples use task terminology throughout.
+
+## Deprecated
+
+- None (legacy `/cases/*` URLs are not retained on this release).
+
+## Related guides
+
+[Custom tasks](/guides/custom-tasks) · [Assessments](/guides/assessments) · [Scopes](/guides/scopes) · [Errors](/guides/errors)

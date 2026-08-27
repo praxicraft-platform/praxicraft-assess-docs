@@ -95,7 +95,7 @@
             "group": "Content & pipelines",
             "icon": "layers",
             "pages": [
-              "guides/custom-cases",
+              "guides/custom-tasks",
               "guides/pipelines"
             ]
           },
@@ -194,6 +194,7 @@
             "icon": "scroll-text",
             "pages": [
               "api-changelog/index",
+              "api-changelog/1-6-0",
               "api-changelog/1-5-0",
               "api-changelog/1-4-0",
               "api-changelog/1-3-0",
@@ -333,15 +334,31 @@
     },
     {
       "source": "/custom-cases",
-      "destination": "/guides/custom-cases"
+      "destination": "/guides/custom-tasks"
     },
     {
       "source": "/docs/custom-cases",
-      "destination": "/guides/custom-cases"
+      "destination": "/guides/custom-tasks"
     },
     {
       "source": "/assess/custom-cases",
-      "destination": "/guides/custom-cases"
+      "destination": "/guides/custom-tasks"
+    },
+    {
+      "source": "/custom-tasks",
+      "destination": "/guides/custom-tasks"
+    },
+    {
+      "source": "/docs/custom-tasks",
+      "destination": "/guides/custom-tasks"
+    },
+    {
+      "source": "/assess/custom-tasks",
+      "destination": "/guides/custom-tasks"
+    },
+    {
+      "source": "/guides/custom-cases",
+      "destination": "/guides/custom-tasks"
     },
     {
       "source": "/errors",
@@ -645,7 +662,7 @@
     "indexing": "navigable",
     "metatags": {
       "title": "Praxicraft Assess API for Technical Hiring",
-      "description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "description": "Praxicraft Assess API: authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
       "keywords": "Assess API, technical hiring API, assessment webhooks, ATS integration, MCP, Praxicraft",
       "robots": "index, follow",
       "canonical": "https://docs.praxicraft.com",

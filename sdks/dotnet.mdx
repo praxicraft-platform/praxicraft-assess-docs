@@ -42,17 +42,17 @@ var client = new Client();
 JsonElement page = await client.Assessments.ListAsync();
 foreach (var assessment in page.GetProperty("results").EnumerateArray())
 {
-    Console.WriteLine($"{assessment.GetProperty("slug")} {assessment.GetProperty("status")}");
+ Console.WriteLine($"{assessment.GetProperty("slug")} {assessment.GetProperty("status")}");
 }
 
 JsonElement invite = await client.Invites.CreateAsync(
-    "senior-backend-screen",
-    new Dictionary<string, object?>
-    {
-        ["email"] = "candidate@example.com",
-        ["name"] = "Jane Doe",
-        ["send_email"] = true,
-    });
+ "senior-backend-screen",
+ new Dictionary<string, object?>
+ {
+ ["email"] = "candidate@example.com",
+ ["name"] = "Jane Doe",
+ ["send_email"] = true,
+ });
 
 string token = invite.GetProperty("invite_token").GetString()!;
 JsonElement result = await client.Results.RetrieveAsync(token);

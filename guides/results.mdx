@@ -8,15 +8,15 @@ A result is the scored session for one invitation: overall percentage, pass/fail
 ## If you are recruiting / ops
 
 <Steps>
-  <Step title="Open the assessment">
-    In the [dashboard](https://assess.praxicraft.com/assess), go to the assessment → **Results**.
-  </Step>
-  <Step title="Find the candidate">
-    Filter by completed sessions. Open a row for the detailed report (and recordings if you enabled them).
-  </Step>
-  <Step title="Read the score">
-    **Passed** means their score meets the assessment’s passing score (often 70% unless you changed it). Proctoring signals do **not** auto-fail — see [Proctoring](/guides/proctoring).
-  </Step>
+ <Step title="Open the assessment">
+ In the [dashboard](https://assess.praxicraft.com/assess), go to the assessment → **Results**.
+ </Step>
+ <Step title="Find the candidate">
+ Filter by completed sessions. Open a row for the detailed report (and recordings if you enabled them).
+ </Step>
+ <Step title="Read the score">
+ **Passed** means their score meets the assessment’s passing score (often 70% unless you changed it). Proctoring signals do **not** auto-fail; see [Proctoring](/guides/proctoring).
+ </Step>
 </Steps>
 
 Want Slack or your ATS updated automatically when someone finishes? Use [Webhooks](/guides/webhooks) or [Automations](/integrations/automations).
@@ -34,8 +34,8 @@ Prefer webhooks (`assessment.completed`) over polling in production.
 
 ```bash
 curl -sS \
-  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/results/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/results/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
 Includes scores, pass/fail, violation counts, and `invite_token` for detail fetches. Paginate with `cursor` / `page_size`.
@@ -44,12 +44,12 @@ Includes scores, pass/fail, violation counts, and `invite_token` for detail fetc
 
 ```bash
 curl -sS \
-  "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
-  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+ "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
-- Not started yet → **200** with a short `{ "status", "message" }` body  
-- Completed → scores, `passed`, `cases[]`, optional `violation_events`, `detailed_report_url`
+- Not started yet → **200** with a short `{ "status", "message" }` body 
+- Completed → scores, `passed`, `tasks[]`, optional `violation_events`, `detailed_report_url`
 
 ### Scoring rules
 

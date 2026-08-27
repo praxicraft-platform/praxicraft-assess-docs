@@ -3,14 +3,14 @@ title: "n8n"
 description: "Install the verified Praxicraft Assess node and build hiring workflows in n8n."
 ---
 
-**Praxicraft Assess** is a **verified** community node on n8n. It gives you a **Trigger** (signed events from Assess) and **Actions** (invite candidates, list assessments, enroll pipelines, and more) — no custom webhook code required.
+**Praxicraft Assess** is a **verified** community node on n8n. It gives you a **Trigger** (signed events from Assess) and **Actions** (invite candidates, list assessments, enroll pipelines, and more). no custom webhook code required.
 
 Package: [`@praxicraft/n8n-nodes-assess`](https://www.npmjs.com/package/@praxicraft/n8n-nodes-assess)
 
 ## Prerequisites
 
 - An n8n Cloud or self-hosted instance
-- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api) — see [Authentication](/guides/authentication)
+- An Assess API key (Starter+) from [Developer → API Keys](https://assess.praxicraft.com/assess/api); see [Authentication](/guides/authentication)
 
 ## Setup guide
 
@@ -18,8 +18,8 @@ Package: [`@praxicraft/n8n-nodes-assess`](https://www.npmjs.com/package/@praxicr
 
 Open n8n and create a new workflow. Click **Add first step…** on the canvas.
 
-<Frame caption="New n8n workflow — add the first step">
-  <img src="/images/n8n/01-add-first-step.png" alt="Empty n8n workflow canvas with Add first step button" />
+<Frame caption="New n8n workflow. add the first step">
+ <img src="/images/n8n/01-add-first-step.png" alt="Empty n8n workflow canvas with Add first step button" />
 </Frame>
 
 ### 2. Open the trigger picker
@@ -27,23 +27,23 @@ Open n8n and create a new workflow. Click **Add first step…** on the canvas.
 n8n opens **What triggers this workflow?** Choose **On app event** (or search for the node directly).
 
 <Frame caption="Trigger picker in n8n">
-  <img src="/images/n8n/02-trigger-panel.png" alt="n8n sidebar asking what triggers this workflow" />
+ <img src="/images/n8n/02-trigger-panel.png" alt="n8n sidebar asking what triggers this workflow" />
 </Frame>
 
 ### 3. Search for Praxicraft Assess
 
-Type `prax` (or `Praxicraft`) in the search box. Select **Praxicraft Assess** — the verified checkmark means it is the official Assess node.
+Type `prax` (or `Praxicraft`) in the search box. Select **Praxicraft Assess**. The verified checkmark means it is the official Assess node.
 
 <Frame caption="Search results showing verified Praxicraft Assess">
-  <img src="/images/n8n/03-search-praxicraft.png" alt="n8n search for prax showing Praxicraft Assess with verified badge" />
+ <img src="/images/n8n/03-search-praxicraft.png" alt="n8n search for prax showing Praxicraft Assess with verified badge" />
 </Frame>
 
 ### 4. Confirm the verified node
 
 Open the node details. You should see **Verified**, **Installed** (or Install), and the list of Assess triggers and actions.
 
-<Frame caption="Praxicraft Assess — verified node with triggers and actions">
-  <img src="/images/n8n/04-verified-node.png" alt="Praxicraft Assess node details showing verified badge and trigger list" />
+<Frame caption="Praxicraft Assess. verified node with triggers and actions">
+ <img src="/images/n8n/04-verified-node.png" alt="Praxicraft Assess node details showing verified badge and trigger list" />
 </Frame>
 
 <Note>
@@ -56,14 +56,14 @@ If the node is not installed yet, use **Install** from this panel (n8n Cloud) or
 2. On any Praxicraft Assess node, open **Credential to connect with** → **Create new credential** (or pick an existing one).
 
 <Frame caption="Select or create a Praxicraft Assess credential">
-  <img src="/images/n8n/06-select-credential.png" alt="n8n List assessments node showing credential dropdown with Create new credential" />
+ <img src="/images/n8n/06-select-credential.png" alt="n8n List assessments node showing credential dropdown with Create new credential" />
 </Frame>
 
 3. Paste your API key. Live keys start with `ct_live_`; test keys start with `ct_test_`. Leave **Base URL** as `https://assess.praxicraft.com` unless you use a custom host.
 4. Save. n8n tests the credential with `GET /org/` (needs `organisation:read` or a full-access key).
 
-<Frame caption="Praxicraft Assess API credential — API Key and Base URL">
-  <img src="/images/n8n/07-credential-form.png" alt="n8n credential form for Praxicraft Assess API with API Key and Base URL fields" />
+<Frame caption="Praxicraft Assess API credential. API Key and Base URL">
+ <img src="/images/n8n/07-credential-form.png" alt="n8n credential form for Praxicraft Assess API with API Key and Base URL fields" />
 </Frame>
 
 ### 6. Build and run
@@ -73,7 +73,7 @@ If the node is not installed yet, use **Install** from this panel (n8n Cloud) or
 **Action path:** start from a manual trigger or ATS webhook → add **Praxicraft Assess** → choose an action such as **List assessments**.
 
 <Frame caption="Example: List assessments action on the canvas">
-  <img src="/images/n8n/05-list-assessments.png" alt="n8n workflow with manual trigger connected to Praxicraft List assessments action" />
+ <img src="/images/n8n/05-list-assessments.png" alt="n8n workflow with manual trigger connected to Praxicraft List assessments action" />
 </Frame>
 
 ### 7. Activate
@@ -100,7 +100,7 @@ High-value events: `assessment.completed`, `candidate.passed` / `failed`, `pipel
 
 ### Actions
 
-Assessment, Case, Invitation, Pipeline (Reject / Hold / Unhold), Webhook (including **Retry delivery** via `POST /webhooks/{id}/deliveries/{delivery_id}/retry/`), Organisation, Interview, Integration — matching Public API capabilities. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
+Assessment, Case, Invitation, Pipeline (Reject / Hold / Unhold), Webhook (including **Retry delivery** via `POST /webhooks/{id}/deliveries/{delivery_id}/retry/`), Organisation, Interview, Integration. matching Public API capabilities. Destinations (HTTPS / Slack / Teams) use the Webhook resource.
 
 ### Troubleshooting
 
@@ -108,7 +108,7 @@ Assessment, Case, Invitation, Pipeline (Reject / Hold / Unhold), Webhook (includ
 |---------|-----|
 | Credential test fails | Add `organisation:read` or use full-access scopes |
 | Trigger never fires | Workflow must be **Active**; webhook must verify |
-| `403 INSUFFICIENT_SCOPE` | Widen key scopes — [Scopes](/guides/scopes) |
+| `403 INSUFFICIENT_SCOPE` | Widen key scopes. [Scopes](/guides/scopes) |
 | Signature failures | Do not rewrite the raw request body in a proxy |
 | Node missing in search | Install `@praxicraft/n8n-nodes-assess` and refresh / restart n8n |
 

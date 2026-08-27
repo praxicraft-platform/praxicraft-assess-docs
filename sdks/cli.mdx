@@ -27,7 +27,7 @@ The interactive TUI requires [Bun](https://bun.sh) ≥ 1.1 on your `PATH` (the p
 curl -fsSL https://praxicraft.com/install.sh | sh && export PATH="$HOME/.local/bin:$PATH"
 ```
 
-That installs the latest GitHub Release binary (with SHA-256 check) as `praxicraft-assess` to `~/.local/bin` or `/usr/local/bin`. The trailing `export` activates PATH in the **current** terminal — `curl | sh` alone cannot change your parent shell's environment.
+That installs the latest GitHub Release binary (with SHA-256 check) as `praxicraft-assess` to `~/.local/bin` or `/usr/local/bin`. The trailing `export` activates PATH in the **current** terminal. `curl | sh` alone cannot change your parent shell's environment.
 
 Optional:
 
@@ -108,10 +108,10 @@ praxicraft-assess assessments create --body-file ./assessment.json
 | Group | What you can do |
 |-------|-----------------|
 | `org` | Profile, stats, team, audit log, squads |
-| `assessments` | List, create, update, duplicate, cases, results |
+| `assessments` | List, create, update, duplicate, tasks, results |
 | `invites` | Create, bulk create, list, remind, cancel, result |
 | `results` | List by assessment, get by invite token |
-| `cases` | Platform and organisation cases |
+| `tasks` | Platform and organisation tasks |
 | `pipelines` | Enroll, bulk enroll, hold, reject, enrollments |
 | `webhooks` | Endpoints, test pings, deliveries, retries |
 | `interviews` | Rooms, templates, analysis, share, cancel |

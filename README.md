@@ -1,23 +1,23 @@
 # Praxicraft Assess Documentation
 
 <p align="center">
-  <img src="./images/docs-banner.jpg" alt="Praxicraft Assess documentation" width="900"/>
+ <img src="./images/docs-banner.jpg" alt="Praxicraft Assess documentation" width="900"/>
 </p>
 
 <div align="center">
 
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" />
-  </a>
-  <a href="https://docs.praxicraft.com">
-    <img src="https://img.shields.io/badge/docs-live-brightgreen.svg" alt="Live Documentation" />
-  </a>
+ <a href="LICENSE">
+ <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" />
+ </a>
+ <a href="https://docs.praxicraft.com">
+ <img src="https://img.shields.io/badge/docs-live-brightgreen.svg" alt="Live Documentation" />
+ </a>
 
 </div>
 
 ## Overview
 
-Welcome to the official documentation repository for [Praxicraft Assess](https://assess.praxicraft.com) — technical assessments, live interviews, and hiring automations for engineering teams. This documentation is built with [Mintlify](https://mintlify.com).
+Welcome to the official documentation repository for [Praxicraft Assess](https://assess.praxicraft.com): technical assessments, live interviews, and hiring automations for engineering teams. This documentation is built with [Mintlify](https://mintlify.com).
 
 ## Documentation site
 
@@ -29,7 +29,7 @@ Content is organized by section (MDX lives in folders, not at the repo root):
 
 ### 1. Guides (`guides/`)
 
-Getting started, authentication, assessments, invitations, results, interviews, webhooks, pipelines, organisation, scopes, errors, and API reference hub.
+Getting started, authentication, assessments, invitations, results, interviews, webhooks, pipelines, custom tasks, organisation, scopes, errors, and API reference hub.
 
 ### 2. Integrations (`integrations/`)
 
@@ -60,28 +60,54 @@ The landing page is root [`index.mdx`](./index.mdx). Navigation is configured in
 
 1. **Clone the repository**
 
-   ```bash
-   git clone https://github.com/praxicraft-platform/praxicraft-assess-docs.git
-   cd praxicraft-assess-docs
-   ```
+ ```bash
+ git clone https://github.com/praxicraft-platform/praxicraft-assess-docs.git
+ cd praxicraft-assess-docs
+ ```
 
 2. **Install the Mintlify CLI**
 
-   ```bash
-   npm i -g mintlify
-   ```
+ ```bash
+ npm i -g mintlify
+ ```
 
 3. **Run the development server**
 
-   ```bash
-   mintlify dev
-   ```
+ ```bash
+ mintlify dev
+ ```
 
-   Docs will be available at `http://localhost:3000`.
+ Docs will be available at `http://localhost:3000`.
+
+### Refresh OpenAPI snapshot
+
+When the Public API changes in the main Assess backend, regenerate `openapi.json` from the live public schema (paths under `/api/v1/public/*`), then rebuild the Postman collection:
+
+```bash
+# From the Gamified-Application monorepo (Docker backend):
+docker compose -f docker-compose.dev.yml run --rm \
+  -v /path/to/praxicraft-assess-docs:/assess-docs \
+  backend python -c "
+import json, django, os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+from drf_spectacular.views import SpectacularAPIView
+from apps.assess.public_openapi import get_public_spectacular_settings
+from rest_framework.test import APIRequestFactory
+request = APIRequestFactory().get('/api/v1/public/schema/', HTTP_ACCEPT='application/json')
+response = SpectacularAPIView.as_view(custom_settings=get_public_spectacular_settings())(request)
+with open('/assess-docs/openapi.json', 'w') as f:
+    json.dump(response.data, f, indent=2)
+    f.write('\n')
+"
+
+node scripts/openapi-to-postman.mjs
+```
 
 ### Configuration
 
 `docs.json` controls navigation, theme, SEO, playground settings, and redirects.
+
 
 ## Contributing
 

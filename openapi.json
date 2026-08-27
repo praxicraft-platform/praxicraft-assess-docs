@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Praxicraft Assess Public API",
-    "version": "1.4.0",
-    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove cases |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate results and session breakdowns |\n| `cases:read` | List and retrieve custom (org-owned) cases |\n| `cases:write` | Create, update, and delete custom cases |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'assessments:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
+    "version": "1.6.0",
+    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove tasks |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate results and session breakdowns |\n| `tasks:read` | List and retrieve custom (org-owned) tasks |\n| `tasks:write` | Create, update, and delete custom tasks |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n| `assistant:write` | CLI Ask AI / `POST /assistant/chat/` (Starter+) |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'assessments:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
   },
   "paths": {
     "/api/v1/public/assessments/": {
@@ -72,7 +72,7 @@
                           "slug": "senior-backend-screen",
                           "description": "A 3-task technical screen.",
                           "status": "active",
-                          "case_count": 3,
+                          "task_count": 3,
                           "time_limit_minutes": 90,
                           "passing_score": 70,
                           "invitation_count": 12,
@@ -197,7 +197,7 @@
     "/api/v1/public/assessments/create/": {
       "post": {
         "operationId": "public_assessments_create_create",
-        "description": "Creates a new assessment in **draft** status. Attach tasks with `POST /assessments/{slug}/cases/attach/`, then set `status: active` via `PATCH /assessments/{slug}/update/` before inviting candidates.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Draft assessment created |\n| `400` | `VALIDATION_ERROR` | Missing title or invalid fields |\n| `403` | `ASSESSMENT_LIMIT_REACHED` | Plan assessment quota exhausted |\n| `403` | `PLAN_REQUIRED` | Recording feature needs a higher plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Creates a new assessment in **draft** status. Attach tasks with `POST /assessments/{slug}/tasks/attach/`, then set `status: active` via `PATCH /assessments/{slug}/update/` before inviting candidates.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Draft assessment created |\n| `400` | `VALIDATION_ERROR` | Missing title or invalid fields |\n| `403` | `ASSESSMENT_LIMIT_REACHED` | Plan assessment quota exhausted |\n| `403` | `PLAN_REQUIRED` | Recording feature needs a higher plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
         "summary": "Create assessment",
         "tags": [
           "Public API \u2014 Assessments"
@@ -514,7 +514,7 @@
     "/api/v1/public/assessments/{slug}/": {
       "get": {
         "operationId": "public_assessments_retrieve",
-        "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/cases/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
         "summary": "Retrieve assessment detail",
         "parameters": [
           {
@@ -598,11 +598,11 @@
         }
       }
     },
-    "/api/v1/public/assessments/{slug}/cases/attach/": {
+    "/api/v1/public/assessments/{slug}/tasks/attach/": {
       "post": {
-        "operationId": "public_assessments_cases_attach_create",
-        "description": "Appends one or more tasks to an assessment. Pass `{ cases: [...] }` or a single `{ case_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Cases attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `CASE_NOT_FOUND` | Platform or org case id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Attach assessment cases",
+        "operationId": "public_assessments_tasks_attach_create",
+        "description": "Appends one or more tasks to an assessment. Pass `{ tasks: [...] }` or a single `{ task_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Tasks attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Platform or org task id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Attach assessment tasks",
         "parameters": [
           {
             "in": "path",
@@ -705,11 +705,11 @@
         }
       }
     },
-    "/api/v1/public/assessments/{slug}/cases/replace/": {
+    "/api/v1/public/assessments/{slug}/tasks/replace/": {
       "put": {
-        "operationId": "public_assessments_cases_replace_update",
-        "description": "Atomically replaces the full task lineup with `{ cases: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `CASE_NOT_FOUND` | Unknown case id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Replace assessment cases",
+        "operationId": "public_assessments_tasks_replace_update",
+        "description": "Atomically replaces the full task lineup with `{ tasks: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Unknown task id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Replace assessment tasks",
         "parameters": [
           {
             "in": "path",
@@ -812,11 +812,11 @@
         }
       }
     },
-    "/api/v1/public/assessments/{slug}/cases/remove/": {
+    "/api/v1/public/assessments/{slug}/tasks/remove/": {
       "delete": {
-        "operationId": "public_assessments_cases_remove_destroy",
-        "description": "Removes one attached task by `assessment_case_id` (the join-row id from the cases list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Remove assessment case",
+        "operationId": "public_assessments_tasks_remove_destroy",
+        "description": "Removes one attached task by `assessment_task_id` (the join-row id from the tasks list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Remove assessment task",
         "parameters": [
           {
             "in": "path",
@@ -882,11 +882,11 @@
         }
       }
     },
-    "/api/v1/public/assessments/{slug}/cases/": {
+    "/api/v1/public/assessments/{slug}/tasks/": {
       "get": {
-        "operationId": "public_assessments_cases_retrieve",
-        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_case_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List assessment cases",
+        "operationId": "public_assessments_tasks_retrieve",
+        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated task summaries (`assessment_task_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List assessment tasks",
         "parameters": [
           {
             "in": "query",
@@ -1552,7 +1552,7 @@
     "/api/v1/public/invites/{token}/result/": {
       "get": {
         "operationId": "public_invites_result_retrieve",
-        "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-case `cases[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
         "summary": "Get result for an invitation",
         "parameters": [
           {
@@ -1607,15 +1607,15 @@
                         {
                           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                           "violation_type": "copy_paste",
-                          "case_order": 2,
+                          "task_order": 2,
                           "created_at": "2025-03-15T14:45:00Z"
                         }
                       ],
                       "detailed_report_url": "https://assess.praxicraft.com/api/v1/assess/assessments/senior-backend-screen/results/e1f2a3b4/",
-                      "cases": [
+                      "tasks": [
                         {
-                          "case_order": 1,
-                          "case_title": "SQL Fundamentals",
+                          "task_order": 1,
+                          "task_title": "SQL Fundamentals",
                           "score": 90,
                           "max_score": 100,
                           "status": "correct",
@@ -3818,11 +3818,11 @@
         }
       }
     },
-    "/api/v1/public/platform-cases/": {
+    "/api/v1/public/platform-tasks/": {
       "get": {
-        "operationId": "public_platform_cases_retrieve",
-        "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform case summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List platform cases",
+        "operationId": "public_platform_tasks_retrieve",
+        "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform task summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List platform tasks",
         "parameters": [
           {
             "in": "query",
@@ -3874,7 +3874,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "security": [
           {
@@ -3945,11 +3945,11 @@
         }
       }
     },
-    "/api/v1/public/cases/": {
+    "/api/v1/public/tasks/": {
       "get": {
-        "operationId": "public_cases_list",
-        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List custom cases",
+        "operationId": "public_tasks_list",
+        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom task objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List custom tasks",
         "parameters": [
           {
             "in": "query",
@@ -3969,7 +3969,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "security": [
           {
@@ -4040,13 +4040,13 @@
         }
       }
     },
-    "/api/v1/public/cases/create/": {
+    "/api/v1/public/tasks/create/": {
       "post": {
-        "operationId": "public_cases_create_create",
-        "description": "Adds a new custom task to your organisation library. Field requirements depend on `case_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Create custom case",
+        "operationId": "public_tasks_create_create",
+        "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Task created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Create custom task",
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "requestBody": {
           "content": {
@@ -4137,11 +4137,11 @@
         }
       }
     },
-    "/api/v1/public/cases/{id}/": {
+    "/api/v1/public/tasks/{id}/": {
       "get": {
-        "operationId": "public_cases_retrieve",
-        "description": "Returns a single custom case by UUID.\n\n> **Required scope:** `cases:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Case detail |\n| `404` | Case not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Retrieve custom case",
+        "operationId": "public_tasks_retrieve",
+        "description": "Returns a single custom task by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Task detail |\n| `404` | Task not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Retrieve custom task",
         "parameters": [
           {
             "in": "path",
@@ -4154,7 +4154,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "security": [
           {
@@ -4225,9 +4225,9 @@
         }
       },
       "put": {
-        "operationId": "public_cases_update",
-        "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `cases:read` (route) \u00b7 `cases:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated case returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Replace custom case",
+        "operationId": "public_tasks_update",
+        "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated task returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Replace custom task",
         "parameters": [
           {
             "in": "path",
@@ -4240,7 +4240,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "requestBody": {
           "content": {
@@ -4305,14 +4305,14 @@
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
                 },
                 "examples": {
-                  "MissingCasesWriteScope": {
+                  "MissingTasksWriteScope": {
                     "value": {
                       "error": {
-                        "message": "This API key does not have the 'cases:write' scope.",
+                        "message": "This API key does not have the 'tasks:write' scope.",
                         "code": "INSUFFICIENT_SCOPE"
                       }
                     },
-                    "summary": "Missing cases write scope"
+                    "summary": "Missing tasks write scope"
                   }
                 }
               }
@@ -4342,9 +4342,9 @@
         }
       },
       "patch": {
-        "operationId": "public_cases_partial_update",
-        "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `cases:read` (route) \u00b7 `cases:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated case returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Update custom case",
+        "operationId": "public_tasks_partial_update",
+        "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated task returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Update custom task",
         "parameters": [
           {
             "in": "path",
@@ -4357,7 +4357,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "requestBody": {
           "content": {
@@ -4421,14 +4421,14 @@
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
                 },
                 "examples": {
-                  "MissingCasesWriteScope": {
+                  "MissingTasksWriteScope": {
                     "value": {
                       "error": {
-                        "message": "This API key does not have the 'cases:write' scope.",
+                        "message": "This API key does not have the 'tasks:write' scope.",
                         "code": "INSUFFICIENT_SCOPE"
                       }
                     },
-                    "summary": "Missing cases write scope"
+                    "summary": "Missing tasks write scope"
                   }
                 }
               }
@@ -4458,9 +4458,9 @@
         }
       },
       "delete": {
-        "operationId": "public_cases_destroy",
-        "description": "Soft-deletes a custom case (`is_active=false`).\n\n> **Required scope:** `cases:read` (route) \u00b7 `cases:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Case deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `cases:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Delete custom case",
+        "operationId": "public_tasks_destroy",
+        "description": "Soft-deletes a custom task (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Task deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Delete custom task",
         "parameters": [
           {
             "in": "path",
@@ -4473,7 +4473,7 @@
           }
         ],
         "tags": [
-          "Public API \u2014 Cases"
+          "Public API \u2014 Tasks"
         ],
         "security": [
           {
@@ -4501,14 +4501,14 @@
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
                 },
                 "examples": {
-                  "MissingCasesWriteScope": {
+                  "MissingTasksWriteScope": {
                     "value": {
                       "error": {
-                        "message": "This API key does not have the 'cases:write' scope.",
+                        "message": "This API key does not have the 'tasks:write' scope.",
                         "code": "INSUFFICIENT_SCOPE"
                       }
                     },
-                    "summary": "Missing cases write scope"
+                    "summary": "Missing tasks write scope"
                   }
                 }
               }
@@ -7046,6 +7046,123 @@
         }
       }
     },
+    "/api/v1/public/assistant/chat/": {
+      "post": {
+        "operationId": "public_assistant_chat_create",
+        "description": "One chat-completion turn for the Assess CLI assistant (Ask AI). Authenticated with an organisation API key. Requires Starter+ (`capabilities.cli_assistant`) and scope `assistant:write` (empty scopes = full access).\n\nOptional OpenAI-format `tools` enable a client-side tool loop (MCP). Dedicated throttle scope `public_api_assistant` (default 30/hour) \u2014 separate from public write quotas.",
+        "summary": "CLI Ask AI chat turn",
+        "tags": [
+          "Public API \u2014 Assistant"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicAssistantChatRequestRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicAssistantChatRequestRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicAssistantChatRequestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAssistantChatResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlatformErrorEnvelope"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/v1/public/interviews/": {
       "get": {
         "operationId": "public_interviews_list",
@@ -7153,17 +7270,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InterviewRoomCreateRequest"
+                "$ref": "#/components/schemas/PublicInterviewRoomCreateRequest"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/InterviewRoomCreateRequest"
+                "$ref": "#/components/schemas/PublicInterviewRoomCreateRequest"
               }
             },
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/InterviewRoomCreateRequest"
+                "$ref": "#/components/schemas/PublicInterviewRoomCreateRequest"
               }
             }
           },
@@ -7412,11 +7529,11 @@
         }
       }
     },
-    "/api/v1/public/interviews/org-cases/": {
+    "/api/v1/public/interviews/org-tasks/": {
       "get": {
-        "operationId": "public_interviews_org_cases_retrieve",
-        "description": "List org coding cases for interviews",
-        "summary": "List org coding cases for interviews",
+        "operationId": "public_interviews_org_tasks_retrieve",
+        "description": "List org coding tasks for interviews",
+        "summary": "List org coding tasks for interviews",
         "tags": [
           "Public API \u2014 Interviews"
         ],
@@ -8646,152 +8763,6 @@
           "title"
         ]
       },
-      "InterviewRoomCreateRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 300
-          },
-          "interview_type": {
-            "enum": [
-              "coding",
-              "technical",
-              "system_design",
-              "behavioral",
-              "mixed"
-            ],
-            "type": "string",
-            "x-spec-enum-id": "9bac42e316080eda"
-          },
-          "interviewer_mode": {
-            "enum": [
-              "ai_only",
-              "human_only",
-              "hybrid"
-            ],
-            "type": "string",
-            "x-spec-enum-id": "c96a49d7c755ab6b"
-          },
-          "candidate_email": {
-            "oneOf": [
-              {
-                "type": "string",
-                "format": "email",
-                "maxLength": 254
-              },
-              {
-                "type": "string",
-                "maxLength": 0
-              }
-            ]
-          },
-          "candidate_name": {
-            "type": "string",
-            "maxLength": 200
-          },
-          "time_limit_minutes": {
-            "type": "integer",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "nullable": true
-          },
-          "scheduled_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "active_language": {
-            "enum": [
-              "python",
-              "javascript",
-              "typescript",
-              "sql",
-              "java",
-              "go",
-              "bash"
-            ],
-            "type": "string",
-            "x-spec-enum-id": "3e799593e1bbd9c9"
-          },
-          "integrity_config": {},
-          "job_description": {
-            "type": "string",
-            "default": ""
-          },
-          "resume_text": {
-            "type": "string",
-            "default": ""
-          },
-          "voice_mode": {
-            "type": "boolean",
-            "default": false
-          },
-          "human_can_join": {
-            "type": "boolean",
-            "default": false
-          },
-          "target_role": {
-            "type": "string",
-            "default": "",
-            "maxLength": 200
-          },
-          "target_company": {
-            "type": "string",
-            "default": "",
-            "maxLength": 200
-          },
-          "difficulty": {
-            "enum": [
-              "entry",
-              "mid",
-              "senior",
-              "staff",
-              ""
-            ],
-            "type": "string",
-            "x-spec-enum-id": "70219e23b4816a13",
-            "default": "mid"
-          },
-          "coding_case_ids": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "org_case_ids": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "persona": {
-            "type": "object",
-            "additionalProperties": {}
-          },
-          "send_invite": {
-            "type": "boolean",
-            "default": true
-          },
-          "pipeline_enrollment_id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "candidate_session_id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true,
-            "description": "Optional completed Screen session in this organisation. Candidate email must match."
-          }
-        },
-        "required": [
-          "title"
-        ]
-      },
       "InterviewRoomDetail": {
         "type": "object",
         "properties": {
@@ -9108,7 +9079,7 @@
           "description": {
             "type": "string"
           },
-          "case_type": {
+          "task_type": {
             "enum": [
               "mcq",
               "coding",
@@ -9248,6 +9219,25 @@
           }
         }
       },
+      "PlatformErrorEnvelope": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "error"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
       "PublicAPIError": {
         "type": "object",
         "properties": {
@@ -9281,7 +9271,7 @@
       "PublicAssessmentCaseAttachItemNestedRequest": {
         "type": "object",
         "properties": {
-          "case_id": {
+          "task_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -9305,13 +9295,13 @@
           }
         },
         "required": [
-          "case_id"
+          "task_id"
         ]
       },
       "PublicAssessmentCaseItem": {
         "type": "object",
         "properties": {
-          "assessment_case_id": {
+          "assessment_task_id": {
             "type": "string"
           },
           "id": {
@@ -9328,7 +9318,7 @@
             "type": "string",
             "description": "platform | org"
           },
-          "case_type": {
+          "task_type": {
             "type": "string"
           },
           "difficulty": {
@@ -9342,12 +9332,12 @@
           }
         },
         "required": [
-          "case_type",
           "description",
           "difficulty",
           "id",
           "order",
           "points",
+          "task_type",
           "title",
           "type"
         ]
@@ -9379,7 +9369,7 @@
       "PublicAssessmentCasePageItem": {
         "type": "object",
         "properties": {
-          "assessment_case_id": {
+          "assessment_task_id": {
             "type": "string"
           },
           "id": {
@@ -9396,7 +9386,7 @@
             "type": "string",
             "description": "platform | org"
           },
-          "case_type": {
+          "task_type": {
             "type": "string"
           },
           "difficulty": {
@@ -9410,12 +9400,12 @@
           }
         },
         "required": [
-          "case_type",
           "description",
           "difficulty",
           "id",
           "order",
           "points",
+          "task_type",
           "title",
           "type"
         ]
@@ -9423,13 +9413,13 @@
       "PublicAssessmentCasesWriteRequestRequest": {
         "type": "object",
         "properties": {
-          "cases": {
+          "tasks": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PublicAssessmentCaseAttachItemNestedRequest"
             }
           },
-          "case_id": {
+          "task_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -9451,13 +9441,13 @@
             "type": "integer",
             "nullable": true
           },
-          "assessment_case_id": {
+          "assessment_task_id": {
             "type": "string",
             "format": "uuid"
           }
         },
         "required": [
-          "cases"
+          "tasks"
         ]
       },
       "PublicAssessmentCreateRequestRequest": {
@@ -9566,7 +9556,7 @@
             "maximum": 2147483647,
             "minimum": 0
           },
-          "case_count": {
+          "task_count": {
             "type": "integer",
             "readOnly": true
           },
@@ -9621,7 +9611,7 @@
             "description": "Per-tag or tag:difficulty counts for tag-balanced strategies, e.g. {\"python\": 10, \"sql\": 10} or {\"python:easy\": 5, \"sql:hard\": 3}"
           },
           "pool_settings": {
-            "description": "Advanced pool options: tag_quota_mode, assignment_seed_mode, display_order_mode, mandatory_case_ids, shuffle_display_order"
+            "description": "Advanced pool options: tag_quota_mode, assignment_seed_mode, display_order_mode, mandatory_task_ids, shuffle_display_order"
           },
           "violation_review_threshold": {
             "type": "integer",
@@ -9654,7 +9644,6 @@
           }
         },
         "required": [
-          "case_count",
           "copy_paste_disabled",
           "created_at",
           "enforce_fullscreen",
@@ -9663,6 +9652,7 @@
           "screen_recording_enabled",
           "session_recording_enabled",
           "slug",
+          "task_count",
           "team",
           "title",
           "updated_at",
@@ -9696,7 +9686,7 @@
           "status": {
             "type": "string"
           },
-          "case_count": {
+          "task_count": {
             "type": "integer"
           },
           "time_limit_minutes": {
@@ -9734,7 +9724,6 @@
           }
         },
         "required": [
-          "case_count",
           "copy_paste_disabled",
           "created_at",
           "description",
@@ -9746,6 +9735,7 @@
           "session_recording_enabled",
           "slug",
           "status",
+          "task_count",
           "time_limit_minutes",
           "title",
           "updated_at",
@@ -9882,6 +9872,84 @@
           "id",
           "name",
           "slug"
+        ]
+      },
+      "PublicAssistantChatRequestRequest": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicAssistantMessageRequest"
+            },
+            "minItems": 1
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          },
+          "max_tokens": {
+            "type": "integer",
+            "maximum": 4096,
+            "minimum": 1
+          }
+        },
+        "required": [
+          "messages"
+        ]
+      },
+      "PublicAssistantChatResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "finish_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "finish_reason",
+          "message"
+        ]
+      },
+      "PublicAssistantMessageRequest": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "26cf84fc43cf29ac"
+          },
+          "content": {
+            "type": "string",
+            "default": ""
+          },
+          "name": {
+            "type": "string"
+          },
+          "tool_call_id": {
+            "type": "string"
+          },
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          }
+        },
+        "required": [
+          "role"
         ]
       },
       "PublicAuditLogPage": {
@@ -10284,14 +10352,14 @@
             "type": "string",
             "format": "date-time"
           },
-          "coding_case_ids": {
+          "coding_task_ids": {
             "type": "array",
             "items": {
               "type": "string",
               "format": "uuid"
             }
           },
-          "org_case_ids": {
+          "org_task_ids": {
             "type": "array",
             "items": {
               "type": "string",
@@ -10408,7 +10476,7 @@
           "title": {
             "type": "string"
           },
-          "case_type": {
+          "task_type": {
             "type": "string"
           },
           "difficulty": {
@@ -10458,6 +10526,153 @@
             "nullable": true
           }
         }
+      },
+      "PublicInterviewRoomCreateRequest": {
+        "type": "object",
+        "description": "Public wire uses task_* field names; maps to internal coding/org case ids.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "interview_type": {
+            "enum": [
+              "coding",
+              "technical",
+              "system_design",
+              "behavioral",
+              "mixed"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "9bac42e316080eda"
+          },
+          "interviewer_mode": {
+            "enum": [
+              "ai_only",
+              "human_only",
+              "hybrid"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "c96a49d7c755ab6b"
+          },
+          "candidate_email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "email",
+                "maxLength": 254
+              },
+              {
+                "type": "string",
+                "maxLength": 0
+              }
+            ]
+          },
+          "candidate_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "time_limit_minutes": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "nullable": true
+          },
+          "scheduled_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "active_language": {
+            "enum": [
+              "python",
+              "javascript",
+              "typescript",
+              "sql",
+              "java",
+              "go",
+              "bash"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "3e799593e1bbd9c9"
+          },
+          "integrity_config": {},
+          "job_description": {
+            "type": "string",
+            "default": ""
+          },
+          "resume_text": {
+            "type": "string",
+            "default": ""
+          },
+          "voice_mode": {
+            "type": "boolean",
+            "default": false
+          },
+          "human_can_join": {
+            "type": "boolean",
+            "default": false
+          },
+          "target_role": {
+            "type": "string",
+            "default": "",
+            "maxLength": 200
+          },
+          "target_company": {
+            "type": "string",
+            "default": "",
+            "maxLength": 200
+          },
+          "difficulty": {
+            "enum": [
+              "entry",
+              "mid",
+              "senior",
+              "staff",
+              ""
+            ],
+            "type": "string",
+            "x-spec-enum-id": "70219e23b4816a13",
+            "default": "mid"
+          },
+          "coding_task_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "org_task_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "persona": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "send_invite": {
+            "type": "boolean",
+            "default": true
+          },
+          "pipeline_enrollment_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "candidate_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "Optional completed Screen session in this organisation. Candidate email must match."
+          }
+        },
+        "required": [
+          "title"
+        ]
       },
       "PublicInterviewShareRequestRequest": {
         "type": "object",
@@ -10811,7 +11026,7 @@
           "description": {
             "type": "string"
           },
-          "case_type": {
+          "task_type": {
             "enum": [
               "mcq",
               "coding",
@@ -10896,7 +11111,7 @@
           "description": {
             "type": "string"
           },
-          "case_type": {
+          "task_type": {
             "type": "string"
           },
           "difficulty": {
@@ -10935,7 +11150,6 @@
         },
         "required": [
           "allow_multiple",
-          "case_type",
           "created_at",
           "description",
           "difficulty",
@@ -10947,6 +11161,7 @@
           "question",
           "rubric",
           "starter_code",
+          "task_type",
           "time_limit_minutes",
           "title"
         ]
@@ -10986,7 +11201,7 @@
           "description": {
             "type": "string"
           },
-          "case_type": {
+          "task_type": {
             "enum": [
               "mcq",
               "coding",
@@ -11992,10 +12207,10 @@
       "PublicResultCaseRow": {
         "type": "object",
         "properties": {
-          "case_order": {
+          "task_order": {
             "type": "integer"
           },
-          "case_title": {
+          "task_title": {
             "type": "string"
           },
           "score": {
@@ -12013,11 +12228,11 @@
           }
         },
         "required": [
-          "case_order",
-          "case_title",
           "max_score",
           "score",
           "status",
+          "task_order",
+          "task_title",
           "time_spent_seconds"
         ]
       },
@@ -12082,7 +12297,7 @@
           "detailed_report_url": {
             "type": "string"
           },
-          "cases": {
+          "tasks": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PublicResultCaseRow"
@@ -12133,7 +12348,7 @@
           "violation_type": {
             "type": "string"
           },
-          "case_order": {
+          "task_order": {
             "type": "integer",
             "nullable": true
           },
@@ -12142,9 +12357,9 @@
           }
         },
         "required": [
-          "case_order",
           "created_at",
           "id",
+          "task_order",
           "violation_type"
         ]
       },
@@ -12585,7 +12800,7 @@
     },
     {
       "name": "Public API \u2014 Assessments",
-      "description": "List, retrieve, and inspect assessments and their case lists.\n\nRead endpoints require `assessments:read`. Assessment results (candidates) require `candidates:read`."
+      "description": "List, retrieve, and inspect assessments and their task lists.\n\nRead endpoints require `assessments:read`. Assessment results (candidates) require `candidates:read`."
     },
     {
       "name": "Public API \u2014 Invitations",
@@ -12596,8 +12811,8 @@
       "description": "Retrieve per-invitation and per-assessment candidate results.\n\nRequired scope: `candidates:read`"
     },
     {
-      "name": "Public API \u2014 Cases",
-      "description": "Manage custom (organisation-owned) cases.\n\nListing / reading cases requires `cases:read`. Creating, updating, or deleting cases requires `cases:write`."
+      "name": "Public API \u2014 Tasks",
+      "description": "Manage custom (organisation-owned) tasks.\n\nListing / reading tasks requires `tasks:read`. Creating, updating, or deleting tasks requires `tasks:write`."
     },
     {
       "name": "Public API \u2014 Pipelines",
@@ -12614,6 +12829,10 @@
     {
       "name": "Public API \u2014 Integrations",
       "description": "Read ATS connection status, inbound webhook URLs, connect URLs, and credential tests.\n\nRequired scope: `organisation:read`"
+    },
+    {
+      "name": "Public API \u2014 Assistant",
+      "description": "CLI Ask AI chat proxy (Starter+).\n\nRequired scope: `assistant:write`. Rate-limited separately via `public_api_assistant`."
     }
   ],
   "x-tagGroups": [
@@ -12624,11 +12843,12 @@
         "Public API \u2014 Assessments",
         "Public API \u2014 Invitations",
         "Public API \u2014 Results",
-        "Public API \u2014 Cases",
+        "Public API \u2014 Tasks",
         "Public API \u2014 Pipelines",
         "Public API \u2014 Webhooks",
         "Public API \u2014 Interviews",
-        "Public API \u2014 Integrations"
+        "Public API \u2014 Integrations",
+        "Public API \u2014 Assistant"
       ]
     }
   ],

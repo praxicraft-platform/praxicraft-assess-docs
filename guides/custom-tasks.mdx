@@ -1,0 +1,75 @@
+---
+title: "Custom tasks"
+description: "Add coding, MCQ, or text questions to your organisation library."
+---
+
+These are tasks your org owns. Attach them to assessments next to Praxicraft's platform library.
+
+## If you are recruiting / ops
+
+<Steps>
+ <Step title="Create the task in the dashboard">
+ Open [Assess](https://assess.praxicraft.com/assess) and add a custom task. Public API types are **coding**, **MCQ**, and **text**. Richer editors may exist only in the UI.
+ </Step>
+ <Step title="Write a clear question">
+ Candidates see the title, description, and question. For coding, include language and starter code if helpful.
+ </Step>
+ <Step title="Attach it to an assessment">
+ Edit the assessment, add the task, and keep the assessment **Active** before inviting.
+ </Step>
+</Steps>
+
+Deleting a custom task removes it from assessments; past submissions keep a snapshot of what the candidate saw.
+
+## For engineers
+
+Scopes: `tasks:read` / `tasks:write`. Platform browse: `GET /platform-tasks/` (`assessments:read`).
+
+| Method | Path |
+|--------|------|
+| GET | `/tasks/` |
+| POST | `/tasks/create/` |
+| GET / PATCH / DELETE | `/tasks/{id}/` (`204` soft delete) |
+
+### Create
+
+Required: `title`, `description`, `question`, `task_type`. `question` accepts GitHub-flavoured Markdown.
+
+```bash
+curl -sS -X POST https://assess.praxicraft.com/api/v1/public/tasks/create/ \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{
+ "title": "Normalize event timestamps",
+ "description": "Clean a small events CSV",
+ "question": "Write a function that…",
+ "task_type": "coding",
+ "language": "python",
+ "starter_code": "def solve(rows):\n ...\n",
+ "difficulty": "medium",
+ "points": 10
+ }'
+```
+
+| Field | Notes |
+|-------|--------|
+| `language` | Coding: `python` \| `javascript` \| `sql` |
+| `options` / `allow_multiple` | MCQ |
+| `difficulty` | `easy` \| `medium` \| `hard` |
+| `points` | Default 10 |
+
+### Attach
+
+```bash
+curl -sS -X POST \
+ "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/tasks/attach/" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{ "tasks": [{ "task_id": "TASK_UUID", "source": "org" }] }'
+```
+
+Use `source: "platform"` for curated library tasks.
+
+## Next
+
+[Assessments](/guides/assessments) · [Scopes](/guides/scopes)

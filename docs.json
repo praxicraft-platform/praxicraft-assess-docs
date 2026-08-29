@@ -69,7 +69,8 @@
               "guides/about",
               "guides/roles",
               "guides/quickstart",
-              "guides/authentication"
+              "guides/authentication",
+              "guides/using-llms"
             ]
           },
           {
@@ -157,8 +158,7 @@
               "integrations/n8n",
               "integrations/zapier",
               "integrations/make",
-              "integrations/assess-mcp",
-              "integrations/using-llms"
+              "integrations/assess-mcp"
             ]
           }
         ]
@@ -582,11 +582,15 @@
     },
     {
       "source": "/using-llms",
-      "destination": "/integrations/using-llms"
+      "destination": "/guides/using-llms"
     },
     {
       "source": "/docs/using-llms",
-      "destination": "/integrations/using-llms"
+      "destination": "/guides/using-llms"
+    },
+    {
+      "source": "/integrations/using-llms",
+      "destination": "/guides/using-llms"
     },
     {
       "source": "/zapier",

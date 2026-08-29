@@ -1,9 +1,9 @@
 ---
 title: "MCP (Coding Agents)"
-description: "Connect Cursor, Claude, or Codex to Assess with MCP."
+description: "Connect Cursor, Claude, Codex, VS Code, or Gemini to Assess with MCP."
 ---
 
-MCP (Model Context Protocol) lets an AI coding agent use Assess tools. create assessments, invite candidates, read results. with your permission.
+MCP (Model Context Protocol) lets an AI coding agent use Assess tools — create assessments, invite candidates, read results — with your permission.
 
 For docs search + skills + one-click install across agents, see [Build with agents](/integrations/build-with-agents) (Knowledge MCP is separate from this API server).
 
@@ -11,7 +11,7 @@ For docs search + skills + one-click install across agents, see [Build with agen
 
 You typically **do not** need MCP. Use the [dashboard](https://assess.praxicraft.com/assess) or ask an engineer to set up [n8n](/integrations/n8n) / [Automations](/integrations/automations).
 
-MCP is for people already working in Cursor, Claude Code, Claude Desktop, or Codex who want the agent to operate Assess safely.
+MCP is for people already working in a coding agent who want it to operate Assess safely.
 
 ## Two ways to connect
 
@@ -20,52 +20,135 @@ MCP is for people already working in Cursor, Claude Code, Claude Desktop, or Cod
 | Hosted HTTP | Interactive IDE sessions | Browser OAuth at `https://assess.praxicraft.com/mcp` (always **live** mode). Owners, admins, and [developers](/guides/roles) can consent. |
 | Stdio package | CI / locked-down machines / Test mode | Env var `PRAXICRAFT_API_KEY` (`ct_live_…` or `ct_test_…`) via `npx -y @praxicraft/assess-mcp` |
 
-The stdio package is [`@praxicraft/assess-mcp`](https://github.com/praxicraft-platform/praxicraft-assess-mcp) on npm. Hosted HTTP still runs in the `bureau` namespace at `https://assess.praxicraft.com/mcp` (image built from the web monorepo deploy mirror).
+The stdio package is [`@praxicraft/assess-mcp`](https://github.com/praxicraft-platform/praxicraft-assess-mcp) on npm. Hosted HTTP runs at `https://assess.praxicraft.com/mcp`.
 
 Prefer least-privilege [scopes](/guides/scopes) on stored keys.
 
 IP allowlists on API keys apply to Public API `ct_live_…` / `ct_test_…` requests only. Hosted MCP OAuth is **not** IP-restricted. If you use stdio MCP with `PRAXICRAFT_API_KEY`, leave that key's CIDR list empty (or use a dedicated MCP key).
 
-## Cursor / Codex
+## Setup by IDE
 
-```json
-{
- "mcpServers": {
- "praxicraft-assess": {
- "url": "https://assess.praxicraft.com/mcp"
- }
- }
-}
-```
+Add the Assess API MCP server in your client, then approve OAuth on the first tool call (hosted) or set `PRAXICRAFT_API_KEY` (stdio).
 
-## Claude Code
+<Tabs>
+  <Tab title="Cursor" icon="/images/brands/cursor.png">
+    Add to Cursor MCP settings (or `.cursor/mcp.json`):
 
-```json
-{
- "mcpServers": {
- "praxicraft-assess": {
- "type": "http",
- "url": "https://assess.praxicraft.com/mcp"
- }
- }
-}
-```
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "url": "https://assess.praxicraft.com/mcp"
+        }
+      }
+    }
+    ```
 
-## Claude Desktop (stdio)
+    Prefer the full [Agent Plugin](/integrations/build-with-agents#agent-plugin) if you also want Knowledge MCP and hiring skills.
+  </Tab>
 
-```json
-{
- "mcpServers": {
- "praxicraft-assess": {
- "command": "npx",
- "args": ["-y", "@praxicraft/assess-mcp"],
- "env": {
- "PRAXICRAFT_API_KEY": "ct_live_xxxxxxxxxxxxxxxx"
- }
- }
- }
-}
-```
+  <Tab title="Claude Code" icon="/images/brands/claude.svg">
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "type": "http",
+          "url": "https://assess.praxicraft.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Or install via marketplace: [Build with agents → Claude Code](/integrations/build-with-agents#agent-plugin).
+  </Tab>
+
+  <Tab title="Codex CLI" icon="/images/brands/openai.svg">
+    Same hosted HTTP shape as Cursor:
+
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "url": "https://assess.praxicraft.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Plugin path: [Build with agents → Codex CLI](/integrations/build-with-agents#agent-plugin).
+  </Tab>
+
+  <Tab title="VS Code / Copilot" icon="/images/brands/vscode.svg">
+    Register the hosted server in your MCP config (Copilot Chat / MCP settings):
+
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "url": "https://assess.praxicraft.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Or clone the Agent Plugin and add it under **Chat → Plugins** — [VS Code setup](/integrations/build-with-agents#agent-plugin).
+  </Tab>
+
+  <Tab title="Claude Desktop" icon="/images/brands/claude.svg">
+    Claude Desktop commonly uses **stdio**. Create an API key in [Developer → API Keys](https://assess.praxicraft.com/assess/api), then:
+
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "command": "npx",
+          "args": ["-y", "@praxicraft/assess-mcp"],
+          "env": {
+            "PRAXICRAFT_API_KEY": "ct_live_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    Use a `ct_test_…` key while developing. Never commit the key.
+  </Tab>
+
+  <Tab title="Gemini CLI" icon="/images/brands/gemini.svg">
+    <Note>
+      Gemini CLI has no agent-skill primitive. Install the MCP servers (API + optional Knowledge) only.
+    </Note>
+
+    Clone the Agent Plugin extension path:
+
+    ```bash
+    git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
+      ~/.gemini/extensions/praxicraft-assess
+    ```
+
+    Restart Gemini CLI. Details: [Build with agents → Gemini](/integrations/build-with-agents#agent-plugin).
+  </Tab>
+
+  <Tab title="Stdio / Test mode" icon="terminal">
+    For CI, locked-down machines, or **Test** mode (`ct_test_…`):
+
+    ```json
+    {
+      "mcpServers": {
+        "praxicraft-assess": {
+          "command": "npx",
+          "args": ["-y", "@praxicraft/assess-mcp"],
+          "env": {
+            "PRAXICRAFT_API_KEY": "ct_test_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    Hosted OAuth is always **live**. Stdio is the path for isolated test data. See [Live and Test mode](/guides/authentication#live-and-test-mode).
+  </Tab>
+</Tabs>
 
 ## What agents can do
 
@@ -75,4 +158,4 @@ Remind agents to respect plan limits and to branch on `error.code`. [Errors](/gu
 
 ## Next
 
-[Build with agents](/integrations/build-with-agents) · [Using docs with LLMs](/integrations/using-llms) · [Quickstart](/guides/quickstart) · [API Reference](/guides/api-reference)
+[Build with agents](/integrations/build-with-agents) · [Using docs with LLMs](/guides/using-llms) · [Quickstart](/guides/quickstart) · [API Reference](/guides/api-reference)

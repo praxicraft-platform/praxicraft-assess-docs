@@ -1,6 +1,6 @@
 ---
 title: "Build with agents"
-description: "Install the Assess Agent Plugin. docs Knowledge MCP, API MCP, and hiring skills for Cursor, Claude, and Codex."
+description: "Install the Assess Agent Plugin — docs Knowledge MCP, API MCP, and hiring skills for Cursor, Claude, Codex, VS Code, and Gemini."
 ---
 
 Coding agents work best with three primitives: **docs search**, **live API tools**, and **skills** (procedural cheat sheets). Praxicraft Assess ships all three.
@@ -28,37 +28,104 @@ Coding agents work best with three primitives: **docs search**, **live API tools
 |-----------|-------------------|------|---------|
 | **Knowledge MCP** | `https://docs.praxicraft.com/mcp` | None | Semantic search + reading Assess docs |
 | **API MCP** | `https://assess.praxicraft.com/mcp` or `@praxicraft/assess-mcp` | OAuth (live) or `PRAXICRAFT_API_KEY` | Invites, webhooks, pipelines, results |
-| **Skills** | Agent Plugin / `npx skills add` |. | Correct patterns (HMAC, `external_id`, ATS loops) |
+| **Skills** | Agent Plugin / `npx skills add` | — | Correct patterns (HMAC, `external_id`, ATS loops) |
 
 Knowledge MCP cannot invite candidates. API MCP does not replace reading docs for payload shapes. use both.
 
 ## Agent Plugin
 
-Source: [praxicraft-assess-agent-plugin](https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin) (Agent Plugins 1.0). Until the public repo is live, clone or symlink from your local checkout.
+Source: [praxicraft-assess-agent-plugin](https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin) (Agent Plugins 1.0). Pick your IDE tab below.
 
-### Cursor
+The hosted API MCP uses **browser OAuth** by default — no keys at install time. The first Assess tool call prompts you to sign in (owners, admins, and [developers](/guides/roles)).
 
-```bash
-git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
- ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
-```
+<Tabs>
+  <Tab title="Cursor" icon="/images/brands/cursor.png">
+    <Steps>
+      <Step title="Clone into Cursor local plugins">
+        ```bash
+        git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
+          ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
+        ```
+      </Step>
+      <Step title="Restart Cursor">
+        Skills load from `skills/`. MCP servers load from `.mcp.json`.
+      </Step>
+      <Step title="Try a hiring prompt">
+        Ask the agent to invite a candidate or verify a webhook signature (see [Try this prompt](#try-this-prompt)).
+      </Step>
+    </Steps>
+  </Tab>
 
-Restart Cursor. Skills load from `skills/`; MCP servers from `.mcp.json`.
+  <Tab title="Claude Code" icon="/images/brands/claude.svg">
+    <Steps>
+      <Step title="Add the Praxicraft marketplace">
+        ```bash
+        claude plugins marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
+        ```
+      </Step>
+      <Step title="Install the plugin">
+        ```bash
+        claude plugins install praxicraft-assess@praxicraft
+        ```
+      </Step>
+      <Step title="Approve OAuth on first tool use">
+        When Claude calls an Assess API tool, complete the browser consent screen. Knowledge MCP needs no credentials.
+      </Step>
+    </Steps>
+  </Tab>
 
-### Claude Code
+  <Tab title="Codex CLI" icon="/images/brands/openai.svg">
+    <Steps>
+      <Step title="Add the marketplace">
+        ```bash
+        codex plugin marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
+        ```
+      </Step>
+      <Step title="Install inside Codex">
+        Open Codex and run `/plugins` → **Praxicraft** marketplace → install **praxicraft-assess**.
+      </Step>
+      <Step title="Refresh if needed">
+        ```bash
+        codex plugin marketplace upgrade praxicraft
+        ```
+      </Step>
+    </Steps>
+  </Tab>
 
-```bash
-claude plugins marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
-claude plugins install praxicraft-assess@praxicraft
-```
+  <Tab title="VS Code / Copilot" icon="/images/brands/vscode.svg">
+    <Steps>
+      <Step title="Clone the plugin repo">
+        ```bash
+        git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git
+        ```
+        Put the folder somewhere stable (for example `~/plugins/praxicraft-assess-agent-plugin`).
+      </Step>
+      <Step title="Register it in VS Code">
+        Open **Chat → Plugins** and add that folder, **or** set `chat.pluginLocations` to include the clone path.
+      </Step>
+      <Step title="Confirm MCP + skills">
+        Skills load from `skills/`. MCP servers load from `.mcp.json`. Reload the window if Copilot Chat does not list them yet.
+      </Step>
+    </Steps>
+  </Tab>
 
-### Codex CLI
-
-```bash
-codex plugin marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
-```
-
-Then `/plugins` → install **praxicraft-assess**.
+  <Tab title="Gemini CLI" icon="/images/brands/gemini.svg">
+    <Note>
+      Gemini CLI has no agent-skill primitive. This path installs the **two MCP servers only** (API + Knowledge).
+    </Note>
+    <Steps>
+      <Step title="Clone into Gemini extensions">
+        ```bash
+        git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
+          ~/.gemini/extensions/praxicraft-assess
+        ```
+      </Step>
+      <Step title="Restart Gemini CLI">
+        Confirm the Assess MCP tools appear. For skills, use [Skills CLI](#skills) or another IDE tab above.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 ### Skills included
 
@@ -109,7 +176,7 @@ Or install from the Agent Plugin repo:
 npx skills add praxicraft-platform/praxicraft-assess-agent-plugin
 ```
 
-Also available: [llms.txt](https://docs.praxicraft.com/llms.txt) and `.md` on every page; see [Using docs with LLMs](/integrations/using-llms).
+Also available: [llms.txt](https://docs.praxicraft.com/llms.txt) and `.md` on every page; see [Using docs with LLMs](/guides/using-llms).
 
 ## API MCP
 
@@ -126,4 +193,4 @@ Hosted OAuth is always **live**. For Test mode, use stdio with a `ct_test_` key 
 
 ## Next
 
-[MCP](/integrations/assess-mcp) · [Using docs with LLMs](/integrations/using-llms) · [Webhooks](/guides/webhooks) · [Integrations](/integrations/overview) · [Automations](/integrations/automations)
+[MCP](/integrations/assess-mcp) · [Using docs with LLMs](/guides/using-llms) · [Webhooks](/guides/webhooks) · [Integrations](/integrations/overview) · [Automations](/integrations/automations)

@@ -46,9 +46,1710 @@
     {
       "key": "provider",
       "value": "greenhouse"
+    },
+    {
+      "key": "job_key",
+      "value": "senior-data-engineer"
+    },
+    {
+      "key": "application_id",
+      "value": ""
+    },
+    {
+      "key": "offer_id",
+      "value": ""
+    },
+    {
+      "key": "candidate_id",
+      "value": ""
     }
   ],
   "item": [
+    {
+      "name": "Public API — Jobs",
+      "item": [
+        {
+          "name": "List job openings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "\n\n> **Required scope:** `jobs:read`"
+          }
+        },
+        {
+          "name": "Create job opening",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Create a draft job. Requires `team_id` (alias `squad_id`). Required scope: `jobs:write`. Empty API key scopes = full access."
+          }
+        },
+        {
+          "name": "Retrieve job opening",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:read`"
+          }
+        },
+        {
+          "name": "Close job opening",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/close/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "close",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:write`"
+          }
+        },
+        {
+          "name": "List job application fields",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/fields/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "fields",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List job application fields"
+          }
+        },
+        {
+          "name": "Create job application field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/fields/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "fields",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Create job application field"
+          }
+        },
+        {
+          "name": "List knockout rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/knockout-rules/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "knockout-rules",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List knockout rules"
+          }
+        },
+        {
+          "name": "Replace knockout rules",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/knockout-rules/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "knockout-rules",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Replace knockout rules"
+          }
+        },
+        {
+          "name": "Publish job opening",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/publish/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "publish",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:write`"
+          }
+        },
+        {
+          "name": "Update job opening",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/update/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "update",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:write`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Applications",
+      "item": [
+        {
+          "name": "List applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "\n\n> **Required scope:** `applications:read`"
+          }
+        },
+        {
+          "name": "Create application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Submit an application via the same path as careers (`submit_application`). Requires an open job (`job_id` or `job_slug`). Source is set to `public_api`. Required scope: `applications:write`."
+          }
+        },
+        {
+          "name": "Retrieve application",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:read`"
+          }
+        },
+        {
+          "name": "Advance application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/advance/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "advance",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:write`"
+          }
+        },
+        {
+          "name": "Reject application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/reject/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "reject",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:write`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Screening",
+      "item": [
+        {
+          "name": "Hold application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/hold/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "hold",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:write`"
+          }
+        },
+        {
+          "name": "Get application screening result",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/screening/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "screening",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:read`"
+          }
+        },
+        {
+          "name": "Re-run screening",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/screening/rerun/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "screening",
+                "rerun",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `screening:write`"
+          }
+        },
+        {
+          "name": "Unhold application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/applications/:application_id/unhold/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "applications",
+                ":application_id",
+                "unhold",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `applications:write`"
+          }
+        },
+        {
+          "name": "List job L3 requirements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/requirements/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "requirements",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:read`"
+          }
+        },
+        {
+          "name": "Replace job L3 requirements",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/jobs/:job_key/requirements/replace/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "jobs",
+                ":job_key",
+                "requirements",
+                "replace",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "job_key",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `jobs:write`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Offers",
+      "item": [
+        {
+          "name": "List soft offers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/offers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "offers",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "List soft offers"
+          }
+        },
+        {
+          "name": "Create draft soft offer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/offers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "offers",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Create draft soft offer"
+          }
+        },
+        {
+          "name": "Retrieve soft offer",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/offers/:offer_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "offers",
+                ":offer_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "offer_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `offers:read`"
+          }
+        },
+        {
+          "name": "Send soft offer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/offers/:offer_id/send/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "offers",
+                ":offer_id",
+                "send",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "offer_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `offers:write`"
+          }
+        },
+        {
+          "name": "Withdraw soft offer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/offers/:offer_id/withdraw/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "offers",
+                ":offer_id",
+                "withdraw",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "offer_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `offers:write`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Profiles",
+      "item": [
+        {
+          "name": "List candidate profiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "\n\n> **Required scope:** `profiles:read`"
+          }
+        },
+        {
+          "name": "Get candidate profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get candidate profile"
+          }
+        },
+        {
+          "name": "Update candidate profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update candidate profile"
+          }
+        },
+        {
+          "name": "Merge candidate profiles",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/merge/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "merge",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `profiles:write`"
+          }
+        },
+        {
+          "name": "List candidate notes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/notes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "notes",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List candidate notes"
+          }
+        },
+        {
+          "name": "Add candidate note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/notes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "notes",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Add candidate note"
+          }
+        },
+        {
+          "name": "List candidate scorecards",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/scorecards/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "scorecards",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List candidate scorecards"
+          }
+        },
+        {
+          "name": "Create candidate scorecard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/scorecards/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "scorecards",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Create candidate scorecard"
+          }
+        },
+        {
+          "name": "List candidate tags",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/tags/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "tags",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "List candidate tags"
+          }
+        },
+        {
+          "name": "Replace candidate tags",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/tags/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "candidates",
+                ":candidate_id",
+                "tags",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "candidate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Replace candidate tags"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Pipelines",
+      "item": [
+        {
+          "name": "List pipelines",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Returns active hiring pipelines for your organisation with stage counts. Each pipeline reports its owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines). Filter to a single squad with the `team_id` or `team_slug` query params, or pass `team_id=null` to list org-wide pipelines only (Growth+ orgs with squads enabled).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated pipeline summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Create pipeline with stages",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Create a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`."
+          }
+        },
+        {
+          "name": "Get enrollment status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Tracks a candidate's progress through a pipeline including per-stage assessment history. Terminal success status is `passed` (not `completed`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Enrollment status with `history[]` |\n| `404` | Enrollment ID not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Advance enrollment past current stage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/advance/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "advance",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Manually advance a candidate past the current stage (board override). Same rules as the dashboard. Scope: `pipelines:write`."
+          }
+        },
+        {
+          "name": "Hold enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/hold/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "hold",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "List enrollment notes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/notes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "notes",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `pipelines:read`"
+          }
+        },
+        {
+          "name": "Add enrollment note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/notes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "notes",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "\n\n> **Required scope:** `pipelines:read`"
+          }
+        },
+        {
+          "name": "Reject enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/reject/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "reject",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Unhold enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/unhold/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                "enrollments",
+                ":id",
+                "unhold",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Retrieve pipeline detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ":assessment_slug",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Returns pipeline configuration and ordered `stages[]` with linked assessment slugs, plus the owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Pipeline detail |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Update pipeline metadata or stages",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ":assessment_slug",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist — `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`."
+          }
+        },
+        {
+          "name": "Enroll candidate in pipeline",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enroll/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ":assessment_slug",
+                "enroll",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Atomically enrolls a candidate and creates the stage-one invitation when the first stage is an assessment. **Idempotent:** returns HTTP `200` if the email is already enrolled. If invite quota is exhausted, returns `INVITE_QUOTA_EXCEEDED` and creates neither enrollment nor invite.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | New enrollment |\n| `200` | Candidate already enrolled |\n| `400` | `MISSING_EMAIL` / validation |\n| `403` | `INVITE_QUOTA_EXCEEDED` |\n| `404` | Pipeline slug not found |\n| `409` | `ALREADY_INVITED` for stage-one assessment |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\",\n  \"name\": \"Ada Lovelace\",\n  \"send_email\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Bulk enroll candidates",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enroll/bulk/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ":assessment_slug",
+                "enroll",
+                "bulk",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Bulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "List pipeline enrollments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enrollments/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "pipelines",
+                ":assessment_slug",
+                "enrollments",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Lists enrollments for a pipeline with optional `status` filter. Paginated.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated enrollments |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        }
+      ]
+    },
     {
       "name": "Public API — Assessments",
       "item": [
@@ -121,21 +1822,17 @@
           }
         },
         {
-          "name": "Update assessment",
+          "name": "Retrieve assessment detail",
           "request": {
-            "method": "PATCH",
+            "method": "GET",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/update/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/",
               "host": [
                 "{{base_url}}"
               ],
@@ -145,7 +1842,6 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "update",
                 ""
               ],
               "variable": [
@@ -155,16 +1851,7 @@
                 }
               ]
             },
-            "description": "Partially updates assessment configuration. Send **only** the fields you want to change (e.g. `{ \"status\": \"archived\" }`). Do not paste OpenAPI placeholder values like `\"<string>\"` or leave unused fields set — they will overwrite real data.\n\nPath `{slug}` must be the URL-safe **slug** (or UUID `id`) from create/list — **not** the assessment title.\n\nCommon fields: `title`, `description`, `status` (`draft` | `active` | `archived`), `time_limit_minutes`, `passing_score`, proctoring flags.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated assessment returned |\n| `400` | `VALIDATION_ERROR` | Invalid field value |\n| `404` | — | Assessment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"active\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
+            "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
@@ -202,7 +1889,7 @@
           }
         },
         {
-          "name": "Retrieve assessment detail",
+          "name": "List assessment cases",
           "request": {
             "method": "GET",
             "header": [
@@ -212,7 +1899,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/",
               "host": [
                 "{{base_url}}"
               ],
@@ -222,6 +1909,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
+                "tasks",
                 ""
               ],
               "variable": [
@@ -231,7 +1919,7 @@
                 }
               ]
             },
-            "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_task_id`, `id`, `title`, `type`, …) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
@@ -283,6 +1971,41 @@
           }
         },
         {
+          "name": "Remove assessment case",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/remove/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "assessments",
+                ":assessment_slug",
+                "tasks",
+                "remove",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Removes one attached task by `assessment_task_id` (the join-row id from the tasks list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
           "name": "Replace assessment cases",
           "request": {
             "method": "PUT",
@@ -331,17 +2054,21 @@
           }
         },
         {
-          "name": "Remove assessment case",
+          "name": "Update assessment",
           "request": {
-            "method": "DELETE",
+            "method": "PATCH",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/remove/",
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/update/",
               "host": [
                 "{{base_url}}"
               ],
@@ -351,8 +2078,7 @@
                 "public",
                 "assessments",
                 ":assessment_slug",
-                "tasks",
-                "remove",
+                "update",
                 ""
               ],
               "variable": [
@@ -362,114 +2088,16 @@
                 }
               ]
             },
-            "description": "Removes one attached task by `assessment_task_id` (the join-row id from the tasks list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "List assessment cases",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/tasks/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "assessments",
-                ":assessment_slug",
-                "tasks",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
+            "description": "Partially updates assessment configuration. Send **only** the fields you want to change (e.g. `{ \"status\": \"archived\" }`). Do not paste OpenAPI placeholder values like `\"<string>\"` or leave unused fields set — they will overwrite real data.\n\nPath `{slug}` must be the URL-safe **slug** (or UUID `id`) from create/list — **not** the assessment title.\n\nCommon fields: `title`, `description`, `status` (`draft` | `active` | `archived`), `time_limit_minutes`, `passing_score`, proctoring flags.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated assessment returned |\n| `400` | `VALIDATION_ERROR` | Invalid field value |\n| `404` | — | Assessment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
-            },
-            "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_task_id`, `id`, `title`, `type`, …) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Results",
-      "item": [
-        {
-          "name": "List assessment results",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
               }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/results/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "assessments",
-                ":assessment_slug",
-                "results",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Returns candidate sessions for an assessment with scores, pass/fail, violation counts, and `invite_token` for fetching the detailed result. Ordered by most recent session start.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated session summaries (includes in-progress and completed invitations) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Get result for an invitation",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/invites/:invite_token/result/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "invites",
-                ":invite_token",
-                "result",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "invite_token",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            }
           }
         }
       ]
@@ -600,40 +2228,6 @@
           }
         },
         {
-          "name": "Send reminder",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/invites/:invite_token/remind/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "invites",
-                ":invite_token",
-                "remind",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "invite_token",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Re-sends the invitation email. Valid only for `pending` or `started` invitations. Limited to one reminder per invitation per 24 hours. Updates `reminded_at` on success.\n\n> **Required scope:** `invitations:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Reminder email dispatched |\n| `400` | `REMINDER_COOLDOWN` | Reminder already sent within the last 24 hours |\n| `400` | `ALREADY_COMPLETED` | Candidate already finished the assessment |\n| `400` | `INVITATION_EXPIRED` | Invitation past `expires_at` |\n| `404` | — | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
           "name": "Get invitation status",
           "request": {
             "method": "GET",
@@ -697,6 +2291,873 @@
               ]
             },
             "description": "Permanently deletes a **pending** invitation. Requires `invitations:write` scope (checked on DELETE only).\n\n> **Required scope:** `invitations:read` (GET) · `invitations:write` (DELETE)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Invitation deleted |\n| `400` | `ALREADY_STARTED` | Candidate is currently in the session |\n| `400` | `ALREADY_COMPLETED` | Assessment already submitted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `invitations:write` |\n| `404` | — | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Send reminder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/invites/:invite_token/remind/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "invites",
+                ":invite_token",
+                "remind",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "invite_token",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Re-sends the invitation email. Valid only for `pending` or `started` invitations. Limited to one reminder per invitation per 24 hours. Updates `reminded_at` on success.\n\n> **Required scope:** `invitations:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Reminder email dispatched |\n| `400` | `REMINDER_COOLDOWN` | Reminder already sent within the last 24 hours |\n| `400` | `ALREADY_COMPLETED` | Candidate already finished the assessment |\n| `400` | `INVITATION_EXPIRED` | Invitation past `expires_at` |\n| `404` | — | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Results",
+      "item": [
+        {
+          "name": "List assessment results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/assessments/:assessment_slug/results/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "assessments",
+                ":assessment_slug",
+                "results",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "assessment_slug",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Returns candidate sessions for an assessment with scores, pass/fail, violation counts, and `invite_token` for fetching the detailed result. Ordered by most recent session start.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated session summaries (includes in-progress and completed invitations) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Get result for an invitation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/invites/:invite_token/result/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "invites",
+                ":invite_token",
+                "result",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "invite_token",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Tasks",
+      "item": [
+        {
+          "name": "List platform cases",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/platform-tasks/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "platform-tasks",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform case summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "List custom cases",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Create custom case",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Retrieve custom case",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Returns a single custom case by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Case detail |\n| `404` | Case not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Replace custom case",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Update custom case",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        },
+        {
+          "name": "Delete custom case",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "tasks",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Soft-deletes a custom case (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Case deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Interviews",
+      "item": [
+        {
+          "name": "List interviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "List interviews"
+          }
+        },
+        {
+          "name": "Interview analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/analytics/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "analytics",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Interview analytics"
+          }
+        },
+        {
+          "name": "Bulk create interviews",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/bulk/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "bulk",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Bulk create interviews"
+          }
+        },
+        {
+          "name": "Create interview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Create interview"
+          }
+        },
+        {
+          "name": "List org coding tasks for interviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/org-tasks/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "org-tasks",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "List org coding tasks for interviews"
+          }
+        },
+        {
+          "name": "List interview templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/templates/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "templates",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "List interview templates"
+          }
+        },
+        {
+          "name": "Create interview template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/templates/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "templates",
+                "create",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "Create interview template"
+          }
+        },
+        {
+          "name": "Retrieve interview template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "templates",
+                ":template_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Retrieve interview template"
+          }
+        },
+        {
+          "name": "Delete interview template",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/delete/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "templates",
+                ":template_id",
+                "delete",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Delete interview template"
+          }
+        },
+        {
+          "name": "Update interview template",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/update/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                "templates",
+                ":template_id",
+                "update",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update interview template"
+          }
+        },
+        {
+          "name": "Retrieve interview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Retrieve interview"
+          }
+        },
+        {
+          "name": "Get interview analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/analysis/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                "analysis",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get interview analysis"
+          }
+        },
+        {
+          "name": "Cancel interview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/cancel/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                "cancel",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Cancel interview"
+          }
+        },
+        {
+          "name": "Get interview replay",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/replay/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                "replay",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get interview replay"
+          }
+        },
+        {
+          "name": "Reschedule interview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/reschedule/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                "reschedule",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Reschedule interview"
+          }
+        },
+        {
+          "name": "Create interview share link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/share/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "interviews",
+                ":room_id",
+                "share",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "room_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Create interview share link"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public API — Insights",
+      "item": [
+        {
+          "name": "Hiring funnel stage counts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/public/insights/funnel/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "public",
+                "insights",
+                "funnel",
+                ""
+              ],
+              "variable": []
+            },
+            "description": "\n\n> **Required scope:** `insights:read`"
           }
         }
       ]
@@ -873,7 +3334,7 @@
           }
         },
         {
-          "name": "Organisation usage time series",
+          "name": "List pending organisation member invites",
           "request": {
             "method": "GET",
             "header": [
@@ -883,7 +3344,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/org/usage/",
+              "raw": "{{base_url}}/api/v1/public/org/member-invites/",
               "host": [
                 "{{base_url}}"
               ],
@@ -892,40 +3353,12 @@
                 "v1",
                 "public",
                 "org",
-                "usage",
+                "member-invites",
                 ""
               ],
               "variable": []
             },
-            "description": "Daily usage time series for the key's Live or Test mode (`ct_live_…` / `ct_test_…`). Query `start` / `end` as YYYY-MM-DD (default last 30 days, max 180-day span).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Mode-scoped series |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "List team members",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/org/team/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "org",
-                "team",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Lists active organisation members with role (`owner`, `admin`, `developer`, `recruiter`, `reviewer`, `member`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated team members |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Pending **org member** invitations (not candidate assessment invites). Does not expose invite tokens. Role changes remain dashboard-only. Scope: `organisation:read`."
           }
         },
         {
@@ -1192,34 +3625,6 @@
           }
         },
         {
-          "name": "List pending organisation member invites",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/org/member-invites/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "org",
-                "member-invites",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Pending **org member** invitations (not candidate assessment invites). Does not expose invite tokens. Role changes remain dashboard-only. Scope: `organisation:read`."
-          }
-        },
-        {
           "name": "Get organisation analytics",
           "request": {
             "method": "GET",
@@ -1246,14 +3651,9 @@
             },
             "description": "Aggregate assessment metrics: invites sent, completions, pass rate, and average score percentage.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Analytics snapshot |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Tasks",
-      "item": [
+        },
         {
-          "name": "List platform cases",
+          "name": "List team members",
           "request": {
             "method": "GET",
             "header": [
@@ -1263,7 +3663,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/platform-tasks/",
+              "raw": "{{base_url}}/api/v1/public/org/team/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1271,16 +3671,17 @@
                 "api",
                 "v1",
                 "public",
-                "platform-tasks",
+                "org",
+                "team",
                 ""
               ],
               "variable": []
             },
-            "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform case summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Lists active organisation members with role (`owner`, `admin`, `developer`, `recruiter`, `reviewer`, `member`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated team members |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         },
         {
-          "name": "List custom cases",
+          "name": "Organisation usage time series",
           "request": {
             "method": "GET",
             "header": [
@@ -1290,7 +3691,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/",
+              "raw": "{{base_url}}/api/v1/public/org/usage/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1298,181 +3699,22 @@
                 "api",
                 "v1",
                 "public",
-                "tasks",
+                "org",
+                "usage",
                 ""
               ],
               "variable": []
             },
-            "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Create custom case",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "tasks",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Retrieve custom case",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "tasks",
-                ":id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Returns a single custom case by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Case detail |\n| `404` | Case not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Replace custom case",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "tasks",
-                ":id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Update custom case",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "tasks",
-                ":id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Updated case returned |\n| `400` | — | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Delete custom case",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/tasks/:id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "tasks",
-                ":id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Soft-deletes a custom case (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) · `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | — | Case deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | — | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Daily usage time series for the key's Live or Test mode (`ct_live_…` / `ct_test_…`). Query `start` / `end` as YYYY-MM-DD (default last 30 days, max 180-day span).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Mode-scoped series |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
           }
         }
       ]
     },
     {
-      "name": "Public API — Pipelines",
+      "name": "Public API — Integrations",
       "item": [
         {
-          "name": "List pipelines",
+          "name": "List ATS integration status",
           "request": {
             "method": "GET",
             "header": [
@@ -1482,7 +3724,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/",
+              "raw": "{{base_url}}/api/v1/public/integrations/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1490,44 +3732,16 @@
                 "api",
                 "v1",
                 "public",
-                "pipelines",
+                "integrations",
                 ""
               ],
               "variable": []
             },
-            "description": "Returns active hiring pipelines for your organisation with stage counts. Each pipeline reports its owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines). Filter to a single squad with the `team_id` or `team_slug` query params, or pass `team_id=null` to list org-wide pipelines only (Growth+ orgs with squads enabled).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated pipeline summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Read-only view of connected ATS providers and inbound webhook URLs. Credential management stays in the Assess dashboard."
           }
         },
         {
-          "name": "Create pipeline with stages",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Create a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`."
-          }
-        },
-        {
-          "name": "Get enrollment status",
+          "name": "Get ATS connect URL",
           "request": {
             "method": "GET",
             "header": [
@@ -1537,7 +3751,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/",
+              "raw": "{{base_url}}/api/v1/public/integrations/:provider/connect/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1545,23 +3759,23 @@
                 "api",
                 "v1",
                 "public",
-                "pipelines",
-                "enrollments",
-                ":id",
+                "integrations",
+                ":provider",
+                "connect",
                 ""
               ],
               "variable": [
                 {
-                  "key": "id",
+                  "key": "provider",
                   "value": ""
                 }
               ]
             },
-            "description": "Tracks a candidate's progress through a pipeline including per-stage assessment history. Terminal success status is `passed` (not `completed`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Enrollment status with `history[]` |\n| `404` | Enrollment ID not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "Returns a dashboard URL to connect an ATS provider in the browser. OAuth and API key setup remain session-only — this does not expose secrets."
           }
         },
         {
-          "name": "Reject enrollment",
+          "name": "Test ATS credentials",
           "request": {
             "method": "POST",
             "header": [
@@ -1571,7 +3785,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/reject/",
+              "raw": "{{base_url}}/api/v1/public/integrations/:provider/test/",
               "host": [
                 "{{base_url}}"
               ],
@@ -1579,1416 +3793,19 @@
                 "api",
                 "v1",
                 "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "reject",
+                "integrations",
+                ":provider",
+                "test",
                 ""
               ],
               "variable": [
                 {
-                  "key": "id",
+                  "key": "provider",
                   "value": ""
                 }
               ]
             },
-            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Hold enrollment",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/hold/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "hold",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Unhold enrollment",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/unhold/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "unhold",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Advance enrollment past current stage",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/advance/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "advance",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Manually advance a candidate past the current stage (board override). Same rules as the dashboard. Scope: `pipelines:write`."
-          }
-        },
-        {
-          "name": "List enrollment notes",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/notes/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "notes",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `pipelines:read`"
-          }
-        },
-        {
-          "name": "Add enrollment note",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/enrollments/:id/notes/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                "enrollments",
-                ":id",
-                "notes",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `pipelines:read`"
-          }
-        },
-        {
-          "name": "Retrieve pipeline detail",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                ":assessment_slug",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Returns pipeline configuration and ordered `stages[]` with linked assessment slugs, plus the owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Pipeline detail |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "Update pipeline metadata or stages",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                ":assessment_slug",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Update `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist — `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`."
-          }
-        },
-        {
-          "name": "Enroll candidate in pipeline",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enroll/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                ":assessment_slug",
-                "enroll",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Atomically enrolls a candidate and creates the stage-one invitation when the first stage is an assessment. **Idempotent:** returns HTTP `200` if the email is already enrolled. If invite quota is exhausted, returns `INVITE_QUOTA_EXCEEDED` and creates neither enrollment nor invite.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | New enrollment |\n| `200` | Candidate already enrolled |\n| `400` | `MISSING_EMAIL` / validation |\n| `403` | `INVITE_QUOTA_EXCEEDED` |\n| `404` | Pipeline slug not found |\n| `409` | `ALREADY_INVITED` for stage-one assessment |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"ada@example.com\",\n  \"name\": \"Ada Lovelace\",\n  \"send_email\": true\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
-        },
-        {
-          "name": "Bulk enroll candidates",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enroll/bulk/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                ":assessment_slug",
-                "enroll",
-                "bulk",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Bulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        },
-        {
-          "name": "List pipeline enrollments",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/pipelines/:assessment_slug/enrollments/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "pipelines",
-                ":assessment_slug",
-                "enrollments",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "assessment_slug",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Lists enrollments for a pipeline with optional `status` filter. Paginated.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated enrollments |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Jobs",
-      "item": [
-        {
-          "name": "List job openings",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "\n\n> **Required scope:** `jobs:read`"
-          }
-        },
-        {
-          "name": "Create job opening",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Create a draft job. Requires `team_id` (alias `squad_id`). Required scope: `jobs:write`. Empty API key scopes = full access."
-          }
-        },
-        {
-          "name": "Retrieve job opening",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:read`"
-          }
-        },
-        {
-          "name": "Update job opening",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/update/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "update",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:write`"
-          }
-        },
-        {
-          "name": "Publish job opening",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/publish/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "publish",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:write`"
-          }
-        },
-        {
-          "name": "Close job opening",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/close/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "close",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:write`"
-          }
-        },
-        {
-          "name": "List job application fields",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/fields/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "fields",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "List job application fields"
-          }
-        },
-        {
-          "name": "Create job application field",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/fields/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "fields",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Create job application field"
-          }
-        },
-        {
-          "name": "List knockout rules",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/knockout-rules/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "knockout-rules",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "List knockout rules"
-          }
-        },
-        {
-          "name": "Replace knockout rules",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/knockout-rules/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "knockout-rules",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Replace knockout rules"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Screening",
-      "item": [
-        {
-          "name": "List job L3 requirements",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/requirements/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "requirements",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:read`"
-          }
-        },
-        {
-          "name": "Replace job L3 requirements",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/jobs/:key/requirements/replace/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "jobs",
-                ":key",
-                "requirements",
-                "replace",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "key",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `jobs:write`"
-          }
-        },
-        {
-          "name": "Get application screening result",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/screening/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "screening",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:read`"
-          }
-        },
-        {
-          "name": "Re-run screening",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/screening/rerun/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "screening",
-                "rerun",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `screening:write`"
-          }
-        },
-        {
-          "name": "Hold application",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/hold/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "hold",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:write`"
-          }
-        },
-        {
-          "name": "Unhold application",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/unhold/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "unhold",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:write`"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Applications",
-      "item": [
-        {
-          "name": "List applications",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "\n\n> **Required scope:** `applications:read`"
-          }
-        },
-        {
-          "name": "Create application",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Submit an application via the same path as careers (`submit_application`). Requires an open job (`job_id` or `job_slug`). Source is set to `public_api`. Required scope: `applications:write`."
-          }
-        },
-        {
-          "name": "Retrieve application",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:read`"
-          }
-        },
-        {
-          "name": "Advance application",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/advance/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "advance",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:write`"
-          }
-        },
-        {
-          "name": "Reject application",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/applications/:application_id/reject/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "applications",
-                ":application_id",
-                "reject",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "application_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `applications:write`"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Profiles",
-      "item": [
-        {
-          "name": "List candidate profiles",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "\n\n> **Required scope:** `profiles:read`"
-          }
-        },
-        {
-          "name": "Get candidate profile",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Get candidate profile"
-          }
-        },
-        {
-          "name": "Update candidate profile",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Update candidate profile"
-          }
-        },
-        {
-          "name": "List candidate notes",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/notes/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "notes",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "List candidate notes"
-          }
-        },
-        {
-          "name": "Add candidate note",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/notes/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "notes",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Add candidate note"
-          }
-        },
-        {
-          "name": "List candidate tags",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/tags/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "tags",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "List candidate tags"
-          }
-        },
-        {
-          "name": "Replace candidate tags",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/tags/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "tags",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Replace candidate tags"
-          }
-        },
-        {
-          "name": "List candidate scorecards",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/scorecards/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "scorecards",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "List candidate scorecards"
-          }
-        },
-        {
-          "name": "Create candidate scorecard",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/scorecards/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "scorecards",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Create candidate scorecard"
-          }
-        },
-        {
-          "name": "Merge candidate profiles",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/candidates/:candidate_id/merge/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "candidates",
-                ":candidate_id",
-                "merge",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "candidate_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "\n\n> **Required scope:** `profiles:write`"
+            "description": "Verify stored credentials for a connected provider. Does not accept or return secrets."
           }
         }
       ]
@@ -3328,106 +4145,6 @@
       ]
     },
     {
-      "name": "Public API — Integrations",
-      "item": [
-        {
-          "name": "List ATS integration status",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/integrations/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "integrations",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Read-only view of connected ATS providers and inbound webhook URLs. Credential management stays in the Assess dashboard."
-          }
-        },
-        {
-          "name": "Get ATS connect URL",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/integrations/:provider/connect/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "integrations",
-                ":provider",
-                "connect",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "provider",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Returns a dashboard URL to connect an ATS provider in the browser. OAuth and API key setup remain session-only — this does not expose secrets."
-          }
-        },
-        {
-          "name": "Test ATS credentials",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/integrations/:provider/test/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "integrations",
-                ":provider",
-                "test",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "provider",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Verify stored credentials for a connected provider. Does not accept or return secrets."
-          }
-        }
-      ]
-    },
-    {
       "name": "Public API — Assistant",
       "item": [
         {
@@ -3456,514 +4173,6 @@
               "variable": []
             },
             "description": "One chat-completion turn for the Assess CLI assistant (Ask AI). Authenticated with an organisation API key. Requires Starter+ (`capabilities.cli_assistant`) and scope `assistant:write` (empty scopes = full access).\n\nOptional OpenAI-format `tools` enable a client-side tool loop (MCP). Dedicated throttle scope `public_api_assistant` (default 30/hour) — separate from public write quotas."
-          }
-        }
-      ]
-    },
-    {
-      "name": "Public API — Interviews",
-      "item": [
-        {
-          "name": "List interviews",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "List interviews"
-          }
-        },
-        {
-          "name": "Create interview",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Create interview"
-          }
-        },
-        {
-          "name": "Bulk create interviews",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/bulk/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "bulk",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Bulk create interviews"
-          }
-        },
-        {
-          "name": "Interview analytics",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/analytics/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "analytics",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Interview analytics"
-          }
-        },
-        {
-          "name": "List org coding tasks for interviews",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/org-tasks/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "org-tasks",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "List org coding tasks for interviews"
-          }
-        },
-        {
-          "name": "List interview templates",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/templates/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "templates",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "List interview templates"
-          }
-        },
-        {
-          "name": "Create interview template",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/templates/create/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "templates",
-                "create",
-                ""
-              ],
-              "variable": []
-            },
-            "description": "Create interview template"
-          }
-        },
-        {
-          "name": "Retrieve interview template",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "templates",
-                ":template_id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "template_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Retrieve interview template"
-          }
-        },
-        {
-          "name": "Update interview template",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/update/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "templates",
-                ":template_id",
-                "update",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "template_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Update interview template"
-          }
-        },
-        {
-          "name": "Delete interview template",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/templates/:template_id/delete/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                "templates",
-                ":template_id",
-                "delete",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "template_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Delete interview template"
-          }
-        },
-        {
-          "name": "Retrieve interview",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Retrieve interview"
-          }
-        },
-        {
-          "name": "Cancel interview",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/cancel/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                "cancel",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Cancel interview"
-          }
-        },
-        {
-          "name": "Reschedule interview",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/reschedule/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                "reschedule",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Reschedule interview"
-          }
-        },
-        {
-          "name": "Get interview analysis",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/analysis/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                "analysis",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Get interview analysis"
-          }
-        },
-        {
-          "name": "Get interview replay",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/replay/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                "replay",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Get interview replay"
-          }
-        },
-        {
-          "name": "Create interview share link",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/v1/public/interviews/:room_id/share/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "public",
-                "interviews",
-                ":room_id",
-                "share",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "room_id",
-                  "value": ""
-                }
-              ]
-            },
-            "description": "Create interview share link"
           }
         }
       ]

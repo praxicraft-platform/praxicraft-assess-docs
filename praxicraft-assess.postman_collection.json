@@ -313,6 +313,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -336,7 +340,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `jobs:write`\n\nAtomically replaces all knockout rules for the job with the provided list.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | New rule set |\n| `400` | `VALIDATION_ERROR` | Invalid rule payload |\n| `404` | — | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `jobs:write`\n\nAtomically replaces all knockout rules for the job with the provided list.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | New rule set |\n| `400` | `VALIDATION_ERROR` | Invalid rule payload |\n| `404` | — | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rules\": [\n    {\n      \"field_id\": \"f1111111-1111-1111-1111-111111111111\",\n      \"operator\": \"lt\",\n      \"value_text\": \"2\",\n      \"on_fail\": \"reject\",\n      \"sort_order\": 0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -594,6 +607,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -617,7 +634,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `applications:write`\n\nPuts an application on hold so it is excluded from normal advance flows until unheld.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | On hold |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `applications:write`\n\nPuts an application on hold so it is excluded from normal advance flows until unheld.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | On hold |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Waiting on manager\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1064,6 +1090,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1086,7 +1116,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `profiles:write`\n\nPartially updates CRM fields on a candidate profile (name, links, archive flags, etc.).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated profile |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `profiles:write`\n\nPartially updates CRM fields on a candidate profile (name, links, archive flags, etc.).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated profile |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ada Lovelace\",\n  \"phone\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1096,6 +1135,10 @@
             "header": [
               {
                 "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
                 "value": "application/json"
               }
             ],
@@ -1120,7 +1163,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `profiles:write`\n\nMerges a duplicate candidate profile into a primary profile and retires the duplicate.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Merge complete |\n| `400` | `VALIDATION_ERROR` | Invalid ids |\n| `404` | — | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `profiles:write`\n\nMerges a duplicate candidate profile into a primary profile and retires the duplicate.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | — | Merge complete |\n| `400` | `VALIDATION_ERROR` | Invalid ids |\n| `404` | — | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_id\": \"d4e5f6a7-b8c9-0123-def0-345678901234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1246,6 +1298,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1269,7 +1325,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `profiles:write`\n\nCreates a scorecard entry (ratings + free text) on the candidate profile.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Scorecard created |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `profiles:write`\n\nCreates a scorecard entry (ratings + free text) on the candidate profile.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Scorecard created |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"criteria\": [\n    {\n      \"name\": \"SQL\",\n      \"score\": 4.5\n    },\n    {\n      \"name\": \"Communication\",\n      \"score\": 4\n    }\n  ],\n  \"total\": 4.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1393,6 +1458,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1410,7 +1479,16 @@
               ],
               "variable": []
             },
-            "description": "> **Required scope:** `pipelines:write`\n\nCreate a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`."
+            "description": "> **Required scope:** `pipelines:write`\n\nCreate a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Data Engineer Hiring\",\n  \"description\": \"Assessment, interview, and offer stages.\",\n  \"stages\": [\n    {\n      \"stage_type\": \"assessment\",\n      \"assessment_slug\": \"senior-backend-screen\",\n      \"label\": \"Technical screen\"\n    },\n    {\n      \"stage_type\": \"interview\",\n      \"label\": \"Live interview\"\n    },\n    {\n      \"stage_type\": \"manual_review\",\n      \"label\": \"Hiring manager review\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1560,6 +1638,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1584,7 +1666,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `pipelines:read`"
+            "description": "> **Required scope:** `pipelines:read`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Strong follow-up after assessment.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1594,6 +1685,10 @@
             "header": [
               {
                 "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
                 "value": "application/json"
               }
             ],
@@ -1619,7 +1714,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `pipelines:write`\n\nManual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `pipelines:write`\n\nManual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Did not meet bar on technical screen\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1698,6 +1802,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1720,7 +1828,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `pipelines:read`\n\nUpdate `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist — `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`."
+            "description": "> **Required scope:** `pipelines:read`\n\nUpdate `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist — `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior DE hiring (v2)\",\n  \"description\": \"Updated funnel\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -1778,6 +1895,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -1802,7 +1923,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `pipelines:write`\n\nBulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |"
+            "description": "> **Required scope:** `pipelines:write`\n\nBulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded — plan-tiered reads/writes per organisation per hour |",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"candidates\": [\n    {\n      \"email\": \"ada@example.com\",\n      \"name\": \"Ada Lovelace\"\n    },\n    {\n      \"email\": \"grace@example.com\",\n      \"name\": \"Grace Hopper\"\n    }\n  ],\n  \"send_email\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -3304,6 +3434,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -3320,7 +3454,16 @@
               ],
               "variable": []
             },
-            "description": "> **Required scope:** `organisation:write`\n\nAllowlisted fields only: `name`, `notify_on_candidate_completion`. Org-global (not Live/Test scoped). Rejects unknown fields with `400`. Requires `organisation:write`."
+            "description": "> **Required scope:** `organisation:write`\n\nAllowlisted fields only: `name`, `notify_on_candidate_completion`. Org-global (not Live/Test scoped). Rejects unknown fields with `400`. Requires `organisation:write`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Corporation\",\n  \"notify_on_candidate_completion\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -3501,6 +3644,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -3518,7 +3665,16 @@
               ],
               "variable": []
             },
-            "description": "> **Required scope:** `organisation:write`\n\nGrowth+. Requires `organisation:write`. Body: `{ \"name\": \"...\" }`."
+            "description": "> **Required scope:** `organisation:write`\n\nGrowth+. Requires `organisation:write`. Body: `{ \"name\": \"...\" }`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Data Platform\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -3563,6 +3719,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -3586,7 +3746,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `organisation:write`"
+            "description": "> **Required scope:** `organisation:write`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Data Platform\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -3666,6 +3835,10 @@
               {
                 "key": "Accept",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -3690,7 +3863,16 @@
                 }
               ]
             },
-            "description": "> **Required scope:** `organisation:write`"
+            "description": "> **Required scope:** `organisation:write`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"u1111111-1111-1111-1111-111111111111\",\n  \"role\": \"member\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {

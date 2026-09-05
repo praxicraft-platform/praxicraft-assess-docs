@@ -1045,6 +1045,42 @@
         "tags": [
           "Public API \u2014 Jobs"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobKnockoutReplaceRequestRequest"
+              },
+              "examples": {
+                "ReplaceKnockoutRules": {
+                  "value": {
+                    "rules": [
+                      {
+                        "field_id": "f1111111-1111-1111-1111-111111111111",
+                        "operator": "lt",
+                        "value_text": "2",
+                        "on_fail": "reject",
+                        "sort_order": 0
+                      }
+                    ]
+                  },
+                  "summary": "Replace knockout rules"
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobKnockoutReplaceRequestRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobKnockoutReplaceRequestRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "security": [
           {
             "bearerAuth": []
@@ -2297,6 +2333,33 @@
         "tags": [
           "Public API \u2014 Screening"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationHoldRequestRequest"
+              },
+              "examples": {
+                "HoldApplication": {
+                  "value": {
+                    "reason": "Waiting on manager"
+                  },
+                  "summary": "Hold application"
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationHoldRequestRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationHoldRequestRequest"
+              }
+            }
+          }
+        },
         "security": [
           {
             "bearerAuth": []
@@ -2310,6 +2373,15 @@
                   "type": "object",
                   "additionalProperties": {},
                   "description": "Unspecified response body"
+                },
+                "examples": {
+                  "ApplicationOnHold": {
+                    "value": {
+                      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                      "status": "on_hold"
+                    },
+                    "summary": "Application on hold"
+                  }
                 }
               }
             },
@@ -2700,6 +2772,15 @@
                   "type": "object",
                   "additionalProperties": {},
                   "description": "Unspecified response body"
+                },
+                "examples": {
+                  "ApplicationUnheld": {
+                    "value": {
+                      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                      "status": "in_review"
+                    },
+                    "summary": "Application unheld"
+                  }
                 }
               }
             },
@@ -4018,6 +4099,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PatchedOrgCandidatePatchRequest"
+              },
+              "examples": {
+                "UpdateCandidateProfile": {
+                  "value": {
+                    "full_name": "Ada Lovelace",
+                    "phone": ""
+                  },
+                  "summary": "Update candidate profile"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -4156,6 +4246,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/OrgCandidateMergeRequest"
+              },
+              "examples": {
+                "MergeDuplicateProfile": {
+                  "value": {
+                    "source_id": "d4e5f6a7-b8c9-0123-def0-345678901234"
+                  },
+                  "summary": "Merge duplicate profile"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -4182,6 +4280,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrgCandidateDetail"
+                },
+                "examples": {
+                  "CandidateProfile": {
+                    "value": {
+                      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+                      "email": "ada@example.com",
+                      "full_name": "Ada Lovelace",
+                      "phone": "",
+                      "linkedin_url": "",
+                      "tags": [
+                        "strong-sql"
+                      ],
+                      "notes": [],
+                      "scorecards": [],
+                      "archived_at": null,
+                      "created_at": "2026-09-02T11:20:00Z",
+                      "updated_at": "2026-09-02T11:20:00Z"
+                    },
+                    "summary": "Candidate profile"
+                  }
                 }
               }
             },
@@ -4202,6 +4320,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4270,6 +4399,19 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrgCandidateNote"
+                },
+                "examples": {
+                  "CandidateNotes": {
+                    "value": [
+                      {
+                        "id": "n1111111-1111-1111-1111-111111111111",
+                        "author_id": null,
+                        "body": "Great communication in screen.",
+                        "created_at": "2026-09-03T10:00:00Z"
+                      }
+                    ],
+                    "summary": "Candidate notes"
+                  }
                 }
               }
             },
@@ -4290,6 +4432,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4384,6 +4537,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrgCandidateNote"
+                },
+                "examples": {
+                  "NoteCreated": {
+                    "value": {
+                      "id": "n1111111-1111-1111-1111-111111111111",
+                      "author_id": null,
+                      "body": "Great communication in screen.",
+                      "created_at": "2026-09-03T10:00:00Z"
+                    },
+                    "summary": "Note created"
+                  }
                 }
               }
             },
@@ -4483,6 +4647,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrgCandidateScorecard"
+                },
+                "examples": {
+                  "CandidateScorecards": {
+                    "value": [
+                      {
+                        "id": "sc111111-1111-1111-1111-111111111111",
+                        "author_id": null,
+                        "application_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                        "assessment_id": null,
+                        "criteria": [
+                          {
+                            "name": "SQL",
+                            "score": 4.5
+                          },
+                          {
+                            "name": "Communication",
+                            "score": 4.0
+                          }
+                        ],
+                        "total": "4.25",
+                        "created_at": "2026-09-03T11:00:00Z",
+                        "updated_at": "2026-09-03T11:00:00Z"
+                      }
+                    ],
+                    "summary": "Candidate scorecards"
+                  }
                 }
               }
             },
@@ -4503,6 +4693,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4563,6 +4764,24 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/OrgCandidateScorecardCreateRequest"
+              },
+              "examples": {
+                "CreateScorecard": {
+                  "value": {
+                    "criteria": [
+                      {
+                        "name": "SQL",
+                        "score": 4.5
+                      },
+                      {
+                        "name": "Communication",
+                        "score": 4.0
+                      }
+                    ],
+                    "total": 4.5
+                  },
+                  "summary": "Create scorecard"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -4588,6 +4807,30 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrgCandidateScorecard"
+                },
+                "examples": {
+                  "ScorecardCreated": {
+                    "value": {
+                      "id": "sc111111-1111-1111-1111-111111111111",
+                      "author_id": null,
+                      "application_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                      "assessment_id": null,
+                      "criteria": [
+                        {
+                          "name": "SQL",
+                          "score": 4.5
+                        },
+                        {
+                          "name": "Communication",
+                          "score": 4.0
+                        }
+                      ],
+                      "total": "4.25",
+                      "created_at": "2026-09-03T11:00:00Z",
+                      "updated_at": "2026-09-03T11:00:00Z"
+                    },
+                    "summary": "Scorecard created"
+                  }
                 }
               }
             },
@@ -4608,6 +4851,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4676,6 +4930,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicCandidateTagsResponse"
+                },
+                "examples": {
+                  "CandidateTags": {
+                    "value": {
+                      "tags": [
+                        "strong-sql",
+                        "pipeline"
+                      ]
+                    },
+                    "summary": "Candidate tags"
+                  }
                 }
               }
             },
@@ -4696,6 +4961,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4793,6 +5069,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicCandidateTagsPutResponse"
+                },
+                "examples": {
+                  "CandidateTags": {
+                    "value": {
+                      "tags": [
+                        "strong-sql",
+                        "pipeline"
+                      ]
+                    },
+                    "summary": "Candidate tags"
+                  }
                 }
               }
             },
@@ -4915,6 +5202,28 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineListPage"
+                },
+                "examples": {
+                  "Pipelines": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": "p1111111-1111-1111-1111-111111111111",
+                          "title": "Senior Data Engineer Hiring",
+                          "slug": "senior-de-hiring",
+                          "description": "Assessment, interview, and offer stages.",
+                          "stage_count": 2,
+                          "team_id": null,
+                          "team_slug": null,
+                          "livemode": true,
+                          "created_at": "2026-08-01T09:00:00Z",
+                          "updated_at": "2026-08-15T12:00:00Z"
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -4935,6 +5244,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -4986,6 +5306,30 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicPipelineCreateRequestRequest"
+              },
+              "examples": {
+                "CreatePipeline": {
+                  "value": {
+                    "title": "Senior Data Engineer Hiring",
+                    "description": "Assessment, interview, and offer stages.",
+                    "stages": [
+                      {
+                        "stage_type": "assessment",
+                        "assessment_slug": "senior-backend-screen",
+                        "label": "Technical screen"
+                      },
+                      {
+                        "stage_type": "interview",
+                        "label": "Live interview"
+                      },
+                      {
+                        "stage_type": "manual_review",
+                        "label": "Hiring manager review"
+                      }
+                    ]
+                  },
+                  "summary": "Create pipeline"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -5012,6 +5356,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineDetailResponse"
+                },
+                "examples": {
+                  "PipelineDetail": {
+                    "value": {
+                      "id": "p1111111-1111-1111-1111-111111111111",
+                      "slug": "senior-de-hiring",
+                      "title": "Senior Data Engineer Hiring",
+                      "description": "Assessment, interview, and offer stages.",
+                      "livemode": true,
+                      "team_id": null,
+                      "team_slug": null,
+                      "created_at": "2026-08-01T09:00:00Z",
+                      "stages": [
+                        {
+                          "id": "st111111-1111-1111-1111-111111111111",
+                          "stage_type": "assessment",
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "assessment_slug": "senior-backend-screen",
+                          "interview_template_id": null,
+                          "interview_template_name": null,
+                          "label": "Technical screen",
+                          "order": 0,
+                          "pass_score_override": null
+                        }
+                      ]
+                    },
+                    "summary": "Pipeline detail"
+                  }
                 }
               }
             },
@@ -5032,6 +5404,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5100,6 +5483,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentStatusResponse"
+                },
+                "examples": {
+                  "EnrollmentStatus": {
+                    "value": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "pipeline_title": "Senior Data Engineer Hiring",
+                      "pipeline_slug": "senior-de-hiring",
+                      "email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "In progress",
+                      "status_code": "in_progress",
+                      "current_stage": 0,
+                      "reject_reason": "",
+                      "history": [
+                        {
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "status": "pending",
+                          "score": null,
+                          "passed": null,
+                          "completed_at": null
+                        }
+                      ],
+                      "enrolled_at": "2026-09-02T12:00:00Z",
+                      "completed_at": null
+                    },
+                    "summary": "Enrollment status"
+                  }
                 }
               }
             },
@@ -5120,6 +5530,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5188,6 +5609,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentStatusResponse"
+                },
+                "examples": {
+                  "EnrollmentStatus": {
+                    "value": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "pipeline_title": "Senior Data Engineer Hiring",
+                      "pipeline_slug": "senior-de-hiring",
+                      "email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "In progress",
+                      "status_code": "in_progress",
+                      "current_stage": 0,
+                      "reject_reason": "",
+                      "history": [
+                        {
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "status": "pending",
+                          "score": null,
+                          "passed": null,
+                          "completed_at": null
+                        }
+                      ],
+                      "enrolled_at": "2026-09-02T12:00:00Z",
+                      "completed_at": null
+                    },
+                    "summary": "Enrollment status"
+                  }
                 }
               }
             },
@@ -5208,6 +5656,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5276,6 +5735,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentStatusResponse"
+                },
+                "examples": {
+                  "EnrollmentStatus": {
+                    "value": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "pipeline_title": "Senior Data Engineer Hiring",
+                      "pipeline_slug": "senior-de-hiring",
+                      "email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "In progress",
+                      "status_code": "in_progress",
+                      "current_stage": 0,
+                      "reject_reason": "",
+                      "history": [
+                        {
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "status": "pending",
+                          "score": null,
+                          "passed": null,
+                          "completed_at": null
+                        }
+                      ],
+                      "enrolled_at": "2026-09-02T12:00:00Z",
+                      "completed_at": null
+                    },
+                    "summary": "Enrollment status"
+                  }
                 }
               }
             },
@@ -5296,6 +5782,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5364,6 +5861,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineNotesPage"
+                },
+                "examples": {
+                  "EnrollmentNotes": {
+                    "value": {
+                      "results": [
+                        {
+                          "id": "pn111111-1111-1111-1111-111111111111",
+                          "body": "Strong follow-up after assessment.",
+                          "created_at": "2026-09-04T10:00:00Z",
+                          "author_email": "recruiter@acme.com"
+                        }
+                      ]
+                    },
+                    "summary": "Enrollment notes"
+                  }
                 }
               }
             },
@@ -5384,6 +5896,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5444,6 +5967,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicPipelineNoteCreateRequest"
+              },
+              "examples": {
+                "AddEnrollmentNote": {
+                  "value": {
+                    "body": "Strong follow-up after assessment."
+                  },
+                  "summary": "Add enrollment note"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -5470,6 +6001,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineNote"
+                },
+                "examples": {
+                  "EnrollmentNoteCreated": {
+                    "value": {
+                      "id": "pn111111-1111-1111-1111-111111111111",
+                      "body": "Strong follow-up after assessment.",
+                      "created_at": "2026-09-04T10:00:00Z"
+                    },
+                    "summary": "Enrollment note created"
+                  }
                 }
               }
             },
@@ -5490,6 +6031,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5552,6 +6104,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicPipelineRejectRequestRequest"
+              },
+              "examples": {
+                "RejectEnrollment": {
+                  "value": {
+                    "reason": "Did not meet bar on technical screen"
+                  },
+                  "summary": "Reject enrollment"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -5577,6 +6137,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentStatusResponse"
+                },
+                "examples": {
+                  "EnrollmentStatus": {
+                    "value": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "pipeline_title": "Senior Data Engineer Hiring",
+                      "pipeline_slug": "senior-de-hiring",
+                      "email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "In progress",
+                      "status_code": "in_progress",
+                      "current_stage": 0,
+                      "reject_reason": "",
+                      "history": [
+                        {
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "status": "pending",
+                          "score": null,
+                          "passed": null,
+                          "completed_at": null
+                        }
+                      ],
+                      "enrolled_at": "2026-09-02T12:00:00Z",
+                      "completed_at": null
+                    },
+                    "summary": "Enrollment status"
+                  }
                 }
               }
             },
@@ -5597,6 +6184,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5665,6 +6263,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentStatusResponse"
+                },
+                "examples": {
+                  "EnrollmentStatus": {
+                    "value": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "pipeline_title": "Senior Data Engineer Hiring",
+                      "pipeline_slug": "senior-de-hiring",
+                      "email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "In progress",
+                      "status_code": "in_progress",
+                      "current_stage": 0,
+                      "reject_reason": "",
+                      "history": [
+                        {
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "status": "pending",
+                          "score": null,
+                          "passed": null,
+                          "completed_at": null
+                        }
+                      ],
+                      "enrolled_at": "2026-09-02T12:00:00Z",
+                      "completed_at": null
+                    },
+                    "summary": "Enrollment status"
+                  }
                 }
               }
             },
@@ -5685,6 +6310,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5752,6 +6388,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineDetailResponse"
+                },
+                "examples": {
+                  "PipelineDetail": {
+                    "value": {
+                      "id": "p1111111-1111-1111-1111-111111111111",
+                      "slug": "senior-de-hiring",
+                      "title": "Senior Data Engineer Hiring",
+                      "description": "Assessment, interview, and offer stages.",
+                      "livemode": true,
+                      "team_id": null,
+                      "team_slug": null,
+                      "created_at": "2026-08-01T09:00:00Z",
+                      "stages": [
+                        {
+                          "id": "st111111-1111-1111-1111-111111111111",
+                          "stage_type": "assessment",
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "assessment_slug": "senior-backend-screen",
+                          "interview_template_id": null,
+                          "interview_template_name": null,
+                          "label": "Technical screen",
+                          "order": 0,
+                          "pass_score_override": null
+                        }
+                      ]
+                    },
+                    "summary": "Pipeline detail"
+                  }
                 }
               }
             },
@@ -5772,6 +6436,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5831,6 +6506,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PatchedPublicPipelinePatchRequestRequest"
+              },
+              "examples": {
+                "RenamePipeline": {
+                  "value": {
+                    "title": "Senior DE hiring (v2)",
+                    "description": "Updated funnel"
+                  },
+                  "summary": "Rename pipeline"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -5856,6 +6540,34 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineDetailResponse"
+                },
+                "examples": {
+                  "PipelineDetail": {
+                    "value": {
+                      "id": "p1111111-1111-1111-1111-111111111111",
+                      "slug": "senior-de-hiring",
+                      "title": "Senior Data Engineer Hiring",
+                      "description": "Assessment, interview, and offer stages.",
+                      "livemode": true,
+                      "team_id": null,
+                      "team_slug": null,
+                      "created_at": "2026-08-01T09:00:00Z",
+                      "stages": [
+                        {
+                          "id": "st111111-1111-1111-1111-111111111111",
+                          "stage_type": "assessment",
+                          "assessment_title": "Senior Backend Engineer Screen",
+                          "assessment_slug": "senior-backend-screen",
+                          "interview_template_id": null,
+                          "interview_template_name": null,
+                          "label": "Technical screen",
+                          "order": 0,
+                          "pass_score_override": null
+                        }
+                      ]
+                    },
+                    "summary": "Pipeline detail"
+                  }
                 }
               }
             },
@@ -5876,6 +6588,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -5937,6 +6660,16 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicPipelineEnrollRequestRequest"
+              },
+              "examples": {
+                "EnrollCandidate": {
+                  "value": {
+                    "email": "ada@example.com",
+                    "name": "Ada Lovelace",
+                    "send_email": true
+                  },
+                  "summary": "Enroll candidate"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -6098,6 +6831,24 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicPipelineBulkEnrollRequestRequest"
+              },
+              "examples": {
+                "BulkEnrollCandidates": {
+                  "value": {
+                    "candidates": [
+                      {
+                        "email": "ada@example.com",
+                        "name": "Ada Lovelace"
+                      },
+                      {
+                        "email": "grace@example.com",
+                        "name": "Grace Hopper"
+                      }
+                    ],
+                    "send_email": true
+                  },
+                  "summary": "Bulk enroll candidates"
+                }
               }
             },
             "multipart/form-data": {
@@ -6123,6 +6874,29 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineBulkEnrollResponse"
+                },
+                "examples": {
+                  "BulkEnrollResult": {
+                    "value": {
+                      "enrolled": [
+                        {
+                          "email": "ada@example.com",
+                          "enrollment_id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890"
+                        }
+                      ],
+                      "skipped": [
+                        {
+                          "email": "grace@example.com",
+                          "reason": "already_enrolled"
+                        }
+                      ],
+                      "errors": [],
+                      "enrolled_count": 1,
+                      "skipped_count": 1,
+                      "error_count": 0
+                    },
+                    "summary": "Bulk enroll result"
+                  }
                 }
               }
             },
@@ -6143,6 +6917,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6234,6 +7019,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentListPage"
+                },
+                "examples": {
+                  "PipelineEnrollments": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                          "email": "ada@example.com",
+                          "candidate_name": "Ada Lovelace",
+                          "status": "In progress",
+                          "status_code": "in_progress",
+                          "current_stage": 0,
+                          "enrolled_at": "2026-09-02T12:00:00Z"
+                        }
+                      ]
+                    },
+                    "summary": "Pipeline enrollments"
+                  }
                 }
               }
             },
@@ -6254,6 +7059,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6493,6 +7309,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicAssessmentCreateRequestRequest"
+              },
+              "examples": {
+                "CreateAssessment": {
+                  "value": {
+                    "title": "Senior Backend Engineer Screen",
+                    "description": "A 3-task technical screen.",
+                    "time_limit_minutes": 90,
+                    "passing_score": 70
+                  },
+                  "summary": "Create assessment"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -6519,6 +7346,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentDetail"
+                },
+                "examples": {
+                  "AssessmentDetail": {
+                    "value": {
+                      "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                      "title": "Senior Backend Engineer Screen",
+                      "slug": "senior-backend-screen",
+                      "description": "A 3-task technical screen.",
+                      "status": "active",
+                      "task_count": 3,
+                      "time_limit_minutes": 90,
+                      "passing_score": 70,
+                      "invitation_count": 12,
+                      "enforce_fullscreen": true,
+                      "copy_paste_disabled": false,
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "updated_at": "2025-03-20T14:30:00Z"
+                    },
+                    "summary": "Assessment detail"
+                  }
                 }
               }
             },
@@ -6539,6 +7386,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6606,6 +7464,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentDetail"
+                },
+                "examples": {
+                  "AssessmentDetail": {
+                    "value": {
+                      "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                      "title": "Senior Backend Engineer Screen",
+                      "slug": "senior-backend-screen",
+                      "description": "A 3-task technical screen.",
+                      "status": "active",
+                      "task_count": 3,
+                      "time_limit_minutes": 90,
+                      "passing_score": 70,
+                      "invitation_count": 12,
+                      "enforce_fullscreen": true,
+                      "copy_paste_disabled": false,
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "updated_at": "2025-03-20T14:30:00Z"
+                    },
+                    "summary": "Assessment detail"
+                  }
                 }
               }
             },
@@ -6626,6 +7504,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6712,6 +7601,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentDetail"
+                },
+                "examples": {
+                  "AssessmentDetail": {
+                    "value": {
+                      "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                      "title": "Senior Backend Engineer Screen",
+                      "slug": "senior-backend-screen",
+                      "description": "A 3-task technical screen.",
+                      "status": "active",
+                      "task_count": 3,
+                      "time_limit_minutes": 90,
+                      "passing_score": 70,
+                      "invitation_count": 12,
+                      "enforce_fullscreen": true,
+                      "copy_paste_disabled": false,
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "updated_at": "2025-03-20T14:30:00Z"
+                    },
+                    "summary": "Assessment detail"
+                  }
                 }
               }
             },
@@ -6732,6 +7641,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6815,6 +7735,28 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentCasePage"
+                },
+                "examples": {
+                  "AssessmentTasks": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "assessment_task_id": "at111111-1111-1111-1111-111111111111",
+                          "id": "t1111111-1111-1111-1111-111111111111",
+                          "title": "SQL warehouse joins",
+                          "description": "Join fact and dim tables for a daily report.",
+                          "type": "platform",
+                          "task_type": "sql",
+                          "difficulty": "intermediate",
+                          "order": 0,
+                          "points": 100
+                        }
+                      ]
+                    },
+                    "summary": "Assessment tasks"
+                  }
                 }
               }
             },
@@ -6835,6 +7777,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -6896,6 +7849,20 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicAssessmentCasesWriteRequestRequest"
+              },
+              "examples": {
+                "AttachOrReplaceTasks": {
+                  "value": {
+                    "tasks": [
+                      {
+                        "task_id": "t1111111-1111-1111-1111-111111111111",
+                        "source": "platform",
+                        "order": 0
+                      }
+                    ]
+                  },
+                  "summary": "Attach or replace tasks"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -6922,6 +7889,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentCaseItem"
+                },
+                "examples": {
+                  "AttachedTask": {
+                    "value": {
+                      "assessment_task_id": "at111111-1111-1111-1111-111111111111",
+                      "id": "t1111111-1111-1111-1111-111111111111",
+                      "title": "SQL warehouse joins",
+                      "description": "Join fact and dim tables for a daily report.",
+                      "type": "platform",
+                      "task_type": "sql",
+                      "difficulty": "intermediate",
+                      "order": 0,
+                      "points": 100
+                    },
+                    "summary": "Attached task"
+                  }
                 }
               }
             },
@@ -6942,6 +7925,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -7073,6 +8067,20 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicAssessmentCasesWriteRequestRequest"
+              },
+              "examples": {
+                "AttachOrReplaceTasks": {
+                  "value": {
+                    "tasks": [
+                      {
+                        "task_id": "t1111111-1111-1111-1111-111111111111",
+                        "source": "platform",
+                        "order": 0
+                      }
+                    ]
+                  },
+                  "summary": "Attach or replace tasks"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -7099,6 +8107,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentCaseItem"
+                },
+                "examples": {
+                  "AttachedTask": {
+                    "value": {
+                      "assessment_task_id": "at111111-1111-1111-1111-111111111111",
+                      "id": "t1111111-1111-1111-1111-111111111111",
+                      "title": "SQL warehouse joins",
+                      "description": "Join fact and dim tables for a daily report.",
+                      "type": "platform",
+                      "task_type": "sql",
+                      "difficulty": "intermediate",
+                      "order": 0,
+                      "points": 100
+                    },
+                    "summary": "Attached task"
+                  }
                 }
               }
             },
@@ -7119,6 +8143,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -7213,6 +8248,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAssessmentDetail"
+                },
+                "examples": {
+                  "AssessmentDetail": {
+                    "value": {
+                      "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+                      "title": "Senior Backend Engineer Screen",
+                      "slug": "senior-backend-screen",
+                      "description": "A 3-task technical screen.",
+                      "status": "active",
+                      "task_count": 3,
+                      "time_limit_minutes": 90,
+                      "passing_score": 70,
+                      "invitation_count": 12,
+                      "enforce_fullscreen": true,
+                      "copy_paste_disabled": false,
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "updated_at": "2025-03-20T14:30:00Z"
+                    },
+                    "summary": "Assessment detail"
+                  }
                 }
               }
             },
@@ -7233,6 +8288,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -7674,6 +8740,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicGlobalInvitePage"
+                },
+                "examples": {
+                  "Invitations": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "invite_token": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                          "email": "ada@example.com",
+                          "name": "Ada Lovelace",
+                          "role": "Senior Data Engineer",
+                          "status": "pending",
+                          "assessment_slug": "senior-backend-screen",
+                          "created_at": "2026-09-02T10:00:00Z",
+                          "expires_at": "2026-09-09T10:00:00Z"
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -7694,6 +8780,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -9392,6 +10489,20 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InterviewRoomDetail"
+                },
+                "examples": {
+                  "InterviewCreated": {
+                    "value": {
+                      "id": "room-abc123",
+                      "candidate_email": "ada@example.com",
+                      "candidate_name": "Ada Lovelace",
+                      "status": "scheduled",
+                      "interview_type": "live",
+                      "scheduled_at": "2026-09-10T14:00:00Z",
+                      "created_at": "2026-09-05T09:00:00Z"
+                    },
+                    "summary": "Interview created"
+                  }
                 }
               }
             },
@@ -10845,6 +11956,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PatchedPublicOrgPatchRequestRequest"
+              },
+              "examples": {
+                "UpdateOrganisationProfile": {
+                  "value": {
+                    "name": "Acme Corporation",
+                    "notify_on_candidate_completion": true
+                  },
+                  "summary": "Update organisation profile"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -10870,6 +11990,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgResponse"
+                },
+                "examples": {
+                  "OrganisationProfile": {
+                    "value": {
+                      "name": "Acme Corp",
+                      "slug": "acme-corp",
+                      "plan": "starter",
+                      "squads_enabled": true,
+                      "invite_limit": 100,
+                      "invites_used": 42,
+                      "invites_remaining": 58,
+                      "meta": {
+                        "plan": "starter",
+                        "invite_limit": 100,
+                        "invites_used": 42,
+                        "invites_remaining": 58
+                      }
+                    },
+                    "summary": "Organisation profile"
+                  }
                 }
               }
             },
@@ -10890,6 +12030,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -11517,6 +12668,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgTeamPage"
+                },
+                "examples": {
+                  "HiringSquads": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": "t1111111-1111-1111-1111-111111111111",
+                          "name": "Data Platform",
+                          "slug": "data-platform",
+                          "member_count": 3,
+                          "created_at": "2026-07-01T09:00:00Z"
+                        }
+                      ]
+                    },
+                    "summary": "Hiring squads"
+                  }
                 }
               }
             },
@@ -11537,6 +12706,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -11586,6 +12766,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicOrgSquadCreateRequestRequest"
+              },
+              "examples": {
+                "CreateHiringSquad": {
+                  "value": {
+                    "name": "Data Platform"
+                  },
+                  "summary": "Create hiring squad"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -11612,6 +12800,18 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgSquadDetail"
+                },
+                "examples": {
+                  "HiringSquad": {
+                    "value": {
+                      "id": "t1111111-1111-1111-1111-111111111111",
+                      "name": "Data Platform",
+                      "slug": "data-platform",
+                      "member_count": 3,
+                      "created_at": "2026-07-01T09:00:00Z"
+                    },
+                    "summary": "Hiring squad"
+                  }
                 }
               }
             },
@@ -11632,6 +12832,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -11700,6 +12911,18 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgSquadDetail"
+                },
+                "examples": {
+                  "HiringSquad": {
+                    "value": {
+                      "id": "t1111111-1111-1111-1111-111111111111",
+                      "name": "Data Platform",
+                      "slug": "data-platform",
+                      "member_count": 3,
+                      "created_at": "2026-07-01T09:00:00Z"
+                    },
+                    "summary": "Hiring squad"
+                  }
                 }
               }
             },
@@ -11720,6 +12943,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -11780,6 +13014,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PatchedPublicOrgSquadPatchRequestRequest"
+              },
+              "examples": {
+                "CreateHiringSquad": {
+                  "value": {
+                    "name": "Data Platform"
+                  },
+                  "summary": "Create hiring squad"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -11805,6 +13047,18 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgSquadDetail"
+                },
+                "examples": {
+                  "HiringSquad": {
+                    "value": {
+                      "id": "t1111111-1111-1111-1111-111111111111",
+                      "name": "Data Platform",
+                      "slug": "data-platform",
+                      "member_count": 3,
+                      "created_at": "2026-07-01T09:00:00Z"
+                    },
+                    "summary": "Hiring squad"
+                  }
                 }
               }
             },
@@ -11825,6 +13079,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -12075,6 +13340,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PublicOrgSquadMemberAddRequestRequest"
+              },
+              "examples": {
+                "AddSquadMember": {
+                  "value": {
+                    "user_id": "u1111111-1111-1111-1111-111111111111",
+                    "role": "member"
+                  },
+                  "summary": "Add squad member"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -12101,6 +13375,18 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgSquadMember"
+                },
+                "examples": {
+                  "SquadMember": {
+                    "value": {
+                      "user_id": "u1111111-1111-1111-1111-111111111111",
+                      "email": "recruiter@acme.com",
+                      "name": "Jane Recruiter",
+                      "role": "member",
+                      "joined_at": "2026-07-02T10:00:00Z"
+                    },
+                    "summary": "Squad member"
+                  }
                 }
               }
             },
@@ -12121,6 +13407,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -12808,6 +14105,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicWebhookListPage"
+                },
+                "examples": {
+                  "Webhooks": {
+                    "value": {
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                          "name": "bright-harbor",
+                          "kind": "https",
+                          "url": "https://api.example.com/webhooks/praxicraft",
+                          "secret_key": "whsec_abc123xyz",
+                          "is_active": false,
+                          "is_verified": false,
+                          "events": [
+                            "assessment.completed",
+                            "candidate.passed",
+                            "webhook.test"
+                          ],
+                          "created_at": "2025-03-01T10:00:00Z",
+                          "last_triggered_at": null,
+                          "failure_count": 0,
+                          "probe_consecutive_failures": 0,
+                          "auto_paused_by_health": false,
+                          "pending_delivery_count": 0
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -12828,6 +14155,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -13053,6 +14391,31 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicWebhookItem"
+                },
+                "examples": {
+                  "WebhookDetail": {
+                    "value": {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "name": "bright-harbor",
+                      "kind": "https",
+                      "url": "https://api.example.com/webhooks/praxicraft",
+                      "secret_key": "whsec_abc123xyz",
+                      "is_active": false,
+                      "is_verified": false,
+                      "events": [
+                        "assessment.completed",
+                        "candidate.passed",
+                        "webhook.test"
+                      ],
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "last_triggered_at": null,
+                      "failure_count": 0,
+                      "probe_consecutive_failures": 0,
+                      "auto_paused_by_health": false,
+                      "pending_delivery_count": 0
+                    },
+                    "summary": "Webhook detail"
+                  }
                 }
               }
             },
@@ -13073,6 +14436,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -13133,6 +14507,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PatchedPublicWebhookRequest"
+              },
+              "examples": {
+                "UpdateWebhook": {
+                  "value": {
+                    "url": "https://hooks.example.com/praxicraft",
+                    "events": [
+                      "application.submitted"
+                    ]
+                  },
+                  "summary": "Update webhook"
+                }
               }
             },
             "application/x-www-form-urlencoded": {
@@ -13158,6 +14543,31 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicWebhookItem"
+                },
+                "examples": {
+                  "WebhookDetail": {
+                    "value": {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "name": "bright-harbor",
+                      "kind": "https",
+                      "url": "https://api.example.com/webhooks/praxicraft",
+                      "secret_key": "whsec_abc123xyz",
+                      "is_active": false,
+                      "is_verified": false,
+                      "events": [
+                        "assessment.completed",
+                        "candidate.passed",
+                        "webhook.test"
+                      ],
+                      "created_at": "2025-03-01T10:00:00Z",
+                      "last_triggered_at": null,
+                      "failure_count": 0,
+                      "probe_consecutive_failures": 0,
+                      "auto_paused_by_health": false,
+                      "pending_delivery_count": 0
+                    },
+                    "summary": "Webhook detail"
+                  }
                 }
               }
             },
@@ -13178,6 +14588,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicAPIErrorBody"
+                },
+                "examples": {
+                  "InvalidAPIKey": {
+                    "value": {
+                      "error": {
+                        "message": "Invalid or revoked API Key.",
+                        "code": "INVALID_API_KEY"
+                      }
+                    },
+                    "summary": "Invalid API key"
+                  }
                 }
               }
             },
@@ -15587,6 +17008,14 @@
           "full_name"
         ]
       },
+      "PublicApplicationHoldRequestRequest": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
       "PublicAssessmentCaseAttachItemNestedRequest": {
         "type": "object",
         "properties": {
@@ -17553,6 +18982,22 @@
           "team",
           "title",
           "updated_at"
+        ]
+      },
+      "PublicJobKnockoutReplaceRequestRequest": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            },
+            "description": "Full replacement list. Each rule needs field_id, operator, value_text."
+          }
+        },
+        "required": [
+          "rules"
         ]
       },
       "PublicJobList": {

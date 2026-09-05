@@ -1,18 +1,33 @@
 ---
 title: "Quickstart"
-description: "Invite your first candidate from the dashboard, or with the Public API in five minutes."
+description: "Post a job or invite a candidate from the dashboard, or call the Public API in minutes."
 ---
 
 Two paths. Pick the one that matches your role.
 
-## Path A: Dashboard only (recruiting / ops) (recruiting / ops)
+## Path A: Dashboard (recruiting / ops)
 
 No API key. No terminal.
+
+### Option 1: Jobs first (recommended)
 
 <Steps>
  <Step title="Sign in to Assess">
  Open the [Assess dashboard](https://assess.praxicraft.com/assess).
  </Step>
+ <Step title="Create a job">
+ Go to [Jobs](https://assess.praxicraft.com/assess/jobs) → **New job**. Pick a hiring squad, write the description, and optionally link an assessment or pipeline.
+ </Step>
+ <Step title="Publish and review applicants">
+ Publish the job. Candidates apply from your careers URL. On the job’s Candidates tab, screen, advance, or reject. Advance sends them toward assessment when configured.
+ </Step>
+</Steps>
+
+Details: [Jobs & applications](/guides/jobs) · [Screening](/guides/screening).
+
+### Option 2: Assessment-only invite
+
+<Steps>
  <Step title="Create or open an assessment">
  Add tasks, set time limit and passing score, then set status to **Active**. Invites fail if the assessment is still a draft.
  </Step>
@@ -20,7 +35,7 @@ No API key. No terminal.
  Use **Invite** on that assessment. Enter email and name. Assess can send the email for you.
  </Step>
  <Step title="Watch for completion">
- When they finish, open **Results** on the assessment. Share the report with the hiring manager from the dashboard.
+ When they finish, open **Results** on the assessment.
  </Step>
 </Steps>
 
@@ -30,19 +45,22 @@ Want Greenhouse, Slack, or spreadsheets to update themselves? Ask an engineer to
 
 ## Path B: Public API (engineers)
 
-Create an API key, list assessments, invite a candidate, and fetch their result.
+Hire in the same order as the product: **jobs → applications**, or skip to assessments if you already source elsewhere.
+
+OpenAPI / ReDoc list **Jobs first**: [API Reference](/guides/api-reference) · [live ReDoc](https://assess.praxicraft.com/api/v1/public/redoc/).
 
 ### Prerequisites
 
 - Organisation on **Starter** or above (Free cannot create API keys)
 - An owner, admin, or [developer](/guides/roles) role (recruiters cannot mint keys)
-- An **active** assessment (dashboard or [Assessments](/guides/assessments) API)
+- For jobs: a hiring squad UUID (`team_id`)
+- For invites: an **active** assessment
 
 <Steps>
  <Step title="Create an API key">
  Open [Assess → Developer → API Keys](https://assess.praxicraft.com/assess/api), create a key, and copy it (shown once). Live keys start with `ct_live_`; switch the dashboard to **Test** to mint `ct_test_…`.
 
- Prefer least-privilege [scopes](/guides/scopes). Empty scopes grant full access (legacy).
+ Prefer least-privilege [scopes](/guides/scopes). Empty scopes grant full access (legacy). For jobs automation use `jobs:read`, `jobs:write`, `applications:read`, `applications:write`.
  </Step>
 
  <Step title="Set your environment">
@@ -53,71 +71,28 @@ export PRAXICRAFT_API_KEY="ct_live_xxxxxxxxxxxxxxxx"
 ```
  </Step>
 
- <Step title="List assessments">
-<CodeGroup>
-
-```bash curl
-curl -sS https://assess.praxicraft.com/api/v1/public/assessments/ \
+ <Step title="List jobs (or create one)">
+```bash
+curl -sS https://assess.praxicraft.com/api/v1/public/jobs/ \
  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
-```python Python
-from praxicraft import Client
-
-client = Client() # reads PRAXICRAFT_API_KEY
-page = client.assessments.list()
-for a in page["results"]:
- print(a["slug"], a["status"])
-```
-
-```ts Node
-import { Client } from "@praxicraft/assess";
-
-const client = new Client();
-const page = (await client.assessments.list()) as {
- results: Array<{ slug: string; status: string }>;
-};
-for (const a of page.results) {
- console.log(a.slug, a.status);
-}
-```
-
-```go Go
-package main
-
-import (
- "fmt"
- "log"
-
- praxicraft "github.com/praxicraft-platform/praxicraft-go"
-)
-
-func main() {
- client, err := praxicraft.New()
- if err != nil {
- log.Fatal(err)
- }
- page, err := client.Assessments.List(nil)
- if err != nil {
- log.Fatal(err)
- }
- for _, a := range page.Results {
- fmt.Println(a.Slug, a.Status)
- }
-}
-```
-
-</CodeGroup>
-
- Pick an assessment with `"status": "active"`. Use its **`slug`** in the next step (not the display title).
+ Create (draft) requires `team_id` / `squad_id`, then `POST /jobs/{key}/publish/`. Full table: [Jobs](/guides/jobs).
  </Step>
 
- <Step title="Invite a candidate">
- Safe to retry: same email on the same assessment returns the existing invite. Default `send_email` is `false`. set `true` to have Assess email them.
+ <Step title="List or create applications">
+```bash
+curl -sS "https://assess.praxicraft.com/api/v1/public/applications/?job=YOUR_JOB_SLUG" \
+ -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
 
-<CodeGroup>
+ Advance above-threshold people with `POST /applications/{id}/advance/` (does **not** auto-invite everyone who applies).
+ </Step>
 
-```bash curl
+ <Step title="Optional: invite to an assessment">
+ Safe to retry: same email on the same assessment returns the existing invite. Default `send_email` is `false`. Set `true` to have Assess email them.
+
+```bash
 curl -sS -X POST \
  "https://assess.praxicraft.com/api/v1/public/assessments/YOUR_SLUG/invites/" \
  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
@@ -129,76 +104,17 @@ curl -sS -X POST \
  }'
 ```
 
-```python Python
-invite = client.invites.create(
- "YOUR_SLUG",
- email="candidate@example.com",
- name="Jane Doe",
- send_email=True,
-)
-print(invite["invite_token"], invite.get("invite_url"))
-```
-
-```ts Node
-const invite = (await client.invites.create("YOUR_SLUG", {
- email: "candidate@example.com",
- name: "Jane Doe",
- send_email: true,
-})) as { invite_token: string; invite_url?: string };
-
-console.log(invite.invite_token, invite.invite_url);
-```
-
-```go Go
-send := true
-invite, err := client.Invites.Create("YOUR_SLUG", praxicraft.InviteCreateParams{
- Email: "candidate@example.com",
- Name: "Jane Doe",
- SendEmail: &send,
-})
-if err != nil {
- log.Fatal(err)
-}
-fmt.Println(invite.InviteToken, invite.InviteURL)
-```
-
-</CodeGroup>
-
- Save **`invite_token`** from the response that is how you look up status and results later.
+ Save **`invite_token`** from the response.
  </Step>
 
  <Step title="Fetch the result">
- Before they finish you get a short status message. After completion you get scores and pass/fail.
-
-<CodeGroup>
-
-```bash curl
+```bash
 curl -sS \
  "https://assess.praxicraft.com/api/v1/public/invites/INVITE_TOKEN/result/" \
  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
 ```
 
-```python Python
-result = client.results.retrieve(invite_token=invite["invite_token"])
-print(result)
-```
-
-```ts Node
-const result = await client.results.retrieve(invite.invite_token);
-console.log(result);
-```
-
-```go Go
-result, err := client.Results.Retrieve(invite.InviteToken)
-if err != nil {
- log.Fatal(err)
-}
-fmt.Println(result)
-```
-
-</CodeGroup>
-
- In production, prefer [webhooks](/guides/webhooks) (`assessment.completed`) instead of polling.
+ In production, prefer [webhooks](/guides/webhooks) (`assessment.completed`, `application.advanced`, …) instead of polling.
  </Step>
 </Steps>
 
@@ -225,14 +141,14 @@ More: [SDKs](/sdks/introduction).
 ## Next
 
 <CardGroup cols={2}>
+ <Card title="Jobs & applications" icon="briefcase" href="/guides/jobs">
+ Openings, apply, advance, reject.
+ </Card>
  <Card title="Authentication" icon="key" href="/guides/authentication">
  Keys, scopes, and safe rotation.
  </Card>
- <Card title="Invitations" icon="mail" href="/guides/invitations">
- Bulk invites, reminders, cancel.
- </Card>
- <Card title="Automations" icon="workflow" href="/integrations/automations">
- n8n / Zapier without a custom app.
+ <Card title="API Reference" icon="code-xml" href="/guides/api-reference">
+ Jobs-first OpenAPI and ReDoc.
  </Card>
  <Card title="Webhooks" icon="webhook" href="/guides/webhooks">
  Get notified when candidates finish.

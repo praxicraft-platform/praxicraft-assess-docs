@@ -209,6 +209,7 @@
             "icon": "scroll-text",
             "pages": [
               "api-changelog/index",
+              "api-changelog/1-8-0",
               "api-changelog/1-7-0",
               "api-changelog/1-6-0",
               "api-changelog/1-5-0",

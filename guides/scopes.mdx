@@ -17,6 +17,17 @@ Create keys: [Authentication](/guides/authentication).
 
 | Scope | Allows |
 |-------|--------|
+| `jobs:read` | List/get jobs, fields, knockout rules, requirements |
+| `jobs:write` | Create/update/publish/close jobs; manage fields, knockouts, requirements |
+| `applications:read` | List/get applications; read screening results |
+| `applications:write` | Create applications; advance, reject, hold, unhold |
+| `screening:write` | Re-run parse / rescore / AI brief / full screen |
+| `offers:read` | List/get soft offers |
+| `offers:write` | Create, send, withdraw soft offers (Growth+) |
+| `profiles:read` | Org candidate CRM list/get, notes, tags, scorecards |
+| `profiles:write` | Patch profiles; add notes/tags/scorecards; merge duplicates |
+| `pipelines:read` | List pipelines, enrollment status, notes |
+| `pipelines:write` | Create/update pipelines & stages; enroll, reject, hold, unhold, advance; add notes |
 | `organisation:read` | Org profile, billing summary, usage, team, member invites list, squads read, stats, audit log/export, developer health, integrations status |
 | `organisation:write` | Limited `PATCH /org/`; create/update/delete hiring squads and squad members |
 | `assessments:read` | List/get assessments and attached tasks; browse platform tasks |
@@ -24,21 +35,13 @@ Create keys: [Authentication](/guides/authentication).
 | `invitations:read` | List/get invitations |
 | `invitations:write` | Create, remind, cancel invitations |
 | `candidates:read` | Assessment results and per-invite result detail (not CRM profiles) |
-| `profiles:read` | Org candidate CRM list/get, notes, tags, scorecards |
-| `profiles:write` | Patch profiles; add notes/tags/scorecards; merge duplicates |
-| `jobs:read` | List/get jobs, fields, knockout rules, requirements |
-| `jobs:write` | Create/update/publish/close jobs; manage fields, knockouts, requirements |
-| `applications:read` | List/get applications; read screening results |
-| `applications:write` | Create applications; advance, reject, hold, unhold |
-| `screening:write` | Re-run parse / rescore / AI brief / full screen |
 | `tasks:read` | List/get org custom tasks |
 | `tasks:write` | Create/update/delete org custom tasks |
-| `pipelines:read` | List pipelines, enrollment status, notes |
-| `pipelines:write` | Create/update pipelines & stages; enroll, reject, hold, unhold, advance; add notes |
-| `webhooks:read` | List webhooks and deliveries |
-| `webhooks:write` | Create/update/delete/test webhooks; retry deliveries |
 | `interviews:read` | List interviews, templates, analysis, replay |
 | `interviews:write` | Create/cancel/reschedule interviews and templates |
+| `insights:read` | Hiring funnel (`GET /insights/funnel/`, Growth+) |
+| `webhooks:read` | List webhooks and deliveries |
+| `webhooks:write` | Create/update/delete/test webhooks; retry deliveries |
 | `assistant:write` | CLI Ask AI (`POST /assistant/chat/`, Starter+) |
 
 Missing scope → **403** `INSUFFICIENT_SCOPE`.
@@ -51,7 +54,9 @@ Missing scope → **403** `INSUFFICIENT_SCOPE`.
 | Build assessments via API | `assessments:read`, `assessments:write`, `tasks:read` |
 | Jobs + apply automation | `jobs:read`, `jobs:write`, `applications:read`, `applications:write` |
 | Screening reruns | above plus `screening:write` |
+| Soft offers | `offers:read`, `offers:write` (Growth+) |
 | Candidate CRM | `profiles:read`, `profiles:write` |
+| Funnel insights | `insights:read` (Growth+) |
 | Webhooks only | `webhooks:read`, `webhooks:write` |
 | Pipeline automation | `pipelines:read`, `pipelines:write`, `webhooks:write` |
 | Live interviews | `interviews:read`, `interviews:write` |

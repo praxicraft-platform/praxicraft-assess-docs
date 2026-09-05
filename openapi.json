@@ -9,7 +9,7 @@
     "/api/v1/public/jobs/": {
       "get": {
         "operationId": "public_jobs_retrieve",
-        "description": "\n\n> **Required scope:** `jobs:read`",
+        "description": "Returns job openings for your organisation. Filter with `status=draft|open|closed` and optionally `team_id` / `squad_id` (hiring squad UUID). Path and list ids use the job **slug** or UUID.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated list of jobs |\n| `404` | Not used \u2014 empty list returns `200` with `results: []` |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:read`",
         "summary": "List job openings",
         "parameters": [
           {
@@ -127,7 +127,7 @@
     "/api/v1/public/jobs/create/": {
       "post": {
         "operationId": "public_jobs_create_create",
-        "description": "Create a draft job. Requires `team_id` (alias `squad_id`). Required scope: `jobs:write`. Empty API key scopes = full access.",
+        "description": "Creates a **draft** job opening. Requires `team_id` (alias `squad_id`). Optionally link `assessment_id` / `pipeline_id`, set location and workplace, then call `POST /jobs/{key}/publish/` to make it apply-able.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Draft job created |\n| `400` | `VALIDATION_ERROR` | Missing title/team or invalid fields |\n| `403` | `PLAN_REQUIRED` | Jobs not available on Free |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Create job opening",
         "tags": [
           "Public API \u2014 Jobs"
@@ -224,7 +224,7 @@
     "/api/v1/public/jobs/{key}/": {
       "get": {
         "operationId": "public_jobs_retrieve_2",
-        "description": "\n\n> **Required scope:** `jobs:read`",
+        "description": "Returns full job configuration: description, fields, knockout rules summary, linked assessment/pipeline, and application counts. `{key}` is the job slug or UUID.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Job detail |\n| `404` | Job not found or wrong livemode |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:read`",
         "summary": "Retrieve job opening",
         "parameters": [
           {
@@ -311,7 +311,7 @@
     "/api/v1/public/jobs/{key}/close/": {
       "post": {
         "operationId": "public_jobs_close_create",
-        "description": "\n\n> **Required scope:** `jobs:write`",
+        "description": "Closes an open job. New applications are rejected; existing applicants stay on the pipeline.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Job is `closed` |\n| `404` | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Close job opening",
         "parameters": [
           {
@@ -398,6 +398,7 @@
     "/api/v1/public/jobs/{key}/fields/": {
       "get": {
         "operationId": "public_jobs_fields_retrieve",
+        "description": "Lists custom application form fields for a job (text, select, etc.) in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Field list |\n| `404` | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:read`",
         "summary": "List job application fields",
         "parameters": [
           {
@@ -482,6 +483,7 @@
       },
       "post": {
         "operationId": "public_jobs_fields_create",
+        "description": "Adds one application form field to a job. Provide `key`, `label`, and `field_type`. Select-style fields may include `options`.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Field created |\n| `400` | `VALIDATION_ERROR` | Missing/duplicate key or invalid type |\n| `404` | \u2014 | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Create job application field",
         "parameters": [
           {
@@ -568,6 +570,7 @@
     "/api/v1/public/jobs/{key}/knockout-rules/": {
       "get": {
         "operationId": "public_jobs_knockout_rules_retrieve",
+        "description": "Lists active knockout rules that auto-fail applicants when an answer matches a condition.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Rule list |\n| `404` | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:read`",
         "summary": "List knockout rules",
         "parameters": [
           {
@@ -652,6 +655,7 @@
       },
       "put": {
         "operationId": "public_jobs_knockout_rules_update",
+        "description": "Atomically replaces all knockout rules for the job with the provided list.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New rule set |\n| `400` | `VALIDATION_ERROR` | Invalid rule payload |\n| `404` | \u2014 | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Replace knockout rules",
         "parameters": [
           {
@@ -738,7 +742,7 @@
     "/api/v1/public/jobs/{key}/publish/": {
       "post": {
         "operationId": "public_jobs_publish_create",
-        "description": "\n\n> **Required scope:** `jobs:write`",
+        "description": "Publishes a draft job so candidates can apply on careers (and via Public API create application). Subject to plan open-job limits.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Job is `open` |\n| `400` | `VALIDATION_ERROR` | Not publishable |\n| `403` | `JOB_LIMIT_REACHED` | Open job quota exhausted |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Publish job opening",
         "parameters": [
           {
@@ -825,7 +829,7 @@
     "/api/v1/public/jobs/{key}/update/": {
       "patch": {
         "operationId": "public_jobs_update_partial_update",
-        "description": "\n\n> **Required scope:** `jobs:write`",
+        "description": "Partially updates a draft or open job. Send only fields you want to change (title, team, description, links, location, workplace, expiry).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated job |\n| `400` | `VALIDATION_ERROR` | Invalid field |\n| `404` | \u2014 | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Update job opening",
         "parameters": [
           {
@@ -912,7 +916,7 @@
     "/api/v1/public/applications/": {
       "get": {
         "operationId": "public_applications_retrieve",
-        "description": "\n\n> **Required scope:** `applications:read`",
+        "description": "Returns applications for your organisation. Filter by `job_id` / `job_slug`, `status`, and hiring squad. Default ordering ranks by L3 screening score; pass `ordering=submitted_at` for chronological.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated applications |\n| `404` | Not used \u2014 empty list returns `200` |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:read`",
         "summary": "List applications",
         "parameters": [
           {
@@ -1050,7 +1054,7 @@
     "/api/v1/public/applications/create/": {
       "post": {
         "operationId": "public_applications_create_create",
-        "description": "Submit an application via the same path as careers (`submit_application`). Requires an open job (`job_id` or `job_slug`). Source is set to `public_api`. Required scope: `applications:write`.",
+        "description": "Creates an application against an **open** job (API ingest). Include candidate identity, answers to job fields, and optional CV upload when the job requires it. Triggers screening.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Application created |\n| `400` | `VALIDATION_ERROR` | Missing fields / knockouts |\n| `404` | \u2014 | Job not found or not open |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:write`",
         "summary": "Create application",
         "tags": [
           "Public API \u2014 Applications"
@@ -1147,7 +1151,7 @@
     "/api/v1/public/applications/{application_id}/": {
       "get": {
         "operationId": "public_applications_retrieve_2",
-        "description": "\n\n> **Required scope:** `applications:read`",
+        "description": "Returns one application with answers, status, and latest screening summary when present.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Application detail |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:read`",
         "summary": "Retrieve application",
         "parameters": [
           {
@@ -1235,7 +1239,7 @@
     "/api/v1/public/applications/{application_id}/advance/": {
       "post": {
         "operationId": "public_applications_advance_create",
-        "description": "\n\n> **Required scope:** `applications:write`",
+        "description": "Advances an application to the next stage (and may invite to a linked assessment). Does **not** auto-advance every applicant who applies \u2014 call this deliberately.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Advanced |\n| `400` | `VALIDATION_ERROR` | Invalid transition |\n| `404` | \u2014 | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:write`",
         "summary": "Advance application",
         "parameters": [
           {
@@ -1323,7 +1327,7 @@
     "/api/v1/public/applications/{application_id}/reject/": {
       "post": {
         "operationId": "public_applications_reject_create",
-        "description": "\n\n> **Required scope:** `applications:write`",
+        "description": "Rejects an application. Optional reason is stored and may surface based on job rejection visibility.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Rejected |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:write`",
         "summary": "Reject application",
         "parameters": [
           {
@@ -1411,7 +1415,7 @@
     "/api/v1/public/applications/{application_id}/hold/": {
       "post": {
         "operationId": "public_applications_hold_create",
-        "description": "\n\n> **Required scope:** `applications:write`",
+        "description": "Puts an application on hold so it is excluded from normal advance flows until unheld.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | On hold |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:write`",
         "summary": "Hold application",
         "parameters": [
           {
@@ -1501,7 +1505,7 @@
     "/api/v1/public/applications/{application_id}/screening/": {
       "get": {
         "operationId": "public_applications_screening_retrieve",
-        "description": "\n\n> **Required scope:** `applications:read`",
+        "description": "Returns the CV / requirements screening result for an application (L2\u2013L5 match scores). If no result exists yet, runs a full screen once (without auto-advance).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Screening result |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:read`",
         "summary": "Get application screening result",
         "parameters": [
           {
@@ -1589,7 +1593,7 @@
     "/api/v1/public/applications/{application_id}/screening/rerun/": {
       "post": {
         "operationId": "public_applications_screening_rerun_create",
-        "description": "\n\n> **Required scope:** `screening:write`",
+        "description": "Re-runs screening. Optional `action`: `rerun_parse`, `rerun_brief`, `rescore`, or `full` (default). Requires `screening:write`.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated screening result |\n| `400` | `VALIDATION_ERROR` | Invalid action |\n| `404` | \u2014 | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `screening:write`",
         "summary": "Re-run screening",
         "parameters": [
           {
@@ -1696,7 +1700,7 @@
     "/api/v1/public/applications/{application_id}/unhold/": {
       "post": {
         "operationId": "public_applications_unhold_create",
-        "description": "\n\n> **Required scope:** `applications:write`",
+        "description": "Removes hold status so the application can be advanced or rejected again.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Hold cleared |\n| `404` | Application not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `applications:write`",
         "summary": "Unhold application",
         "parameters": [
           {
@@ -1786,7 +1790,7 @@
     "/api/v1/public/jobs/{key}/requirements/": {
       "get": {
         "operationId": "public_jobs_requirements_retrieve",
-        "description": "\n\n> **Required scope:** `jobs:read`",
+        "description": "Lists L3 structured requirements used when scoring applications for this job.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Requirement list |\n| `404` | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:read`",
         "summary": "List job L3 requirements",
         "parameters": [
           {
@@ -1873,7 +1877,7 @@
     "/api/v1/public/jobs/{key}/requirements/replace/": {
       "put": {
         "operationId": "public_jobs_requirements_replace_update",
-        "description": "\n\n> **Required scope:** `jobs:write`",
+        "description": "Replaces the full L3 requirements set for the job. Call after editing requirements in bulk.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New requirements |\n| `400` | `VALIDATION_ERROR` | Invalid payload |\n| `404` | \u2014 | Job not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `jobs:write`",
         "summary": "Replace job L3 requirements",
         "parameters": [
           {
@@ -1980,6 +1984,7 @@
     "/api/v1/public/offers/": {
       "get": {
         "operationId": "public_offers_list",
+        "description": "Lists soft offers (letter + PDF + accept/decline \u2014 not e-sign). Filter by `job`, `status`, or `application_id`. Growth+ plan required.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated offers |\n| `403` | `PLAN_REQUIRED` | Below Growth |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `offers:read`",
         "summary": "List soft offers",
         "parameters": [
           {
@@ -2093,6 +2098,7 @@
       },
       "post": {
         "operationId": "public_offers_create",
+        "description": "Creates a **draft** soft offer for an application. Fill title/body/compensation, then `POST /offers/{id}/send/`. Growth+ required.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Draft offer |\n| `400` | `VALIDATION_ERROR` | Invalid application |\n| `403` | `PLAN_REQUIRED` | Below Growth |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `offers:write`",
         "summary": "Create draft soft offer",
         "tags": [
           "Public API \u2014 Offers"
@@ -2189,7 +2195,7 @@
     "/api/v1/public/offers/{offer_id}/": {
       "get": {
         "operationId": "public_offer_detail",
-        "description": "\n\n> **Required scope:** `offers:read`",
+        "description": "Returns one soft offer including status, body, and send/accept timestamps.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Offer detail |\n| `404` | Offer not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `offers:read`",
         "summary": "Retrieve soft offer",
         "parameters": [
           {
@@ -2277,7 +2283,7 @@
     "/api/v1/public/offers/{offer_id}/send/": {
       "post": {
         "operationId": "public_offer_send",
-        "description": "\n\n> **Required scope:** `offers:write`",
+        "description": "Sends the soft offer email (and PDF) to the candidate. Transitions draft \u2192 sent.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Offer sent |\n| `400` | `VALIDATION_ERROR` | Not sendable |\n| `404` | \u2014 | Offer not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `offers:write`",
         "summary": "Send soft offer",
         "parameters": [
           {
@@ -2365,7 +2371,7 @@
     "/api/v1/public/offers/{offer_id}/withdraw/": {
       "post": {
         "operationId": "public_offer_withdraw",
-        "description": "\n\n> **Required scope:** `offers:write`",
+        "description": "Withdraws a sent soft offer so the candidate can no longer accept it.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Withdrawn |\n| `404` | Offer not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `offers:write`",
         "summary": "Withdraw soft offer",
         "parameters": [
           {
@@ -2453,7 +2459,7 @@
     "/api/v1/public/candidates/": {
       "get": {
         "operationId": "public_candidates_retrieve",
-        "description": "\n\n> **Required scope:** `profiles:read`",
+        "description": "Lists org-wide candidate CRM profiles (across jobs and invites). Filter with `search`, `tag`, or `include_archived`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated profiles |\n| `404` | Not used \u2014 empty list returns `200` |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:read`",
         "summary": "List candidate profiles",
         "parameters": [
           {
@@ -2569,6 +2575,7 @@
     "/api/v1/public/candidates/{candidate_id}/": {
       "get": {
         "operationId": "public_candidates_retrieve_2",
+        "description": "Returns one candidate profile with tags, recent notes, and scorecards.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Profile detail |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:read`",
         "summary": "Get candidate profile",
         "parameters": [
           {
@@ -2654,6 +2661,7 @@
       },
       "patch": {
         "operationId": "public_candidates_partial_update",
+        "description": "Partially updates CRM fields on a candidate profile (name, links, archive flags, etc.).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated profile |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:write`",
         "summary": "Update candidate profile",
         "parameters": [
           {
@@ -2760,7 +2768,7 @@
     "/api/v1/public/candidates/{candidate_id}/merge/": {
       "post": {
         "operationId": "public_candidates_merge_create",
-        "description": "\n\n> **Required scope:** `profiles:write`",
+        "description": "Merges a duplicate candidate profile into a primary profile and retires the duplicate.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Merge complete |\n| `400` | `VALIDATION_ERROR` | Invalid ids |\n| `404` | \u2014 | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:write`",
         "summary": "Merge candidate profiles",
         "parameters": [
           {
@@ -2868,6 +2876,7 @@
     "/api/v1/public/candidates/{candidate_id}/notes/": {
       "get": {
         "operationId": "public_candidates_notes_retrieve",
+        "description": "Lists recruiter notes on a candidate, newest first.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Notes list |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:read`",
         "summary": "List candidate notes",
         "parameters": [
           {
@@ -2953,6 +2962,7 @@
       },
       "post": {
         "operationId": "public_candidates_notes_create",
+        "description": "Adds a note to the candidate CRM timeline.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Note created |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:write`",
         "summary": "Add candidate note",
         "parameters": [
           {
@@ -3060,6 +3070,7 @@
     "/api/v1/public/candidates/{candidate_id}/scorecards/": {
       "get": {
         "operationId": "public_candidates_scorecards_retrieve",
+        "description": "Lists interviewer / recruiter scorecards for the candidate.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Scorecard list |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:read`",
         "summary": "List candidate scorecards",
         "parameters": [
           {
@@ -3145,6 +3156,7 @@
       },
       "post": {
         "operationId": "public_candidates_scorecards_create",
+        "description": "Creates a scorecard entry (ratings + free text) on the candidate profile.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Scorecard created |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:write`",
         "summary": "Create candidate scorecard",
         "parameters": [
           {
@@ -3251,6 +3263,7 @@
     "/api/v1/public/candidates/{candidate_id}/tags/": {
       "get": {
         "operationId": "public_candidates_tags_retrieve",
+        "description": "Lists tags attached to the candidate profile.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Tag list |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:read`",
         "summary": "List candidate tags",
         "parameters": [
           {
@@ -3336,6 +3349,7 @@
       },
       "put": {
         "operationId": "public_candidates_tags_update",
+        "description": "Replaces the full tag set for the candidate.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | New tags |\n| `404` | Candidate not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `profiles:write`",
         "summary": "Replace candidate tags",
         "parameters": [
           {
@@ -3443,7 +3457,7 @@
     "/api/v1/public/pipelines/": {
       "get": {
         "operationId": "public_pipelines_list",
-        "description": "Returns active hiring pipelines for your organisation with stage counts. Each pipeline reports its owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines). Filter to a single squad with the `team_id` or `team_slug` query params, or pass `team_id=null` to list org-wide pipelines only (Growth+ orgs with squads enabled).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated pipeline summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns active hiring pipelines for your organisation with stage counts. Each pipeline reports its owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines). Filter to a single squad with the `team_id` or `team_slug` query params, or pass `team_id=null` to list org-wide pipelines only (Growth+ orgs with squads enabled).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated pipeline summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:read`",
         "summary": "List pipelines",
         "parameters": [
           {
@@ -3554,7 +3568,7 @@
     "/api/v1/public/pipelines/create/": {
       "post": {
         "operationId": "public_pipelines_create_create",
-        "description": "Create a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`.",
+        "description": "Create a linear hiring pipeline (Growth+). Body: `title`, optional `description`, `team_id`, and `stages` (assessment / interview / manual_review). Livemode follows the API key. Scope: `pipelines:write`.\n\n> **Required scope:** `pipelines:write`",
         "summary": "Create pipeline with stages",
         "tags": [
           "Public API \u2014 Pipelines"
@@ -3651,7 +3665,7 @@
     "/api/v1/public/pipelines/enrollments/{id}/": {
       "get": {
         "operationId": "public_pipelines_enrollments_retrieve",
-        "description": "Tracks a candidate's progress through a pipeline including per-stage assessment history. Terminal success status is `passed` (not `completed`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Enrollment status with `history[]` |\n| `404` | Enrollment ID not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Tracks a candidate's progress through a pipeline including per-stage assessment history. Terminal success status is `passed` (not `completed`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Enrollment status with `history[]` |\n| `404` | Enrollment ID not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:read`",
         "summary": "Get enrollment status",
         "parameters": [
           {
@@ -3739,7 +3753,7 @@
     "/api/v1/public/pipelines/enrollments/{id}/advance/": {
       "post": {
         "operationId": "public_pipelines_enrollments_advance_create",
-        "description": "Manually advance a candidate past the current stage (board override). Same rules as the dashboard. Scope: `pipelines:write`.",
+        "description": "Manually advance a candidate past the current stage (board override). Same rules as the dashboard. Scope: `pipelines:write`.\n\n> **Required scope:** `pipelines:write`",
         "summary": "Advance enrollment past current stage",
         "parameters": [
           {
@@ -3827,7 +3841,7 @@
     "/api/v1/public/pipelines/enrollments/{id}/hold/": {
       "post": {
         "operationId": "public_pipelines_enrollments_hold_create",
-        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:write`",
         "summary": "Hold enrollment",
         "parameters": [
           {
@@ -4109,7 +4123,7 @@
     "/api/v1/public/pipelines/enrollments/{id}/reject/": {
       "post": {
         "operationId": "public_pipelines_enrollments_reject_create",
-        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:write`",
         "summary": "Reject enrollment",
         "parameters": [
           {
@@ -4216,7 +4230,7 @@
     "/api/v1/public/pipelines/enrollments/{id}/unhold/": {
       "post": {
         "operationId": "public_pipelines_enrollments_unhold_create",
-        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Manual ATS actions: reject (optional reason) or hold/unhold. Held enrollments do not auto-advance.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Updated enrollment |\n| `400` | Invalid status transition |\n| `404` | Enrollment not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:write`",
         "summary": "Unhold enrollment",
         "parameters": [
           {
@@ -4304,7 +4318,7 @@
     "/api/v1/public/pipelines/{slug}/": {
       "get": {
         "operationId": "public_pipelines_retrieve",
-        "description": "Returns pipeline configuration and ordered `stages[]` with linked assessment slugs, plus the owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Pipeline detail |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns pipeline configuration and ordered `stages[]` with linked assessment slugs, plus the owning hiring squad as `team_id` / `team_slug` (`null` for org-wide pipelines).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Pipeline detail |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:read`",
         "summary": "Retrieve pipeline detail",
         "parameters": [
           {
@@ -4389,7 +4403,7 @@
       },
       "patch": {
         "operationId": "public_pipelines_partial_update",
-        "description": "Update `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist \u2014 `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`.",
+        "description": "Update `title` / `description`, and optionally replace or append `stages` (append-only once enrollments exist \u2014 `409 STAGES_LOCKED` / `STAGE_IN_USE`). Requires `pipelines:write`.\n\n> **Required scope:** `pipelines:read`",
         "summary": "Update pipeline metadata or stages",
         "parameters": [
           {
@@ -4495,7 +4509,7 @@
     "/api/v1/public/pipelines/{slug}/enroll/": {
       "post": {
         "operationId": "public_pipelines_enroll_create",
-        "description": "Atomically enrolls a candidate and creates the stage-one invitation when the first stage is an assessment. **Idempotent:** returns HTTP `200` if the email is already enrolled. If invite quota is exhausted, returns `INVITE_QUOTA_EXCEEDED` and creates neither enrollment nor invite.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | New enrollment |\n| `200` | Candidate already enrolled |\n| `400` | `MISSING_EMAIL` / validation |\n| `403` | `INVITE_QUOTA_EXCEEDED` |\n| `404` | Pipeline slug not found |\n| `409` | `ALREADY_INVITED` for stage-one assessment |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Atomically enrolls a candidate and creates the stage-one invitation when the first stage is an assessment. **Idempotent:** returns HTTP `200` if the email is already enrolled. If invite quota is exhausted, returns `INVITE_QUOTA_EXCEEDED` and creates neither enrollment nor invite.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | New enrollment |\n| `200` | Candidate already enrolled |\n| `400` | `MISSING_EMAIL` / validation |\n| `403` | `INVITE_QUOTA_EXCEEDED` |\n| `404` | Pipeline slug not found |\n| `409` | `ALREADY_INVITED` for stage-one assessment |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:write`",
         "summary": "Enroll candidate in pipeline",
         "parameters": [
           {
@@ -4656,7 +4670,7 @@
     "/api/v1/public/pipelines/{slug}/enroll/bulk/": {
       "post": {
         "operationId": "public_pipelines_enroll_bulk_create",
-        "description": "Bulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Bulk-enroll candidates. Same atomicity rules as single enroll. Capped like bulk invite (20/hour).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Batch result with enrolled/skipped/errors |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:write`",
         "summary": "Bulk enroll candidates",
         "parameters": [
           {
@@ -4762,7 +4776,7 @@
     "/api/v1/public/pipelines/{slug}/enrollments/": {
       "get": {
         "operationId": "public_pipelines_enrollments_list",
-        "description": "Lists enrollments for a pipeline with optional `status` filter. Paginated.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated enrollments |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Lists enrollments for a pipeline with optional `status` filter. Paginated.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated enrollments |\n| `404` | Pipeline slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `pipelines:read`",
         "summary": "List pipeline enrollments",
         "parameters": [
           {
@@ -4873,7 +4887,7 @@
     "/api/v1/public/assessments/": {
       "get": {
         "operationId": "public_assessments_list",
-        "description": "Returns assessments for your organisation (all statuses by default). Pass `status=active|draft|archived` to narrow the list, or `status=all` to be explicit. Use `search` for a case-insensitive title match. The top-level `meta` object includes your plan invite quota (`plan`, `invite_limit`, `invites_used`, `invites_remaining`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated list of assessments plus `meta` quota object |\n| `404` | Not used \u2014 empty list returns `200` with `results: []` |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns assessments for your organisation (all statuses by default). Pass `status=active|draft|archived` to narrow the list, or `status=all` to be explicit. Use `search` for a case-insensitive title match. The top-level `meta` object includes your plan invite quota (`plan`, `invite_limit`, `invites_used`, `invites_remaining`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated list of assessments plus `meta` quota object |\n| `404` | Not used \u2014 empty list returns `200` with `results: []` |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `assessments:read`",
         "summary": "List assessments",
         "parameters": [
           {
@@ -5158,7 +5172,7 @@
     "/api/v1/public/assessments/{slug}/": {
       "get": {
         "operationId": "public_assessments_retrieve",
-        "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns full configuration for a single assessment: time limit, passing score, proctoring flags, and counts. Path `{slug}` is the assessment **URL slug** from create/list (e.g. `core-data-engineers-cohort-admission-assessment`), **not** the human title. UUID `id` is also accepted. Use `GET /assessments/{slug}/tasks/` for the attached task list.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Assessment detail |\n| `404` | Assessment not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `assessments:read`",
         "summary": "Retrieve assessment detail",
         "parameters": [
           {
@@ -5245,7 +5259,7 @@
     "/api/v1/public/assessments/{slug}/duplicate/": {
       "post": {
         "operationId": "public_assessments_duplicate_create",
-        "description": "Clone an assessment (settings + tasks) into a new draft. Candidates and results are not copied.",
+        "description": "Clone an assessment (settings + tasks) into a new draft. Candidates and results are not copied.\n\n> **Required scope:** `assessments:write`",
         "summary": "Duplicate assessment",
         "parameters": [
           {
@@ -5351,7 +5365,7 @@
     "/api/v1/public/assessments/{slug}/tasks/": {
       "get": {
         "operationId": "public_assessments_tasks_retrieve",
-        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_task_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_task_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `assessments:read`",
         "summary": "List assessment cases",
         "parameters": [
           {
@@ -5852,7 +5866,7 @@
     "/api/v1/public/assessments/{slug}/invites/": {
       "post": {
         "operationId": "public_assessments_invites_create",
-        "description": "Creates a unique assessment link for one candidate. **Idempotent:** if the email was already invited, or if `external_id` matches an existing invite on this assessment, returns the existing invitation with HTTP `200` (not `201`). Set `send_email: true` to dispatch the email immediately. `extra_time_percent` must be 0, 25, 50, or 100. Optional `tags` are stored on the invitation. Counts against your monthly invite quota unless you are on the enterprise plan.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | New invitation created |\n| `200` | \u2014 | Invitation already exists for this email (idempotent) |\n| `400` | `ASSESSMENT_NOT_ACTIVE` | Assessment is draft or archived |\n| `400` | `MISSING_EMAIL` | `email` field is empty |\n| `403` | `INVITE_QUOTA_EXCEEDED` | Monthly invite quota exhausted |\n| `404` | \u2014 | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Creates a unique assessment link for one candidate. **Idempotent:** if the email was already invited, or if `external_id` matches an existing invite on this assessment, returns the existing invitation with HTTP `200` (not `201`). Set `send_email: true` to dispatch the email immediately. `extra_time_percent` must be 0, 25, 50, or 100. Optional `tags` are stored on the invitation. Counts against your monthly invite quota unless you are on the enterprise plan.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | New invitation created |\n| `200` | \u2014 | Invitation already exists for this email (idempotent) |\n| `400` | `ASSESSMENT_NOT_ACTIVE` | Assessment is draft or archived |\n| `400` | `MISSING_EMAIL` | `email` field is empty |\n| `403` | `INVITE_QUOTA_EXCEEDED` | Monthly invite quota exhausted |\n| `404` | \u2014 | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `invitations:write`",
         "summary": "Create invitation",
         "parameters": [
           {
@@ -6036,7 +6050,7 @@
     "/api/v1/public/assessments/{slug}/invites/bulk/": {
       "post": {
         "operationId": "public_assessments_invites_bulk_create",
-        "description": "Creates invitations for multiple candidates in one request. Duplicate emails are returned in `skipped` (reason: `already invited`). Rows with empty email are skipped (`missing email`). Processing stops when the monthly invite quota is reached mid-batch (`invite quota reached for this billing cycle`). Also subject to a dedicated **20 requests/hour** bulk-invite rate limit (in addition to the plan write bucket).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Batch processed \u2014 see `invited` and `skipped` arrays |\n| `400` | `ASSESSMENT_NOT_ACTIVE` | Assessment is draft or archived |\n| `400` | `INVALID_INPUT` | `candidates` missing or empty |\n| `403` | `INVITE_QUOTA_EXCEEDED` | No quota remaining before any invites are created |\n| `404` | \u2014 | Assessment slug not found |\n| `429` | `RATE_LIMITED` | Plan write bucket or bulk-invite 20/hour cap exceeded |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Creates invitations for multiple candidates in one request. Duplicate emails are returned in `skipped` (reason: `already invited`). Rows with empty email are skipped (`missing email`). Processing stops when the monthly invite quota is reached mid-batch (`invite quota reached for this billing cycle`). Also subject to a dedicated **20 requests/hour** bulk-invite rate limit (in addition to the plan write bucket).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Batch processed \u2014 see `invited` and `skipped` arrays |\n| `400` | `ASSESSMENT_NOT_ACTIVE` | Assessment is draft or archived |\n| `400` | `INVALID_INPUT` | `candidates` missing or empty |\n| `403` | `INVITE_QUOTA_EXCEEDED` | No quota remaining before any invites are created |\n| `404` | \u2014 | Assessment slug not found |\n| `429` | `RATE_LIMITED` | Plan write bucket or bulk-invite 20/hour cap exceeded |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `invitations:write`",
         "summary": "Bulk create invitations",
         "parameters": [
           {
@@ -6218,7 +6232,7 @@
     "/api/v1/public/invites/": {
       "get": {
         "operationId": "public_invites_list",
-        "description": "Global list of all candidate invitations across every assessment in your organisation.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated invitation rows |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Global list of all candidate invitations across every assessment in your organisation.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated invitation rows |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `invitations:read`",
         "summary": "List all invitations",
         "parameters": [
           {
@@ -6658,7 +6672,7 @@
     "/api/v1/public/assessments/{slug}/results/": {
       "get": {
         "operationId": "public_assessments_results_retrieve",
-        "description": "Returns candidate sessions for an assessment with scores, pass/fail, violation counts, and `invite_token` for fetching the detailed result. Ordered by most recent session start.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated session summaries (includes in-progress and completed invitations) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns candidate sessions for an assessment with scores, pass/fail, violation counts, and `invite_token` for fetching the detailed result. Ordered by most recent session start.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated session summaries (includes in-progress and completed invitations) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `candidates:read`",
         "summary": "List assessment results",
         "parameters": [
           {
@@ -6761,7 +6775,7 @@
     "/api/v1/public/invites/{token}/result/": {
       "get": {
         "operationId": "public_invites_result_retrieve",
-        "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns the scored result for a candidate invitation. If the candidate has **not started**, returns HTTP `200` with `{ status, message }` only. When completed, includes `violation_events`, per-task `tasks[]`, and `detailed_report_url`.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Full result **or** not-started message (`status` + `message` only) |\n| `404` | Invitation token not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `candidates:read`",
         "summary": "Get result for an invitation",
         "parameters": [
           {
@@ -7029,7 +7043,7 @@
     "/api/v1/public/tasks/": {
       "get": {
         "operationId": "public_cases_list",
-        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `tasks:read`",
         "summary": "List custom cases",
         "parameters": [
           {
@@ -7124,7 +7138,7 @@
     "/api/v1/public/tasks/create/": {
       "post": {
         "operationId": "public_tasks_create_create",
-        "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `tasks:write`",
         "summary": "Create custom case",
         "tags": [
           "Public API \u2014 Tasks"
@@ -7622,7 +7636,7 @@
     "/api/v1/public/interviews/": {
       "get": {
         "operationId": "public_interviews_list",
-        "description": "List interviews",
+        "description": "List interviews\n\n> **Required scope:** `interviews:read`",
         "summary": "List interviews",
         "parameters": [
           {
@@ -7717,7 +7731,7 @@
     "/api/v1/public/interviews/analytics/": {
       "get": {
         "operationId": "public_interviews_analytics_retrieve",
-        "description": "Interview analytics",
+        "description": "Interview analytics\n\n> **Required scope:** `interviews:read`",
         "summary": "Interview analytics",
         "tags": [
           "Public API \u2014 Interviews"
@@ -7794,7 +7808,7 @@
     "/api/v1/public/interviews/bulk/": {
       "post": {
         "operationId": "public_interviews_bulk_create",
-        "description": "Bulk create interviews",
+        "description": "Bulk create interviews\n\n> **Required scope:** `interviews:write`",
         "summary": "Bulk create interviews",
         "tags": [
           "Public API \u2014 Interviews"
@@ -7891,7 +7905,7 @@
     "/api/v1/public/interviews/create/": {
       "post": {
         "operationId": "public_interviews_create_create",
-        "description": "Create interview",
+        "description": "Create interview\n\n> **Required scope:** `interviews:write`",
         "summary": "Create interview",
         "tags": [
           "Public API \u2014 Interviews"
@@ -7988,7 +8002,7 @@
     "/api/v1/public/interviews/org-tasks/": {
       "get": {
         "operationId": "public_interviews_org_tasks_retrieve",
-        "description": "List org coding tasks for interviews",
+        "description": "List org coding tasks for interviews\n\n> **Required scope:** `interviews:read`",
         "summary": "List org coding tasks for interviews",
         "tags": [
           "Public API \u2014 Interviews"
@@ -8065,7 +8079,7 @@
     "/api/v1/public/interviews/templates/": {
       "get": {
         "operationId": "public_interviews_templates_retrieve",
-        "description": "List interview templates",
+        "description": "List interview templates\n\n> **Required scope:** `interviews:read`",
         "summary": "List interview templates",
         "tags": [
           "Public API \u2014 Interviews"
@@ -8142,7 +8156,7 @@
     "/api/v1/public/interviews/templates/create/": {
       "post": {
         "operationId": "public_interviews_templates_create_create",
-        "description": "Create interview template",
+        "description": "Create interview template\n\n> **Required scope:** `interviews:write`",
         "summary": "Create interview template",
         "tags": [
           "Public API \u2014 Interviews"
@@ -8239,7 +8253,7 @@
     "/api/v1/public/interviews/templates/{template_id}/": {
       "get": {
         "operationId": "public_interviews_templates_retrieve_2",
-        "description": "Retrieve interview template",
+        "description": "Retrieve interview template\n\n> **Required scope:** `interviews:read`",
         "summary": "Retrieve interview template",
         "parameters": [
           {
@@ -8327,7 +8341,7 @@
     "/api/v1/public/interviews/templates/{template_id}/delete/": {
       "delete": {
         "operationId": "public_interviews_templates_delete_destroy",
-        "description": "Delete interview template",
+        "description": "Delete interview template\n\n> **Required scope:** `interviews:write`",
         "summary": "Delete interview template",
         "parameters": [
           {
@@ -8408,7 +8422,7 @@
     "/api/v1/public/interviews/templates/{template_id}/update/": {
       "patch": {
         "operationId": "public_interviews_templates_update_partial_update",
-        "description": "Update interview template",
+        "description": "Update interview template\n\n> **Required scope:** `interviews:write`",
         "summary": "Update interview template",
         "parameters": [
           {
@@ -8515,7 +8529,7 @@
     "/api/v1/public/interviews/{room_id}/": {
       "get": {
         "operationId": "public_interviews_retrieve",
-        "description": "Retrieve interview",
+        "description": "Retrieve interview\n\n> **Required scope:** `interviews:read`",
         "summary": "Retrieve interview",
         "parameters": [
           {
@@ -8603,7 +8617,7 @@
     "/api/v1/public/interviews/{room_id}/analysis/": {
       "get": {
         "operationId": "public_interviews_analysis_retrieve",
-        "description": "Get interview analysis",
+        "description": "Get interview analysis\n\n> **Required scope:** `interviews:read`",
         "summary": "Get interview analysis",
         "parameters": [
           {
@@ -8691,7 +8705,7 @@
     "/api/v1/public/interviews/{room_id}/cancel/": {
       "post": {
         "operationId": "public_interviews_cancel_create",
-        "description": "Cancel interview",
+        "description": "Cancel interview\n\n> **Required scope:** `interviews:write`",
         "summary": "Cancel interview",
         "parameters": [
           {
@@ -8779,7 +8793,7 @@
     "/api/v1/public/interviews/{room_id}/replay/": {
       "get": {
         "operationId": "public_interviews_replay_retrieve",
-        "description": "Get interview replay",
+        "description": "Get interview replay\n\n> **Required scope:** `interviews:read`",
         "summary": "Get interview replay",
         "parameters": [
           {
@@ -8867,7 +8881,7 @@
     "/api/v1/public/interviews/{room_id}/reschedule/": {
       "post": {
         "operationId": "public_interviews_reschedule_create",
-        "description": "Reschedule interview",
+        "description": "Reschedule interview\n\n> **Required scope:** `interviews:write`",
         "summary": "Reschedule interview",
         "parameters": [
           {
@@ -8975,7 +8989,7 @@
     "/api/v1/public/interviews/{room_id}/share/": {
       "post": {
         "operationId": "public_interviews_share_create",
-        "description": "Create interview share link",
+        "description": "Create interview share link\n\n> **Required scope:** `interviews:write`",
         "summary": "Create interview share link",
         "parameters": [
           {
@@ -9082,7 +9096,7 @@
     "/api/v1/public/insights/funnel/": {
       "get": {
         "operationId": "public_insights_funnel",
-        "description": "\n\n> **Required scope:** `insights:read`",
+        "description": "Returns hiring funnel stage counts for the organisation (Growth+). Optional filters: `date_from`, `date_to`, `job_id`, `team_id`.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Funnel payload |\n| `403` | `PLAN_REQUIRED` | Below Growth |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `insights:read`",
         "summary": "Hiring funnel stage counts",
         "parameters": [
           {
@@ -9191,7 +9205,7 @@
     "/api/v1/public/org/": {
       "get": {
         "operationId": "public_org_retrieve",
-        "description": "Returns organisation profile and current billing-cycle invite quota usage.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Organisation profile |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Returns organisation profile and current billing-cycle invite quota usage.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Organisation profile |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Get organisation info",
         "tags": [
           "Public API \u2014 Organisation"
@@ -9286,7 +9300,7 @@
       },
       "patch": {
         "operationId": "public_org_partial_update",
-        "description": "Allowlisted fields only: `name`, `notify_on_candidate_completion`. Org-global (not Live/Test scoped). Rejects unknown fields with `400`. Requires `organisation:write`.",
+        "description": "Allowlisted fields only: `name`, `notify_on_candidate_completion`. Org-global (not Live/Test scoped). Rejects unknown fields with `400`. Requires `organisation:write`.\n\n> **Required scope:** `organisation:write`",
         "summary": "Update organisation profile (limited)",
         "tags": [
           "Public API \u2014 Organisation"
@@ -9533,7 +9547,7 @@
     "/api/v1/public/org/audit-log/export/": {
       "get": {
         "operationId": "public_org_audit_log_export_retrieve",
-        "description": "Export audit log as CSV or JSON (`?export_format=csv|json`, default csv). Mode-scoped via key prefix. Capped at 10_000 rows. Starter+.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | File / JSON body |\n| `400` | `VALIDATION_ERROR` | Invalid export_format |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Export audit log as CSV or JSON (`?export_format=csv|json`, default csv). Mode-scoped via key prefix. Capped at 10_000 rows. Starter+.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | File / JSON body |\n| `400` | `VALIDATION_ERROR` | Invalid export_format |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Export organisation audit log",
         "parameters": [
           {
@@ -9677,7 +9691,7 @@
     "/api/v1/public/org/billing/": {
       "get": {
         "operationId": "public_org_billing_retrieve",
-        "description": "Read-only entitlement summary: plan, seats, invite/assessment quotas. Org-global (not split by Live/Test). No checkout or payment IDs. Test-mode activity does not consume live invite quota.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Entitlement snapshot |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Read-only entitlement summary: plan, seats, invite/assessment quotas. Org-global (not split by Live/Test). No checkout or payment IDs. Test-mode activity does not consume live invite quota.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Entitlement snapshot |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Billing entitlement summary",
         "tags": [
           "Public API \u2014 Organisation"
@@ -9754,7 +9768,7 @@
     "/api/v1/public/org/developer/health/": {
       "get": {
         "operationId": "public_org_developer_health_retrieve",
-        "description": "Public API / destination health for the key's Live or Test mode: alerts, insights, recent API errors. No secrets or signing keys.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Health payload |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Public API / destination health for the key's Live or Test mode: alerts, insights, recent API errors. No secrets or signing keys.\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Health payload |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Developer / destination health",
         "tags": [
           "Public API \u2014 Organisation"
@@ -9831,7 +9845,7 @@
     "/api/v1/public/org/member-invites/": {
       "get": {
         "operationId": "public_org_member_invites_retrieve",
-        "description": "Pending **org member** invitations (not candidate assessment invites). Does not expose invite tokens. Role changes remain dashboard-only. Scope: `organisation:read`.",
+        "description": "Pending **org member** invitations (not candidate assessment invites). Does not expose invite tokens. Role changes remain dashboard-only. Scope: `organisation:read`.\n\n> **Required scope:** `organisation:read`",
         "summary": "List pending organisation member invites",
         "parameters": [
           {
@@ -9934,7 +9948,7 @@
     "/api/v1/public/org/squads/": {
       "get": {
         "operationId": "public_org_squads_retrieve",
-        "description": "Lists hiring squads (sub-teams) within the organisation. Requires Growth plan or above.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated squads |\n| `403` | `PLAN_REQUIRED` below Growth |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Lists hiring squads (sub-teams) within the organisation. Requires Growth plan or above.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated squads |\n| `403` | `PLAN_REQUIRED` below Growth |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "List hiring squads",
         "parameters": [
           {
@@ -10027,7 +10041,7 @@
       },
       "post": {
         "operationId": "public_org_squads_create",
-        "description": "Growth+. Requires `organisation:write`. Body: `{ \"name\": \"...\" }`.",
+        "description": "Growth+. Requires `organisation:write`. Body: `{ \"name\": \"...\" }`.\n\n> **Required scope:** `organisation:write`",
         "summary": "Create hiring squad",
         "tags": [
           "Public API \u2014 Organisation"
@@ -10124,7 +10138,7 @@
     "/api/v1/public/org/squads/{team_id}/": {
       "get": {
         "operationId": "public_org_squads_retrieve_2",
-        "description": "Returns one hiring squad by id. Requires Growth plan or above (`403 PLAN_REQUIRED` below Growth).",
+        "description": "Returns one hiring squad by id. Requires Growth plan or above (`403 PLAN_REQUIRED` below Growth).\n\n> **Required scope:** `organisation:read`",
         "summary": "Get hiring squad detail",
         "parameters": [
           {
@@ -10210,7 +10224,7 @@
       },
       "patch": {
         "operationId": "public_org_squads_partial_update",
-        "description": "\n\n> **Required scope:** `organisation:read`",
+        "description": "\n\n> **Required scope:** `organisation:write`",
         "summary": "Rename hiring squad",
         "parameters": [
           {
@@ -10315,7 +10329,7 @@
       },
       "delete": {
         "operationId": "public_org_squads_destroy",
-        "description": "\n\n> **Required scope:** `organisation:read`",
+        "description": "\n\n> **Required scope:** `organisation:write`",
         "summary": "Delete hiring squad",
         "parameters": [
           {
@@ -10403,7 +10417,7 @@
     "/api/v1/public/org/squads/{team_id}/members/": {
       "get": {
         "operationId": "public_org_squads_members_retrieve",
-        "description": "Lists members of a hiring squad. Requires Growth plan or above (`403 PLAN_REQUIRED` below Growth).",
+        "description": "Lists members of a hiring squad. Requires Growth plan or above (`403 PLAN_REQUIRED` below Growth).\n\n> **Required scope:** `organisation:read`",
         "summary": "List hiring squad members",
         "parameters": [
           {
@@ -10505,7 +10519,7 @@
       },
       "post": {
         "operationId": "public_org_squads_members_create",
-        "description": "\n\n> **Required scope:** `organisation:read`",
+        "description": "\n\n> **Required scope:** `organisation:write`",
         "summary": "Add member to hiring squad",
         "parameters": [
           {
@@ -10611,7 +10625,7 @@
       },
       "delete": {
         "operationId": "public_org_squads_members_destroy",
-        "description": "\n\n> **Required scope:** `organisation:read`",
+        "description": "\n\n> **Required scope:** `organisation:write`",
         "summary": "Remove member from hiring squad",
         "parameters": [
           {
@@ -10707,7 +10721,7 @@
     "/api/v1/public/org/stats/": {
       "get": {
         "operationId": "public_org_stats_retrieve",
-        "description": "Aggregate assessment metrics: invites sent, completions, pass rate, and average score percentage.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Analytics snapshot |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Aggregate assessment metrics: invites sent, completions, pass rate, and average score percentage.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Analytics snapshot |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Get organisation analytics",
         "tags": [
           "Public API \u2014 Organisation"
@@ -10784,7 +10798,7 @@
     "/api/v1/public/org/team/": {
       "get": {
         "operationId": "public_org_team_retrieve",
-        "description": "Lists active organisation members with role (`owner`, `admin`, `developer`, `recruiter`, `reviewer`, `member`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated team members |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Lists active organisation members with role (`owner`, `admin`, `developer`, `recruiter`, `reviewer`, `member`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated team members |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "List team members",
         "parameters": [
           {
@@ -10879,7 +10893,7 @@
     "/api/v1/public/org/usage/": {
       "get": {
         "operationId": "public_org_usage_retrieve",
-        "description": "Daily usage time series for the key's Live or Test mode (`ct_live_\u2026` / `ct_test_\u2026`). Query `start` / `end` as YYYY-MM-DD (default last 30 days, max 180-day span).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Mode-scoped series |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Daily usage time series for the key's Live or Test mode (`ct_live_\u2026` / `ct_test_\u2026`). Query `start` / `end` as YYYY-MM-DD (default last 30 days, max 180-day span).\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Mode-scoped series |\n| `403` | `PLAN_REQUIRED` | Free plan |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `organisation:read`",
         "summary": "Organisation usage time series",
         "parameters": [
           {
@@ -10974,7 +10988,7 @@
     "/api/v1/public/integrations/": {
       "get": {
         "operationId": "public_integrations_retrieve",
-        "description": "Read-only view of connected ATS providers and inbound webhook URLs. Credential management stays in the Assess dashboard.",
+        "description": "Read-only view of connected ATS providers and inbound webhook URLs. Credential management stays in the Assess dashboard.\n\n> **Required scope:** `organisation:read`",
         "summary": "List ATS integration status",
         "tags": [
           "Public API \u2014 Integrations"
@@ -11051,7 +11065,7 @@
     "/api/v1/public/integrations/{provider}/connect/": {
       "get": {
         "operationId": "public_integrations_connect_retrieve",
-        "description": "Returns a dashboard URL to connect an ATS provider in the browser. OAuth and API key setup remain session-only \u2014 this does not expose secrets.",
+        "description": "Returns a dashboard URL to connect an ATS provider in the browser. OAuth and API key setup remain session-only \u2014 this does not expose secrets.\n\n> **Required scope:** `organisation:read`",
         "summary": "Get ATS connect URL",
         "parameters": [
           {
@@ -11138,7 +11152,7 @@
     "/api/v1/public/integrations/{provider}/test/": {
       "post": {
         "operationId": "public_integrations_test_create",
-        "description": "Verify stored credentials for a connected provider. Does not accept or return secrets.",
+        "description": "Verify stored credentials for a connected provider. Does not accept or return secrets.\n\n> **Required scope:** `organisation:read`",
         "summary": "Test ATS credentials",
         "parameters": [
           {
@@ -11225,7 +11239,7 @@
     "/api/v1/public/webhooks/": {
       "get": {
         "operationId": "public_webhooks_list",
-        "description": "Lists registered webhook endpoints including verification state, subscribed `events`, and delivery health fields.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated webhook endpoints |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Lists registered webhook endpoints including verification state, subscribed `events`, and delivery health fields.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated webhook endpoints |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `webhooks:read`",
         "summary": "List webhooks",
         "parameters": [
           {
@@ -11320,7 +11334,7 @@
     "/api/v1/public/webhooks/create/": {
       "post": {
         "operationId": "public_webhooks_create_create",
-        "description": "Registers a destination. **HTTPS** endpoints receive signed JSON (`whsec_\u2026` shown once). Set `kind` to `slack` or `teams` (or paste a `hooks.slack.com` / `webhook.office.com` URL) to post a formatted chat message instead \u2014 no HMAC. After connecting Slack in the dashboard, you can omit `url` and pass `slack_channel_id` to post via `chat.postMessage`. New destinations start as `is_active: false` until a successful test ping.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Webhook created |\n| `400` | Invalid URL or payload |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "description": "Registers a destination. **HTTPS** endpoints receive signed JSON (`whsec_\u2026` shown once). Set `kind` to `slack` or `teams` (or paste a `hooks.slack.com` / `webhook.office.com` URL) to post a formatted chat message instead \u2014 no HMAC. After connecting Slack in the dashboard, you can omit `url` and pass `slack_channel_id` to post via `chat.postMessage`. New destinations start as `is_active: false` until a successful test ping.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Webhook created |\n| `400` | Invalid URL or payload |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |\n\n> **Required scope:** `webhooks:write`",
         "summary": "Create webhook",
         "tags": [
           "Public API \u2014 Webhooks"
@@ -11477,7 +11491,7 @@
     "/api/v1/public/webhooks/{id}/": {
       "get": {
         "operationId": "public_webhooks_retrieve",
-        "description": "Retrieve, update, or delete a webhook endpoint.",
+        "description": "Retrieve, update, or delete a webhook endpoint.\n\n> **Required scope:** `webhooks:read`",
         "summary": "Retrieve webhook",
         "parameters": [
           {
@@ -11563,7 +11577,7 @@
       },
       "patch": {
         "operationId": "public_webhooks_partial_update",
-        "description": "Retrieve, update, or delete a webhook endpoint.",
+        "description": "Retrieve, update, or delete a webhook endpoint.\n\n> **Required scope:** `webhooks:write`",
         "summary": "Update webhook",
         "parameters": [
           {
@@ -11668,7 +11682,7 @@
       },
       "delete": {
         "operationId": "public_webhooks_destroy",
-        "description": "Retrieve, update, or delete a webhook endpoint.",
+        "description": "Retrieve, update, or delete a webhook endpoint.\n\n> **Required scope:** `webhooks:write`",
         "summary": "Delete webhook",
         "parameters": [
           {
@@ -11749,7 +11763,7 @@
     "/api/v1/public/webhooks/{id}/deliveries/": {
       "get": {
         "operationId": "public_webhooks_deliveries_retrieve",
-        "description": "Recent delivery log rows for a webhook endpoint (newest first, max 100).",
+        "description": "Recent delivery log rows for a webhook endpoint (newest first, max 100).\n\n> **Required scope:** `webhooks:read`",
         "summary": "List webhook deliveries",
         "parameters": [
           {
@@ -12052,7 +12066,7 @@
     "/api/v1/public/assistant/chat/": {
       "post": {
         "operationId": "public_assistant_chat_create",
-        "description": "One chat-completion turn for the Assess CLI assistant (Ask AI). Authenticated with an organisation API key. Requires Starter+ (`capabilities.cli_assistant`) and scope `assistant:write` (empty scopes = full access).\n\nOptional OpenAI-format `tools` enable a client-side tool loop (MCP). Dedicated throttle scope `public_api_assistant` (default 30/hour) \u2014 separate from public write quotas.",
+        "description": "One chat-completion turn for the Assess CLI assistant (Ask AI). Authenticated with an organisation API key. Requires Starter+ (`capabilities.cli_assistant`) and scope `assistant:write` (empty scopes = full access).\n\nOptional OpenAI-format `tools` enable a client-side tool loop (MCP). Dedicated throttle scope `public_api_assistant` (default 30/hour) \u2014 separate from public write quotas.\n\n> **Required scope:** `assistant:write`",
         "summary": "CLI Ask AI chat turn",
         "tags": [
           "Public API \u2014 Assistant"

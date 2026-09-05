@@ -1,0 +1,113 @@
+---
+title: "Screening"
+description: "L1 knockouts, CV parse, deterministic L3 match scores, optional AI briefs, and human or threshold advance."
+---
+
+Screening turns applications into a ranked shortlist. The **L3 match score** is the sort key. Optional AI briefs (L4) never change that order.
+
+## Layers (L1–L5)
+
+| Layer | What it does | Who decides |
+|-------|----------------|-------------|
+| **L1** | Knockout rules on application answers | Rules (hard fail) |
+| **L2** | Parse CV into structured fields | System |
+| **L3** | Score parsed CV against job requirements | Deterministic matcher (sort key) |
+| **L4** | Short brief / red flags | Optional AI (Growth+). assist only |
+| **L5** | Advance, hold, or reject | Human, or auto-advance when L3 ≥ threshold |
+
+Auto-advance and CV analysis toggles live on the job (dashboard Overview or Public API job update). AI analysis is plan-gated (Growth+).
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Add requirements">
+    Open the job → **Screening**. Add must/should requirements (skills, years, tools, titles). Save.
+  </Step>
+  <Step title="Optional auto-advance">
+    On Overview, enable auto-advance and set a minimum L3 score if you want high matches to move without a click.
+  </Step>
+  <Step title="Review ranked Candidates">
+    The Candidates tab sorts by match score when requirements exist. Open a row for the brief and breakdown. Hold, advance, or reject.
+  </Step>
+  <Step title="Screened CVs">
+    Org-wide queue: [Screened CVs](https://assess.praxicraft.com/assess/screened-cvs).
+  </Step>
+</Steps>
+
+No API key needed for dashboard review.
+
+## For engineers
+
+### Requirements
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/jobs/{key}/requirements/` | `jobs:read` |
+| PUT | `/jobs/{key}/requirements/replace/` | `jobs:write` |
+
+Replace body: `{ "requirements": [ … ] }`. Each row uses `kind` (`must` \| `should`), `field` (`skill` \| `years` \| `tool` \| `title` \| `education` \| `custom`), `key`, `label`, optional `weight`, `min_years`, `values`, `sort_order`, `is_active`.
+
+```bash
+curl -sS -X PUT \
+  "https://assess.praxicraft.com/api/v1/public/jobs/senior-data-engineer/requirements/replace/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "requirements": [
+      {
+        "kind": "must",
+        "field": "skill",
+        "key": "sql",
+        "label": "SQL",
+        "weight": 20,
+        "values": ["SQL", "PostgreSQL"]
+      },
+      {
+        "kind": "should",
+        "field": "years",
+        "key": "yoe",
+        "label": "Years of experience",
+        "weight": 10,
+        "min_years": 3
+      }
+    ]
+  }'
+```
+
+### Screening result
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/applications/{id}/screening/` | `applications:read` |
+| POST | `/applications/{id}/screening/rerun/` | `screening:write` |
+| POST | `/applications/{id}/hold/` · `/unhold/` | `applications:write` |
+
+`GET` returns the stored `CVScreenResult`, or runs a screen (without auto-advance) if none exists.
+
+Rerun body (optional): `{ "action": "full" | "rerun_parse" | "rescore" | "rerun_brief" }`.
+
+Useful fields: `status`, `l1_passed`, `l3_score`, `l3_breakdown`, `ai_brief`, `ai_red_flags`, `auto_advanced`, `screened_at`.
+
+```bash
+curl -sS \
+  "https://assess.praxicraft.com/api/v1/public/applications/APPLICATION_UUID/screening/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+### Webhook
+
+`application.screened` fires when L2/L3 finish (L4 brief may be present). Payload includes nested `screening` with `status`, `l1_passed`, `l3_score`, `auto_advanced`. See [Webhook events](/guides/webhook-events).
+
+Publishing a job ensures a pipeline `cv_screen` stage when a pipeline is linked. Advance can move the enrollment onto that stage.
+
+### Micro-task gate
+
+Optional short platform task on the job (Overview → Micro-task gate). On advance, Assess invites that single-task assessment first. When the candidate **passes**, the full linked assessment invite is sent. Fail leaves them advanced without the full invite so a recruiter can decide next steps.
+
+### Soft L4 usage
+
+Growth+ orgs see **CV analysis briefs (L4)** counts on the Usage page (`by_activity` / `total_cv_briefs`). Report only — no per-CV credits.
+
+## Next
+
+[Jobs & applications](/guides/jobs) · [Pipelines](/guides/pipelines) · [Scopes](/guides/scopes) · [API changelog 1.7.0](/api-changelog/1-7-0)

@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Praxicraft Assess Public API",
-    "version": "1.6.0",
-    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove tasks |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate results and session breakdowns |\n| `tasks:read` | List and retrieve custom (org-owned) tasks |\n| `tasks:write` | Create, update, and delete custom tasks |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n| `assistant:write` | CLI Ask AI / `POST /assistant/chat/` (Starter+) |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'assessments:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
+    "version": "1.7.0",
+    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove tasks |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate results and session breakdowns |\n| `tasks:read` | List and retrieve custom (org-owned) tasks |\n| `tasks:write` | Create, update, and delete custom tasks |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `jobs:read` | List and retrieve job openings, fields, knockout rules |\n| `jobs:write` | Create, update, publish, and close jobs; manage fields/rules |\n| `applications:read` | List and retrieve job applications |\n| `applications:write` | Create, advance, and reject applications |\n| `profiles:read` | List and retrieve org candidate CRM profiles |\n| `profiles:write` | Update profiles; notes, tags, scorecards, merge |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n| `assistant:write` | CLI Ask AI / `POST /assistant/chat/` (Starter+) |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'assessments:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
   },
   "paths": {
     "/api/v1/public/assessments/": {
@@ -601,8 +601,8 @@
     "/api/v1/public/assessments/{slug}/tasks/attach/": {
       "post": {
         "operationId": "public_assessments_tasks_attach_create",
-        "description": "Appends one or more tasks to an assessment. Pass `{ tasks: [...] }` or a single `{ task_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Tasks attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Platform or org task id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Attach assessment tasks",
+        "description": "Appends one or more tasks to an assessment. Pass `{ tasks: [...] }` or a single `{ task_id, source }` object. `source` is `platform` (default) or `org`. Duplicates are skipped. Blocked after candidates have started.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `201` | \u2014 | Cases attached (may be empty if all were duplicates) |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Platform or org case id invalid |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Attach assessment cases",
         "parameters": [
           {
             "in": "path",
@@ -708,8 +708,8 @@
     "/api/v1/public/assessments/{slug}/tasks/replace/": {
       "put": {
         "operationId": "public_assessments_tasks_replace_update",
-        "description": "Atomically replaces the full task lineup with `{ tasks: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan task-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Unknown task id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Replace assessment tasks",
+        "description": "Atomically replaces the full task lineup with `{ tasks: [...] }`.\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | New lineup returned |\n| `403` | `LIMIT_REACHED` | Plan case-per-assessment limit |\n| `404` | `TASK_NOT_FOUND` | Unknown case id |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Replace assessment cases",
         "parameters": [
           {
             "in": "path",
@@ -816,7 +816,7 @@
       "delete": {
         "operationId": "public_assessments_tasks_remove_destroy",
         "description": "Removes one attached task by `assessment_task_id` (the join-row id from the tasks list).\n\n> **Required scope:** `assessments:write`\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Link removed |\n| `404` | `NOT_FOUND` | Link id not on this assessment |\n| `409` | `TASKS_LOCKED` | Candidates have already started |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Remove assessment task",
+        "summary": "Remove assessment case",
         "parameters": [
           {
             "in": "path",
@@ -885,8 +885,8 @@
     "/api/v1/public/assessments/{slug}/tasks/": {
       "get": {
         "operationId": "public_assessments_tasks_retrieve",
-        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated task summaries (`assessment_task_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List assessment tasks",
+        "description": "Returns platform and custom tasks attached to an assessment, in display order.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated case summaries (`assessment_task_id`, `id`, `title`, `type`, \u2026) |\n| `404` | Assessment slug not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List assessment cases",
         "parameters": [
           {
             "in": "query",
@@ -3821,8 +3821,8 @@
     "/api/v1/public/platform-tasks/": {
       "get": {
         "operationId": "public_platform_tasks_retrieve",
-        "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform task summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List platform tasks",
+        "description": "Browse the curated Praxicraft platform task library available for assessments. Returns safe metadata only (no hidden tests or solutions).\n\n> **Required scope:** `assessments:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated platform case summaries |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List platform cases",
         "parameters": [
           {
             "in": "query",
@@ -3947,9 +3947,9 @@
     },
     "/api/v1/public/tasks/": {
       "get": {
-        "operationId": "public_tasks_list",
-        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom task objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "List custom tasks",
+        "operationId": "public_cases_list",
+        "description": "Returns your organisation's custom task library. Soft-deleted tasks are excluded.\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Paginated custom case objects |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "List custom cases",
         "parameters": [
           {
             "in": "query",
@@ -4043,8 +4043,8 @@
     "/api/v1/public/tasks/create/": {
       "post": {
         "operationId": "public_tasks_create_create",
-        "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Task created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Create custom task",
+        "description": "Adds a new custom task to your organisation library. Field requirements depend on `task_type` (`coding`, `mcq`, `text`).\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `201` | Case created |\n| `400` | Serializer validation failed |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Create custom case",
         "tags": [
           "Public API \u2014 Tasks"
         ],
@@ -4140,8 +4140,8 @@
     "/api/v1/public/tasks/{id}/": {
       "get": {
         "operationId": "public_tasks_retrieve",
-        "description": "Returns a single custom task by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Task detail |\n| `404` | Task not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Retrieve custom task",
+        "description": "Returns a single custom case by UUID.\n\n> **Required scope:** `tasks:read`\n\n### Responses\n\n| Status | When |\n|--------|------|\n| `200` | Case detail |\n| `404` | Case not found or not owned by your organisation |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Retrieve custom case",
         "parameters": [
           {
             "in": "path",
@@ -4226,8 +4226,8 @@
       },
       "put": {
         "operationId": "public_tasks_update",
-        "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated task returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Replace custom task",
+        "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated case returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Replace custom case",
         "parameters": [
           {
             "in": "path",
@@ -4343,8 +4343,8 @@
       },
       "patch": {
         "operationId": "public_tasks_partial_update",
-        "description": "Partially or fully updates a custom task.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated task returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Update custom task",
+        "description": "Partially or fully updates a custom case.\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to update)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `200` | \u2014 | Updated case returned |\n| `400` | \u2014 | Validation error on request body |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Update custom case",
         "parameters": [
           {
             "in": "path",
@@ -4459,8 +4459,8 @@
       },
       "delete": {
         "operationId": "public_tasks_destroy",
-        "description": "Soft-deletes a custom task (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Task deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Task not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
-        "summary": "Delete custom task",
+        "description": "Soft-deletes a custom case (`is_active=false`).\n\n> **Required scope:** `tasks:read` (route) \u00b7 `tasks:write` (required to delete)\n\n### Responses\n\n| Status | Code | When |\n|--------|------|------|\n| `204` | \u2014 | Case deleted |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks `tasks:write` |\n| `404` | \u2014 | Case not found |\n\n**Authentication & rate limits (all endpoints)**\n\n| Status | Code | When |\n|--------|------|------|\n| `401` | `INVALID_API_KEY` | Missing or invalid bearer token |\n| `401` | `EXPIRED_API_KEY` | API key past its optional `expires_at` |\n| `403` | `INSUFFICIENT_SCOPE` | API key lacks the required scope for this operation |\n| `403` | `IP_NOT_ALLOWED` | Client IP is outside this key's CIDR allowlist |\n| `429` | `RATE_LIMITED` | Rate limit exceeded \u2014 plan-tiered reads/writes per organisation per hour |",
+        "summary": "Delete custom case",
         "parameters": [
           {
             "in": "path",
@@ -5910,6 +5910,2959 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicPipelineEnrollmentListPage"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/": {
+      "get": {
+        "operationId": "public_jobs_retrieve",
+        "description": "\n\n> **Required scope:** `jobs:read`",
+        "summary": "List job openings",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque pagination cursor \u2014 pass the value from `next` to fetch the next page."
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Results per page, max 100 (default 20)."
+          },
+          {
+            "in": "query",
+            "name": "squad_id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Alias for team_id"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by hiring squad UUID"
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobList"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/create/": {
+      "post": {
+        "operationId": "public_jobs_create_create",
+        "description": "Create a draft job. Requires `team_id` (alias `squad_id`). Required scope: `jobs:write`. Empty API key scopes = full access.",
+        "summary": "Create job opening",
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobCreateRequestRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobCreateRequestRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobCreateRequestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/": {
+      "get": {
+        "operationId": "public_jobs_retrieve_2",
+        "description": "\n\n> **Required scope:** `jobs:read`",
+        "summary": "Retrieve job opening",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/update/": {
+      "patch": {
+        "operationId": "public_jobs_update_partial_update",
+        "description": "\n\n> **Required scope:** `jobs:write`",
+        "summary": "Update job opening",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/publish/": {
+      "post": {
+        "operationId": "public_jobs_publish_create",
+        "description": "\n\n> **Required scope:** `jobs:write`",
+        "summary": "Publish job opening",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/close/": {
+      "post": {
+        "operationId": "public_jobs_close_create",
+        "description": "\n\n> **Required scope:** `jobs:write`",
+        "summary": "Close job opening",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/fields/": {
+      "get": {
+        "operationId": "public_jobs_fields_retrieve",
+        "summary": "List job application fields",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobApplicationField"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "public_jobs_fields_create",
+        "summary": "Create job application field",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobApplicationField"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/knockout-rules/": {
+      "get": {
+        "operationId": "public_jobs_knockout_rules_retrieve",
+        "summary": "List knockout rules",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobKnockoutRule"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "public_jobs_knockout_rules_update",
+        "summary": "Replace knockout rules",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Jobs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobKnockoutRule"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/requirements/": {
+      "get": {
+        "operationId": "public_jobs_requirements_retrieve",
+        "description": "\n\n> **Required scope:** `jobs:read`",
+        "summary": "List job L3 requirements",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobRequirement"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{key}/requirements/replace/": {
+      "put": {
+        "operationId": "public_jobs_requirements_replace_update",
+        "description": "\n\n> **Required scope:** `jobs:write`",
+        "summary": "Replace job L3 requirements",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobRequirementsPutRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobRequirementsPutRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicJobRequirementsPutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobRequirement"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/": {
+      "get": {
+        "operationId": "public_applications_retrieve",
+        "description": "\n\n> **Required scope:** `applications:read`",
+        "summary": "List applications",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque pagination cursor \u2014 pass the value from `next` to fetch the next page."
+          },
+          {
+            "in": "query",
+            "name": "job_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "job_slug",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Results per page, max 100 (default 20)."
+          },
+          {
+            "in": "query",
+            "name": "squad_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobApplicationList"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/create/": {
+      "post": {
+        "operationId": "public_applications_create_create",
+        "description": "Submit an application via the same path as careers (`submit_application`). Requires an open job (`job_id` or `job_slug`). Source is set to `public_api`. Required scope: `applications:write`.",
+        "summary": "Create application",
+        "tags": [
+          "Public API \u2014 Applications"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationCreateRequestRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationCreateRequestRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicApplicationCreateRequestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApplication"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/": {
+      "get": {
+        "operationId": "public_applications_retrieve_2",
+        "description": "\n\n> **Required scope:** `applications:read`",
+        "summary": "Retrieve application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApplication"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/advance/": {
+      "post": {
+        "operationId": "public_applications_advance_create",
+        "description": "\n\n> **Required scope:** `applications:write`",
+        "summary": "Advance application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApplication"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/reject/": {
+      "post": {
+        "operationId": "public_applications_reject_create",
+        "description": "\n\n> **Required scope:** `applications:write`",
+        "summary": "Reject application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApplication"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/screening/": {
+      "get": {
+        "operationId": "public_applications_screening_retrieve",
+        "description": "\n\n> **Required scope:** `applications:read`",
+        "summary": "Get application screening result",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CVScreenResult"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/screening/rerun/": {
+      "post": {
+        "operationId": "public_applications_screening_rerun_create",
+        "description": "\n\n> **Required scope:** `screening:write`",
+        "summary": "Re-run screening",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicScreeningRerunRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicScreeningRerunRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicScreeningRerunRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CVScreenResult"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/hold/": {
+      "post": {
+        "operationId": "public_applications_hold_create",
+        "description": "\n\n> **Required scope:** `applications:write`",
+        "summary": "Hold application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {},
+                  "description": "Unspecified response body"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/applications/{application_id}/unhold/": {
+      "post": {
+        "operationId": "public_applications_unhold_create",
+        "description": "\n\n> **Required scope:** `applications:write`",
+        "summary": "Unhold application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Screening"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {},
+                  "description": "Unspecified response body"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/": {
+      "get": {
+        "operationId": "public_candidates_retrieve",
+        "description": "\n\n> **Required scope:** `profiles:read`",
+        "summary": "List candidate profiles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque pagination cursor \u2014 pass the value from `next` to fetch the next page."
+          },
+          {
+            "in": "query",
+            "name": "include_archived",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Results per page, max 100 (default 20)."
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tag",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateList"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/{candidate_id}/": {
+      "get": {
+        "operationId": "public_candidates_retrieve_2",
+        "summary": "Get candidate profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "public_candidates_partial_update",
+        "summary": "Update candidate profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedOrgCandidatePatchRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedOrgCandidatePatchRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedOrgCandidatePatchRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateDetail"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/{candidate_id}/notes/": {
+      "get": {
+        "operationId": "public_candidates_notes_retrieve",
+        "summary": "List candidate notes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateNote"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "public_candidates_notes_create",
+        "summary": "Add candidate note",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateNoteCreateRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateNoteCreateRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateNoteCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateNote"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/{candidate_id}/tags/": {
+      "get": {
+        "operationId": "public_candidates_tags_retrieve",
+        "summary": "List candidate tags",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicCandidateTagsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "public_candidates_tags_update",
+        "summary": "Replace candidate tags",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateTagsPutRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateTagsPutRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateTagsPutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicCandidateTagsPutResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/{candidate_id}/scorecards/": {
+      "get": {
+        "operationId": "public_candidates_scorecards_retrieve",
+        "summary": "List candidate scorecards",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateScorecard"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "public_candidates_scorecards_create",
+        "summary": "Create candidate scorecard",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateScorecardCreateRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateScorecardCreateRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateScorecardCreateRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateScorecard"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/candidates/{candidate_id}/merge/": {
+      "post": {
+        "operationId": "public_candidates_merge_create",
+        "description": "\n\n> **Required scope:** `profiles:write`",
+        "summary": "Merge candidate profiles",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "candidate_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Profiles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateMergeRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateMergeRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OrgCandidateMergeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgCandidateDetail"
                 }
               }
             },
@@ -8626,6 +11579,83 @@
   },
   "components": {
     "schemas": {
+      "CVScreenResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "parsed",
+              "scored",
+              "briefed",
+              "failed"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "7d5579699b059ad1"
+          },
+          "l1_passed": {
+            "type": "boolean"
+          },
+          "l1_failed_rule_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "parse_json": {},
+          "parse_error": {
+            "type": "string"
+          },
+          "l3_score": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$",
+            "nullable": true
+          },
+          "l3_breakdown": {},
+          "ai_brief": {
+            "type": "string"
+          },
+          "ai_red_flags": {},
+          "ai_rationale": {
+            "type": "string"
+          },
+          "brief_error": {
+            "type": "string"
+          },
+          "auto_advanced": {
+            "type": "boolean"
+          },
+          "model_version": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "screened_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_id",
+          "id",
+          "updated_at"
+        ]
+      },
       "InterviewChatMessage": {
         "type": "object",
         "properties": {
@@ -8983,6 +12013,791 @@
           "scheduled_at"
         ]
       },
+      "JobApplicationAnswer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "field_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "field_key": {
+            "type": "string",
+            "readOnly": true
+          },
+          "field_label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "field_type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "value_text": {
+            "type": "string"
+          },
+          "value_number": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,14}(?:\\.\\d{0,4})?$",
+            "nullable": true
+          },
+          "value_boolean": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "value_json": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "field_id",
+          "field_key",
+          "field_label",
+          "field_type",
+          "id"
+        ]
+      },
+      "JobApplicationAttachment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "kind": {
+            "enum": [
+              "cv",
+              "cover_letter",
+              "other"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "bb1fc0399a2c182b"
+          },
+          "original_filename": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "content_type": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "size_bytes": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "kind",
+          "original_filename"
+        ]
+      },
+      "JobApplicationEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "event_type": {
+            "enum": [
+              "submitted",
+              "knockout_failed",
+              "knockout_passed",
+              "enrolled",
+              "invited",
+              "advanced",
+              "rejected",
+              "withdrawn",
+              "note",
+              "held",
+              "unheld",
+              "screened",
+              "auto_advanced"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "d54d96fcf237a83b"
+          },
+          "actor_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "payload": {},
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "actor_user_id",
+          "created_at",
+          "event_type",
+          "id"
+        ]
+      },
+      "JobApplicationField": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "key": {
+            "type": "string",
+            "maxLength": 80,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "field_type": {
+            "enum": [
+              "short_text",
+              "long_text",
+              "single_select",
+              "multi_select",
+              "number",
+              "boolean",
+              "url"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "bd168945fc7e3ce3"
+          },
+          "placeholder": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "help_text": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "is_required": {
+            "type": "boolean"
+          },
+          "sort_order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobApplicationFieldOption"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "created_at",
+          "field_type",
+          "id",
+          "key",
+          "label",
+          "updated_at"
+        ]
+      },
+      "JobApplicationFieldOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "sort_order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "value"
+        ]
+      },
+      "JobApplicationList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "candidate_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "status": {
+            "enum": [
+              "submitted",
+              "knockout_failed",
+              "on_hold",
+              "withdrawn",
+              "advanced",
+              "rejected"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "395c39072d45c698"
+          },
+          "source": {
+            "enum": [
+              "public_careers",
+              "public_api",
+              "manual",
+              "import"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "4a4b89f6b9c63a93"
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "reject_reason": {
+            "type": "string"
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "screening": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "candidate_id",
+          "created_at",
+          "email",
+          "full_name",
+          "id",
+          "invitation_id",
+          "screening",
+          "submitted_at",
+          "updated_at"
+        ]
+      },
+      "JobKnockoutRule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "field_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "field_key": {
+            "type": "string",
+            "readOnly": true
+          },
+          "operator": {
+            "enum": [
+              "eq",
+              "neq",
+              "gte",
+              "lte",
+              "gt",
+              "lt",
+              "in",
+              "not_in",
+              "truthy",
+              "falsy"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "7377b5774a5b3279"
+          },
+          "value_text": {
+            "type": "string"
+          },
+          "on_fail": {
+            "enum": [
+              "reject",
+              "hold"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "174c7fb0ae2fd172"
+          },
+          "is_active": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "sort_order": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "field_id",
+          "field_key",
+          "id",
+          "is_active",
+          "operator"
+        ]
+      },
+      "JobRequirement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "kind": {
+            "enum": [
+              "must",
+              "should"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "47d09ee0660ec4df"
+          },
+          "field": {
+            "enum": [
+              "skill",
+              "years",
+              "tool",
+              "title",
+              "education",
+              "custom"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "b20202a4d695f103"
+          },
+          "key": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "weight": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0
+          },
+          "min_years": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0,
+            "nullable": true
+          },
+          "values": {},
+          "sort_order": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "label"
+        ]
+      },
+      "OrgCandidateDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "source_summary": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "last_activity_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "archived_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "tags": {
+            "type": "string",
+            "readOnly": true
+          },
+          "application_count": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "invitation_count": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrgCandidateNote"
+            },
+            "readOnly": true
+          },
+          "scorecards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrgCandidateScorecard"
+            },
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_count",
+          "created_at",
+          "email",
+          "full_name",
+          "id",
+          "invitation_count",
+          "notes",
+          "scorecards",
+          "tags",
+          "updated_at"
+        ]
+      },
+      "OrgCandidateList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "source_summary": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "last_activity_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "archived_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "tags": {
+            "type": "string",
+            "readOnly": true
+          },
+          "application_count": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "invitation_count": {
+            "type": "integer",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_count",
+          "created_at",
+          "email",
+          "full_name",
+          "id",
+          "invitation_count",
+          "tags",
+          "updated_at"
+        ]
+      },
+      "OrgCandidateMergeRequest": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "source_id"
+        ]
+      },
+      "OrgCandidateNote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "author_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "body": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "author_id",
+          "body",
+          "created_at",
+          "id"
+        ]
+      },
+      "OrgCandidateNoteCreateRequest": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "OrgCandidateScorecard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "author_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "criteria": {},
+          "total": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,6}(?:\\.\\d{0,2})?$",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "author_id",
+          "created_at",
+          "id",
+          "updated_at"
+        ]
+      },
+      "OrgCandidateScorecardCreateRequest": {
+        "type": "object",
+        "properties": {
+          "criteria": {
+            "type": "array",
+            "items": {}
+          },
+          "total": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,6}(?:\\.\\d{0,2})?$",
+            "nullable": true
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        }
+      },
+      "OrgCandidateTagsPutRequest": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        },
+        "required": [
+          "tags"
+        ]
+      },
+      "PatchedOrgCandidatePatchRequest": {
+        "type": "object",
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "source_summary": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
       "PatchedPublicAssessmentUpdateRequestRequest": {
         "type": "object",
         "properties": {
@@ -9079,7 +12894,7 @@
           "description": {
             "type": "string"
           },
-          "task_type": {
+          "case_type": {
             "enum": [
               "mcq",
               "coding",
@@ -9266,6 +13081,184 @@
         },
         "required": [
           "error"
+        ]
+      },
+      "PublicApplication": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "candidate_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "status": {
+            "enum": [
+              "submitted",
+              "knockout_failed",
+              "on_hold",
+              "withdrawn",
+              "advanced",
+              "rejected"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "395c39072d45c698"
+          },
+          "source": {
+            "enum": [
+              "public_careers",
+              "public_api",
+              "manual",
+              "import"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "4a4b89f6b9c63a93"
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "invitation_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "reject_reason": {
+            "type": "string"
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "screening": {
+            "type": "string",
+            "readOnly": true
+          },
+          "enrollment_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "knockout_failed_rule_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobApplicationAnswer"
+            },
+            "readOnly": true
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobApplicationAttachment"
+            },
+            "readOnly": true
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobApplicationEvent"
+            },
+            "readOnly": true
+          },
+          "job_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "job_slug": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "answers",
+          "attachments",
+          "candidate_id",
+          "created_at",
+          "email",
+          "enrollment_id",
+          "events",
+          "full_name",
+          "id",
+          "invitation_id",
+          "job_id",
+          "job_slug",
+          "knockout_failed_rule_id",
+          "screening",
+          "submitted_at",
+          "updated_at"
+        ]
+      },
+      "PublicApplicationCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "job_slug": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          },
+          "full_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "phone": {
+            "type": "string"
+          },
+          "answers": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "external_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "full_name"
         ]
       },
       "PublicAssessmentCaseAttachItemNestedRequest": {
@@ -9611,7 +13604,7 @@
             "description": "Per-tag or tag:difficulty counts for tag-balanced strategies, e.g. {\"python\": 10, \"sql\": 10} or {\"python:easy\": 5, \"sql:hard\": 3}"
           },
           "pool_settings": {
-            "description": "Advanced pool options: tag_quota_mode, assignment_seed_mode, display_order_mode, mandatory_task_ids, shuffle_display_order"
+            "description": "Advanced pool options: tag_quota_mode, assignment_seed_mode, display_order_mode, mandatory_case_ids, shuffle_display_order"
           },
           "violation_review_threshold": {
             "type": "integer",
@@ -10099,6 +14092,34 @@
         "required": [
           "email",
           "reason"
+        ]
+      },
+      "PublicCandidateTagsPutResponse": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "tags"
+        ]
+      },
+      "PublicCandidateTagsResponse": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "tags"
         ]
       },
       "PublicGlobalInvitePage": {
@@ -10933,6 +14954,436 @@
           "status"
         ]
       },
+      "PublicJobCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "team_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "squad_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description_html": {
+            "type": "string"
+          },
+          "position_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "workplace_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "location_text": {
+            "type": "string"
+          },
+          "cv_required": {
+            "type": "boolean"
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "pipeline_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "PublicJobDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "open",
+              "closed"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "d9eb0615cd175e4c"
+          },
+          "livemode": {
+            "type": "boolean"
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true,
+            "readOnly": true
+          },
+          "position_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true
+          },
+          "workplace_type": {
+            "enum": [
+              "onsite",
+              "hybrid",
+              "remote",
+              "unspecified"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "45724afcce0d85b5"
+          },
+          "location_text": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "country_code": {
+            "type": "string",
+            "maxLength": 2
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cv_required": {
+            "type": "boolean"
+          },
+          "auto_invite_assessment": {
+            "type": "boolean",
+            "description": "Deprecated product path. Assessment invites happen on advance / threshold actions only \u2014 never automatically on apply."
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "assessment_slug": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "pipeline_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "pipeline_slug": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "application_count": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "description_html": {
+            "type": "string"
+          },
+          "description_plaintext": {
+            "type": "string"
+          },
+          "rejection_visibility": {
+            "enum": [
+              "immediate",
+              "delayed",
+              "hidden"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "b20b2c4b6398c54b"
+          },
+          "cv_analysis_enabled": {
+            "type": "boolean",
+            "description": "When True, L4 AI CV briefs run in M3+. Requires Growth+ plan. No per-CV credits."
+          },
+          "screen_auto_advance_enabled": {
+            "type": "boolean",
+            "description": "When True, L1-pass apps with L3 >= threshold auto-advance (no AI)."
+          },
+          "screen_auto_advance_l3_min": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$",
+            "nullable": true,
+            "description": "Minimum L3 score (0\u2013100) for optional auto-advance."
+          },
+          "micro_task_case_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "interview_template_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sample_case_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "sample_task": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true,
+            "readOnly": true
+          },
+          "sample_case": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true,
+            "readOnly": true
+          },
+          "application_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobApplicationField"
+            },
+            "readOnly": true
+          },
+          "knockout_rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobKnockoutRule"
+            },
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_count",
+          "application_fields",
+          "assessment_id",
+          "assessment_slug",
+          "created_at",
+          "id",
+          "interview_template_id",
+          "knockout_rules",
+          "micro_task_case_id",
+          "pipeline_id",
+          "pipeline_slug",
+          "position_types",
+          "sample_case",
+          "sample_case_id",
+          "sample_task",
+          "slug",
+          "team",
+          "title",
+          "updated_at"
+        ]
+      },
+      "PublicJobList": {
+        "type": "object",
+        "description": "Public wire: expose sample_task brief on list when loaded.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "open",
+              "closed"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "d9eb0615cd175e4c"
+          },
+          "livemode": {
+            "type": "boolean"
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true,
+            "readOnly": true
+          },
+          "position_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "readOnly": true
+          },
+          "workplace_type": {
+            "enum": [
+              "onsite",
+              "hybrid",
+              "remote",
+              "unspecified"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "45724afcce0d85b5"
+          },
+          "location_text": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "country_code": {
+            "type": "string",
+            "maxLength": 2
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cv_required": {
+            "type": "boolean"
+          },
+          "auto_invite_assessment": {
+            "type": "boolean",
+            "description": "Deprecated product path. Assessment invites happen on advance / threshold actions only \u2014 never automatically on apply."
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "assessment_slug": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "pipeline_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "nullable": true
+          },
+          "pipeline_slug": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "application_count": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "sample_task": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_count",
+          "assessment_id",
+          "assessment_slug",
+          "created_at",
+          "id",
+          "pipeline_id",
+          "pipeline_slug",
+          "position_types",
+          "sample_task",
+          "slug",
+          "team",
+          "title",
+          "updated_at"
+        ]
+      },
+      "PublicJobRequirementsPutRequest": {
+        "type": "object",
+        "properties": {
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          }
+        },
+        "required": [
+          "requirements"
+        ]
+      },
       "PublicMessageResponse": {
         "type": "object",
         "properties": {
@@ -11026,7 +15477,7 @@
           "description": {
             "type": "string"
           },
-          "task_type": {
+          "case_type": {
             "enum": [
               "mcq",
               "coding",
@@ -11201,7 +15652,7 @@
           "description": {
             "type": "string"
           },
-          "task_type": {
+          "case_type": {
             "enum": [
               "mcq",
               "coding",
@@ -12308,6 +16759,21 @@
           "violation_counts"
         ]
       },
+      "PublicScreeningRerunRequest": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "enum": [
+              "rerun_parse",
+              "rerun_brief",
+              "rescore",
+              "full"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "555461ec2e6b7f0e"
+          }
+        }
+      },
       "PublicViolationCounts": {
         "type": "object",
         "properties": {
@@ -12819,6 +17285,18 @@
       "description": "Manage multi-stage hiring pipelines and candidate enrollments.\n\nListing / reading pipelines and enrollment status requires `pipelines:read`. Creating/updating linear pipelines, enrolling, advancing, and notes require `pipelines:write`."
     },
     {
+      "name": "Public API \u2014 Jobs",
+      "description": "Job openings: list, create, update, publish, close, application fields, and knockout rules.\n\nRead endpoints require `jobs:read`. Mutations require `jobs:write`. Create requires `team_id` (alias `squad_id`). Empty API key scopes grant full access."
+    },
+    {
+      "name": "Public API \u2014 Applications",
+      "description": "Inbound job applications: list, create (same submit path as careers), retrieve, advance, and reject.\n\nRead endpoints require `applications:read`. Create / advance / reject require `applications:write`."
+    },
+    {
+      "name": "Public API \u2014 Profiles",
+      "description": "Org-scoped candidate CRM profiles (people), notes, tags, scorecards, and merge.\n\nRead: `profiles:read`. Write: `profiles:write`. Distinct from `candidates:read` (assessment results)."
+    },
+    {
       "name": "Public API \u2014 Webhooks",
       "description": "Register and verify webhook endpoints for real-time event delivery.\n\nListing webhooks requires `webhooks:read`. Creating or testing webhooks requires `webhooks:write`."
     },
@@ -12845,6 +17323,9 @@
         "Public API \u2014 Results",
         "Public API \u2014 Tasks",
         "Public API \u2014 Pipelines",
+        "Public API \u2014 Jobs",
+        "Public API \u2014 Applications",
+        "Public API \u2014 Profiles",
         "Public API \u2014 Webhooks",
         "Public API \u2014 Interviews",
         "Public API \u2014 Integrations",

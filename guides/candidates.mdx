@@ -1,0 +1,61 @@
+---
+title: "Candidate profiles"
+description: "Org-wide people CRM: notes, tags, scorecards, and merge — distinct from assessment session results."
+---
+
+**Candidate profiles** are people records for your organisation (CRM). They are not the same as **assessment results** (`candidates:read` on invitations/sessions).
+
+| Surface | Scope | What it is |
+|---------|--------|------------|
+| Profiles CRM | `profiles:read` / `profiles:write` | People, notes, tags, scorecards, merge |
+| Assessment results | `candidates:read` | Scores and pass/fail for invites |
+
+## If you are recruiting / ops
+
+<Steps>
+  <Step title="Open Candidates">
+    In the [dashboard](https://assess.praxicraft.com/assess/candidates), browse people linked from applications and invites.
+  </Step>
+  <Step title="Add context">
+    Notes, tags, and scorecards stay on the person so the next recruiter sees history across jobs.
+  </Step>
+  <Step title="Merge duplicates">
+    When two profiles are the same person, merge into the keeper. Activity consolidates onto the survivor.
+  </Step>
+</Steps>
+
+No API key needed for dashboard CRM.
+
+## For engineers
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/candidates/` | `profiles:read` |
+| GET / PATCH | `/candidates/{id}/` | read / `profiles:write` |
+| GET / POST | `/candidates/{id}/notes/` | read / write |
+| GET / PUT | `/candidates/{id}/tags/` | read / write |
+| GET / POST | `/candidates/{id}/scorecards/` | read / write |
+| POST | `/candidates/{id}/merge/` | `profiles:write` |
+
+List supports search and cursor pagination. Profiles are org-global (not Live/Test split the way jobs are).
+
+```bash
+curl -sS "https://assess.praxicraft.com/api/v1/public/candidates/?search=ada" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+Merge: `POST /candidates/{survivor_id}/merge/` with the duplicate id in the body (see OpenAPI). Prefer merging after you confirm email / identity.
+
+### Webhooks
+
+| Event | When |
+|-------|------|
+| `candidate.updated` | Profile fields changed |
+| `candidate.note_added` | Note created |
+| `candidate.merged` | Duplicate merged into survivor |
+
+Do not confuse these with `candidate.passed` / `candidate.failed` (assessment scoring). Full samples: [Webhook events](/guides/webhook-events).
+
+## Next
+
+[Jobs & applications](/guides/jobs) · [Results](/guides/results) · [Scopes](/guides/scopes) · [API changelog 1.7.0](/api-changelog/1-7-0)

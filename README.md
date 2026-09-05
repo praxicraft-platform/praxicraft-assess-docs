@@ -29,7 +29,9 @@ Content is organized by section (MDX lives in folders, not at the repo root):
 
 ### 1. Guides (`guides/`)
 
-Getting started, authentication, assessments, invitations, results, interviews, webhooks, pipelines, custom tasks, organisation, scopes, errors, and API reference hub.
+**Guides tab (Get started only):** introduction, about, roles, quickstart, authentication, using LLMs.
+
+**Product tab:** jobs, screening, candidate CRM, assessments, invitations, results, interviews, pipelines, webhooks, organisation, scopes, errors, and API reference hub.
 
 ### 2. Integrations (`integrations/`)
 
@@ -48,6 +50,8 @@ Public API release notes.
 Interactive OpenAPI playground from `openapi.json`.
 
 The landing page is root [`index.mdx`](./index.mdx). Navigation is configured in [`docs.json`](./docs.json). Writing rules for contributors: [`STYLE.md`](./STYLE.md).
+
+Nav tabs: **Guides** (get started only) · **Product** (jobs, screening, assessments, …) · Integrations · SDKs · API changelog · API Reference.
 
 ## Development setup
 

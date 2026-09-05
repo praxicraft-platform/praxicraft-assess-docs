@@ -1,0 +1,65 @@
+---
+title: "1.7.0: Jobs, applications, screening, and candidate CRM"
+description: "Additive Public API for job openings, applications, L1–L5 screening, org candidate profiles, and matching webhooks."
+---
+
+**Shipped:** 2026-09-05 · **OpenAPI:** `1.7.0` · **Prefix:** `/api/v1/public/`
+
+## Breaking
+
+None. Existing assessment, invitation, pipeline, and interview paths are unchanged. Assessment-only orgs keep working without Jobs.
+
+## Added
+
+### Jobs & applications
+
+| Area | Paths | Scopes |
+|------|-------|--------|
+| Jobs | `GET /jobs/`, `POST /jobs/create/`, `GET|PATCH /jobs/{key}/`, `POST …/publish/`, `POST …/close/`, fields, knockout-rules | `jobs:read` / `jobs:write` |
+| Applications | `GET /applications/`, `POST /applications/create/`, `GET /applications/{id}/`, advance, reject, hold, unhold | `applications:read` / `applications:write` |
+
+- Job `{key}` accepts slug or UUID.
+- Create job requires `team_id` (alias `squad_id`).
+- Application create shares the careers submit path (`source=public_api`).
+
+### Screening
+
+| Area | Paths | Scopes |
+|------|-------|--------|
+| Requirements | `GET /jobs/{key}/requirements/`, `PUT …/requirements/replace/` | `jobs:read` / `jobs:write` |
+| Result / rerun | `GET /applications/{id}/screening/`, `POST …/screening/rerun/` | `applications:read` / `screening:write` |
+
+L3 match score ranks applications. Optional L4 AI brief never sorts. See [Screening](/guides/screening).
+
+### Candidate CRM profiles
+
+| Area | Paths | Scopes |
+|------|-------|--------|
+| Profiles | `GET /candidates/`, `GET|PATCH /candidates/{id}/`, notes, tags, scorecards, merge | `profiles:read` / `profiles:write` |
+
+Distinct from `candidates:read` (assessment session results). See [Candidate profiles](/guides/candidates).
+
+### Webhooks
+
+| Event | Notes |
+|-------|--------|
+| `job.created` / `job.published` / `job.closed` | Job lifecycle |
+| `application.submitted` / `knockout_failed` / `screened` / `held` / `unheld` / `advanced` / `rejected` / `withdrawn` | Application lifecycle; `application.screened` includes nested `screening` summary |
+| `candidate.updated` / `candidate.note_added` / `candidate.merged` | CRM profile events |
+
+### Pipeline stage
+
+Linked job pipelines gain a `cv_screen` stage on publish when screening is in use.
+
+## Changed
+
+- OpenAPI snapshot tags include Jobs, Applications, Profiles (and Screening operations under Applications/Jobs paths).
+- Empty API key scopes still mean full access (unchanged).
+
+## Deprecated
+
+None for this release.
+
+## Related guides
+
+[Jobs & applications](/guides/jobs) · [Screening](/guides/screening) · [Candidate profiles](/guides/candidates) · [Webhook events](/guides/webhook-events) · [Scopes](/guides/scopes)

@@ -18,20 +18,23 @@ Use this when you are building software against Assess. Recruiters and ops can s
 
 Direct link: [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/)
 
-Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground (snapshot `openapi.json`, currently **1.4.0**).
+Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground (snapshot `openapi.json`, currently **1.7.0**).
 
-## Current surface (1.4.0)
+## Current surface (1.7.0)
 
-Additive org/ops endpoints since the 1.1.0 baseline. details in the [API changelog](/api-changelog):
+Additive resources since the 1.1.0 baseline. details in the [API changelog](/api-changelog):
 
 | Area | Paths | Notes |
 |------|-------|--------|
+| Jobs & applications | `/jobs/…`, `/applications/…` | Openings, apply, advance/reject/hold; scopes `jobs:*`, `applications:*` |
+| Screening | `/jobs/{key}/requirements/…`, `/applications/{id}/screening/…` | L3 rank + optional L4; `screening:write` for reruns |
+| Candidate CRM | `/candidates/…` | Profiles, notes, tags, scorecards, merge; `profiles:*` (not `candidates:read`) |
 | Org reads | `/org/usage/`, `/org/developer/health/`, `/org/billing/`, `/org/audit-log/export/` | Mode-scoped usage/health/export; billing is org-global |
-| Org writes | `PATCH /org/`, `/org/squads/…`, `/org/member-invites/` | Scope `organisation:write` for mutations; member-invite list is read-only |
-| Pipelines | `POST /pipelines/create/`, `PATCH /pipelines/{slug}/`, enrollments `advance` + `notes` | Linear stages; Growth+; `pipelines:write` |
-| Destinations | `/webhooks/` (+ delivery retry) | Same as Developer → Destinations; no separate `/destinations/` path |
+| Org writes | `PATCH /org/`, `/org/squads/…`, `/org/member-invites/` | Scope `organisation:write` for mutations |
+| Pipelines | `POST /pipelines/create/`, enrollments, advance, notes | Linear stages; Growth+; `cv_screen` with jobs |
+| Destinations | `/webhooks/` (+ delivery retry) | Includes job / application / CRM events |
 
-Guides with curl and Live/Test callouts: [Organisation](/guides/organisation) · [Pipelines](/guides/pipelines) · [Scopes](/guides/scopes) · [Webhooks](/guides/webhooks).
+Guides: [Jobs](/guides/jobs) · [Screening](/guides/screening) · [Candidate profiles](/guides/candidates) · [Organisation](/guides/organisation) · [Pipelines](/guides/pipelines) · [Scopes](/guides/scopes) · [Webhooks](/guides/webhooks).
 
 ## Playground notes
 
@@ -44,7 +47,7 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
 ## Schema files
 
 | Resource | URL |
-|----------|-----|
+|----------|------|
 | ReDoc | [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/) |
 | Live schema | `GET /api/v1/public/schema/` with `Accept: application/json` |
 | Docs snapshot | [openapi.json](https://docs.praxicraft.com/openapi.json) |
@@ -54,6 +57,7 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
 - Flat JSON success bodies
 - Errors: `{ "error": { "code", "message", "details?" } }`
 - Invitation id: **`invite_token`**
+- Job path id: slug or UUID
 - Cursor pagination: `cursor`, `page_size` (default 20, max 100)
 - Audit export format query: **`export_format`** (`csv` \| `json`). not `?format=` (DRF renderer)
 
@@ -63,8 +67,8 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
  <Card title="Quickstart" icon="rocket" href="/guides/quickstart">
  First call in five minutes.
  </Card>
- <Card title="Authentication" icon="key" href="/guides/authentication">
- Keys and scopes.
+ <Card title="Jobs & screening" icon="briefcase" href="/guides/jobs">
+ Openings, applications, and match scores.
  </Card>
  <Card title="API changelog" icon="scroll-text" href="/api-changelog">
  Public API release notes (separate from the product changelog).

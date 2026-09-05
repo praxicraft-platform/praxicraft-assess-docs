@@ -1,0 +1,110 @@
+---
+title: "Jobs & applications"
+description: "Post openings, collect applications, and advance or reject candidates from the dashboard or Public API."
+---
+
+Jobs are openings your org publishes on careers (and via API). Applications are people who apply. Screening ranks them before you invite to an assessment. Assessment-only hiring still works without Jobs.
+
+## If you are recruiting / ops
+
+You do **not** need an API key for day-to-day work.
+
+<Steps>
+  <Step title="Create a job">
+    Open [Jobs](https://assess.praxicraft.com/assess/jobs) → **New job**. Pick a hiring squad, write the description, and attach an assessment or pipeline when you want one after advance.
+  </Step>
+  <Step title="Application form & knockouts">
+    On the job, use **Questions** for custom fields and **Knockouts** for hard L1 rules (for example work authorization). Failures never reach ranking.
+  </Step>
+  <Step title="Match requirements">
+    On **Screening**, add must/should requirements. That score ranks the Candidates list. See [Screening](/guides/screening).
+  </Step>
+  <Step title="Publish">
+    Publish when ready. Candidates apply from your careers URL. Review on the job’s **Candidates** tab (or Screened CVs).
+  </Step>
+  <Step title="Advance or reject">
+    Advance sends them toward assessment / pipeline stages. Reject closes the application with an optional reason.
+  </Step>
+</Steps>
+
+## For engineers
+
+Base path: `/api/v1/public/`. Auth: Bearer `ct_live_…` / `ct_test_…`. Mode follows the key.
+
+Job `{key}` is **slug or UUID**. Create requires a hiring squad: send `team_id` (alias `squad_id`).
+
+### Jobs
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/jobs/` | `jobs:read` |
+| POST | `/jobs/create/` | `jobs:write` |
+| GET | `/jobs/{key}/` | `jobs:read` |
+| PATCH | `/jobs/{key}/update/` | `jobs:write` |
+| POST | `/jobs/{key}/publish/` | `jobs:write` |
+| POST | `/jobs/{key}/close/` | `jobs:write` |
+| GET / POST | `/jobs/{key}/fields/` | read / write |
+| GET / PUT | `/jobs/{key}/knockout-rules/` | read / write |
+| GET / PUT | `/jobs/{key}/requirements/` · `…/replace/` | read / write (see [Screening](/guides/screening)) |
+
+List filters: `status`, `team_id` / `squad_id`, cursor pagination.
+
+```bash
+curl -sS -X POST https://assess.praxicraft.com/api/v1/public/jobs/create/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Senior data engineer",
+    "team_id": "SQUAD_UUID",
+    "cv_required": true,
+    "workplace_type": "remote"
+  }'
+```
+
+Publish / close:
+
+```bash
+curl -sS -X POST \
+  "https://assess.praxicraft.com/api/v1/public/jobs/senior-data-engineer/publish/" \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY"
+```
+
+Statuses: `draft` → `open` → `closed`.
+
+### Applications
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/applications/` | `applications:read` |
+| POST | `/applications/create/` | `applications:write` |
+| GET | `/applications/{id}/` | `applications:read` |
+| POST | `/applications/{id}/advance/` | `applications:write` |
+| POST | `/applications/{id}/reject/` | `applications:write` |
+| POST | `/applications/{id}/hold/` · `/unhold/` | `applications:write` |
+| GET / POST | `/applications/{id}/screening/` · `…/rerun/` | read / `screening:write` |
+
+Create uses the same submit path as careers (`source=public_api`). Provide `job_id` or `job_slug`, plus `email` and `full_name`.
+
+```bash
+curl -sS -X POST https://assess.praxicraft.com/api/v1/public/applications/create/ \
+  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "job_slug": "senior-data-engineer",
+    "email": "ada@example.com",
+    "full_name": "Ada Lovelace",
+    "external_id": "ats_42"
+  }'
+```
+
+List defaults to L3 match rank when screening exists (`ordering=-l3_score,-submitted_at`). Pass `?ordering=submitted_at` for chronological order. Filter with `job_id` / `job_slug`, `status`, `team_id` / `squad_id`.
+
+Careers (anonymous, no API key): `/api/v1/careers/{org_slug}/jobs/…`.
+
+### Webhooks
+
+Subscribe to `job.created`, `job.published`, `job.closed`, and `application.*` (submitted, knockout_failed, screened, held, unheld, advanced, rejected, withdrawn). Payloads: [Webhook events](/guides/webhook-events).
+
+## Next
+
+[Screening](/guides/screening) · [Candidate profiles](/guides/candidates) · [Scopes](/guides/scopes) · [API changelog 1.7.0](/api-changelog/1-7-0)

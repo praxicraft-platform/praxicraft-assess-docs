@@ -1,6 +1,6 @@
 ---
 title: "Webhooks"
-description: "Get notified when candidates finish, pass, or move through a pipeline."
+description: "Get notified when candidates finish, applications screen, or people move through a pipeline."
 ---
 
 A webhook is an HTTPS URL Assess calls when something happens. Your tool (n8n, Zapier, Make, or your backend) listens and reacts. no need to refresh the dashboard.
@@ -22,6 +22,10 @@ Useful events to ask for:
 | `assessment.completed` | Candidate finished the test |
 | `candidate.passed` / `failed` | Score vs passing score |
 | `invitation.created` | New assessment invite created |
+| `job.published` / `closed` | Opening went live or closed |
+| `application.submitted` / `screened` | Apply received or CV screen finished |
+| `application.advanced` / `rejected` | Recruiter decision on an application |
+| `candidate.updated` / `note_added` / `merged` | CRM profile changes (not assessment pass/fail) |
 | `pipeline.enrolled` / `advanced` / `held` / `unheld` | Funnel movement |
 | `interview.completed` / `no_show` | Live interview ended or expired |
 

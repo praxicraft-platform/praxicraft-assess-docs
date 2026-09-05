@@ -72,9 +72,24 @@
               "guides/authentication",
               "guides/using-llms"
             ]
+          }
+        ]
+      },
+      {
+        "tab": "Product",
+        "icon": "briefcase",
+        "groups": [
+          {
+            "group": "Jobs & screening",
+            "icon": "clipboard-list",
+            "pages": [
+              "guides/jobs",
+              "guides/screening",
+              "guides/candidates"
+            ]
           },
           {
-            "group": "Assessments & candidates",
+            "group": "Assessments",
             "icon": "clipboard-check",
             "pages": [
               "guides/assessments",
@@ -84,20 +99,20 @@
             ]
           },
           {
-            "group": "Interviews & webhooks",
-            "icon": "video",
+            "group": "Interviews & pipelines",
+            "icon": "git-branch",
             "pages": [
               "guides/interviews",
-              "guides/webhooks",
-              "guides/webhook-events"
+              "guides/pipelines",
+              "guides/custom-tasks"
             ]
           },
           {
-            "group": "Content & pipelines",
-            "icon": "layers",
+            "group": "Webhooks",
+            "icon": "webhook",
             "pages": [
-              "guides/custom-tasks",
-              "guides/pipelines"
+              "guides/webhooks",
+              "guides/webhook-events"
             ]
           },
           {
@@ -194,6 +209,7 @@
             "icon": "scroll-text",
             "pages": [
               "api-changelog/index",
+              "api-changelog/1-7-0",
               "api-changelog/1-6-0",
               "api-changelog/1-5-0",
               "api-changelog/1-4-0",
@@ -264,6 +280,30 @@
     }
   },
   "redirects": [
+    {
+      "source": "/docs/candidates",
+      "destination": "/guides/candidates"
+    },
+    {
+      "source": "/candidates",
+      "destination": "/guides/candidates"
+    },
+    {
+      "source": "/docs/screening",
+      "destination": "/guides/screening"
+    },
+    {
+      "source": "/screening",
+      "destination": "/guides/screening"
+    },
+    {
+      "source": "/docs/jobs",
+      "destination": "/guides/jobs"
+    },
+    {
+      "source": "/jobs",
+      "destination": "/guides/jobs"
+    },
     {
       "source": "/docs",
       "destination": "/"
@@ -665,14 +705,14 @@
   "seo": {
     "indexing": "navigable",
     "metatags": {
-      "title": "Praxicraft Assess API for Technical Hiring",
-      "description": "Praxicraft Assess API: authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
-      "keywords": "Assess API, technical hiring API, assessment webhooks, ATS integration, MCP, Praxicraft",
+      "title": "Praxicraft Assess \u2014 hiring workspace docs",
+      "description": "Hire with Praxicraft Assess: jobs, CV screening, assessments, live interviews, webhooks, MCP, and ATS guides.",
+      "keywords": "Assess API, job openings, CV screening, technical hiring, assessments, webhooks, ATS, MCP, Praxicraft",
       "robots": "index, follow",
       "canonical": "https://docs.praxicraft.com",
       "og:site_name": "Praxicraft Assess Docs",
-      "og:title": "Praxicraft Assess API for Technical Hiring",
-      "og:description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "og:title": "Praxicraft Assess \u2014 hiring workspace docs",
+      "og:description": "Hire with Praxicraft Assess: jobs, CV screening, assessments, live interviews, webhooks, MCP, and ATS guides.",
       "og:type": "website",
       "og:url": "https://docs.praxicraft.com",
       "og:locale": "en_US",
@@ -680,8 +720,8 @@
       "og:image:alt": "Praxicraft Assess API documentation",
       "twitter:card": "summary_large_image",
       "twitter:site": "@praxicraft",
-      "twitter:title": "Praxicraft Assess API for Technical Hiring",
-      "twitter:description": "Praxicraft Assess API \u2014 authentication, assessments, live interviews, webhooks, MCP, and ATS integration guides for technical hiring teams.",
+      "twitter:title": "Praxicraft Assess \u2014 hiring workspace docs",
+      "twitter:description": "Hire with Praxicraft Assess: jobs, CV screening, assessments, live interviews, webhooks, MCP, and ATS guides.",
       "twitter:image": "/images/og/docs.png",
       "twitter:image:alt": "Praxicraft Assess API documentation"
     },

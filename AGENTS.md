@@ -7,11 +7,11 @@ This is the **public** Mintlify documentation for Praxicraft Assess (`docs.praxi
 | Path | Purpose |
 |------|---------|
 | `index.mdx` | Landing page (only guide MDX at repo root) |
-| `guides/` | Core product & API guides |
+| `guides/` | Get started + Product guides (nav split in `docs.json`) |
 | `integrations/` | ATS, chat, automations, MCP, agents |
 | `sdks/` | Official client & CLI docs |
 | `api-changelog/` | Public API release notes |
-| `docs.json` | Navigation, redirects, theme, SEO |
+| `docs.json` | Navigation, redirects, theme, SEO — **Guides** = get started only; **Product** = assessments, jobs, screening, etc. |
 | `openapi.json` | API Reference playground |
 
 Do **not** dump new guides at the repo root — put them under the matching folder and register them in `docs.json`.

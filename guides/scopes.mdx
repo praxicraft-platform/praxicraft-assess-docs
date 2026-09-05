@@ -23,7 +23,14 @@ Create keys: [Authentication](/guides/authentication).
 | `assessments:write` | Create/update/duplicate assessments; attach/replace/remove tasks |
 | `invitations:read` | List/get invitations |
 | `invitations:write` | Create, remind, cancel invitations |
-| `candidates:read` | Assessment results and per-invite result detail |
+| `candidates:read` | Assessment results and per-invite result detail (not CRM profiles) |
+| `profiles:read` | Org candidate CRM list/get, notes, tags, scorecards |
+| `profiles:write` | Patch profiles; add notes/tags/scorecards; merge duplicates |
+| `jobs:read` | List/get jobs, fields, knockout rules, requirements |
+| `jobs:write` | Create/update/publish/close jobs; manage fields, knockouts, requirements |
+| `applications:read` | List/get applications; read screening results |
+| `applications:write` | Create applications; advance, reject, hold, unhold |
+| `screening:write` | Re-run parse / rescore / AI brief / full screen |
 | `tasks:read` | List/get org custom tasks |
 | `tasks:write` | Create/update/delete org custom tasks |
 | `pipelines:read` | List pipelines, enrollment status, notes |
@@ -42,6 +49,9 @@ Missing scope → **403** `INSUFFICIENT_SCOPE`.
 |----------|--------|
 | Invite + read results | `assessments:read`, `invitations:write`, `candidates:read` |
 | Build assessments via API | `assessments:read`, `assessments:write`, `tasks:read` |
+| Jobs + apply automation | `jobs:read`, `jobs:write`, `applications:read`, `applications:write` |
+| Screening reruns | above plus `screening:write` |
+| Candidate CRM | `profiles:read`, `profiles:write` |
 | Webhooks only | `webhooks:read`, `webhooks:write` |
 | Pipeline automation | `pipelines:read`, `pipelines:write`, `webhooks:write` |
 | Live interviews | `interviews:read`, `interviews:write` |
@@ -49,4 +59,4 @@ Missing scope → **403** `INSUFFICIENT_SCOPE`.
 
 ## Next
 
-[Authentication](/guides/authentication) · [Plan limits](/guides/plan-limits)
+[Authentication](/guides/authentication) · [Jobs & applications](/guides/jobs) · [Screening](/guides/screening) · [Plan limits](/guides/plan-limits)

@@ -444,6 +444,129 @@ Room fields plus analysis summary:
 }
 ```
 
+## Jobs
+
+Shared job fields:
+
+| Field | Notes |
+|-------|--------|
+| `job_id` / `job_slug` | Opening identity |
+| `title` / `status` | Title and `draft` \| `open` \| `closed` |
+| `team_id` | Hiring squad UUID or `null` |
+| `livemode` | boolean |
+| `published_at` / `closed_at` | ISO-8601 or `null` |
+
+### `job.created` / `job.published` / `job.closed`
+
+```json
+{
+ "id": "evt_job111111111111111111111111111111",
+ "event": "job.published",
+ "created_at": "2026-09-05T10:00:00.000000+00:00",
+ "data": {
+ "job_id": "550e8400-e29b-41d4-a716-446655440060",
+ "job_slug": "senior-data-engineer",
+ "title": "Senior data engineer",
+ "status": "open",
+ "team_id": "550e8400-e29b-41d4-a716-446655440061",
+ "livemode": true,
+ "published_at": "2026-09-05T10:00:00.000000+00:00",
+ "closed_at": null
+ }
+}
+```
+
+## Applications
+
+Shared application fields (plus event-specific extras):
+
+| Field | Notes |
+|-------|--------|
+| `application_id` | Application UUID |
+| `job_id` / `job_slug` | Parent job |
+| `email` / `full_name` | Applicant |
+| `status` / `source` | Lifecycle and origin (`careers`, `public_api`, …) |
+| `external_id` | Your ATS id when set |
+| `team_id` / `livemode` / `submitted_at` | Squad, mode, submit time |
+
+### `application.submitted`
+
+Emitted when an application is accepted (careers or Public API create).
+
+### `application.knockout_failed`
+
+L1 knockout failed. Same shared fields; status reflects knockout failure.
+
+### `application.screened`
+
+L2/L3 finished (optional L4 brief). Nested `screening` summary:
+
+```json
+{
+ "id": "evt_app222222222222222222222222222222",
+ "event": "application.screened",
+ "created_at": "2026-09-05T10:05:00.000000+00:00",
+ "data": {
+ "application_id": "550e8400-e29b-41d4-a716-446655440070",
+ "job_id": "550e8400-e29b-41d4-a716-446655440060",
+ "job_slug": "senior-data-engineer",
+ "email": "ada@example.com",
+ "full_name": "Ada Lovelace",
+ "status": "submitted",
+ "source": "careers",
+ "external_id": "",
+ "team_id": "550e8400-e29b-41d4-a716-446655440061",
+ "livemode": true,
+ "submitted_at": "2026-09-05T10:01:00.000000+00:00",
+ "screening": {
+ "status": "scored",
+ "l1_passed": true,
+ "l3_score": "82.50",
+ "auto_advanced": false
+ }
+ }
+}
+```
+
+### `application.held` / `application.unheld`
+
+Hold pauses recruiter auto-advance for that application. Shared application fields; status becomes `on_hold` when held.
+
+### `application.advanced` / `application.rejected` / `application.withdrawn`
+
+Advance / reject / withdraw. `application.rejected` may include `reject_reason`.
+
+## Candidate CRM
+
+These events are for **org candidate profiles** (`profiles:*`), not assessment pass/fail.
+
+### `candidate.updated`
+
+```json
+{
+ "id": "evt_crm333333333333333333333333333333",
+ "event": "candidate.updated",
+ "created_at": "2026-09-05T11:00:00.000000+00:00",
+ "data": {
+ "candidate_id": "550e8400-e29b-41d4-a716-446655440080",
+ "email": "ada@example.com",
+ "full_name": "Ada Lovelace",
+ "phone": "",
+ "source_summary": "careers",
+ "archived_at": null,
+ "last_activity_at": "2026-09-05T11:00:00.000000+00:00"
+ }
+}
+```
+
+### `candidate.note_added`
+
+Same profile fields plus note metadata when a note is created.
+
+### `candidate.merged`
+
+Fired when a duplicate profile is merged into a survivor. Payload includes survivor identity (and merge extras when present).
+
 ## System
 
 ### `webhook.test`
@@ -482,8 +605,11 @@ HTTP 2xx on this ping sets `is_verified` and activates the destination.
 | `pipeline.held` / `unheld` | Pause / resume auto-advance |
 | `interview.*` | Live interview lifecycle |
 | `interview.analysis_ready` | Report ready |
+| `job.*` | Job create / publish / close |
+| `application.*` | Apply, knockout, screen, hold, advance, reject |
+| `candidate.updated` / `note_added` / `merged` | CRM profile (not assessment pass/fail) |
 | `webhook.test` | Destination ping |
 
 ## Next
 
-[Webhooks setup](/guides/webhooks) · [Verify signatures](/sdks/webhooks) · [Connect ATS via webhooks](/integrations/via-webhooks) · [n8n](/integrations/n8n) · [Zapier](/integrations/zapier)
+[Webhooks setup](/guides/webhooks) · [Jobs & applications](/guides/jobs) · [Screening](/guides/screening) · [Verify signatures](/sdks/webhooks) · [Connect ATS via webhooks](/integrations/via-webhooks)

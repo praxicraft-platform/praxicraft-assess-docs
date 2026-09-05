@@ -64,11 +64,15 @@ const EXAMPLES = {
 
 const PATH_VARS = {
   slug: "assessment_slug",
+  key: "job_key",
   token: "invite_token",
   id: "id",
   delivery_id: "delivery_id",
   task_id: "task_id",
   provider: "provider",
+  application_id: "application_id",
+  offer_id: "offer_id",
+  candidate_id: "candidate_id",
 };
 
 function firstExample(content) {
@@ -159,6 +163,12 @@ function main() {
     }
   }
 
+  const tagOrder = (spec.tags || []).map((t) => t.name);
+  const tagRank = (name) => {
+    const i = tagOrder.indexOf(name);
+    return i === -1 ? tagOrder.length + 100 : i;
+  };
+
   const collection = {
     info: {
       name: "Praxicraft Assess Public API",
@@ -179,8 +189,15 @@ function main() {
       { key: "delivery_id", value: "" },
       { key: "task_id", value: "" },
       { key: "provider", value: "greenhouse" },
+      { key: "job_key", value: "senior-data-engineer" },
+      { key: "application_id", value: "" },
+      { key: "offer_id", value: "" },
+      { key: "candidate_id", value: "" },
     ],
-    item: [...groups.entries()].map(([name, item]) => ({ name, item })),
+    // Prefer OpenAPI tag order (Jobs-first) over discovery order.
+    item: [...groups.entries()]
+      .sort(([a], [b]) => tagRank(a) - tagRank(b))
+      .map(([name, item]) => ({ name, item })),
   };
 
   const webhookGroup = collection.item.find((g) => g.name.includes("Webhook"));

@@ -1,0 +1,42 @@
+---
+title: "1.8.0: Offers, insights, and Jobs-first OpenAPI"
+description: "Soft offers Public API, hiring funnel insights, Screening/Offers/Insights tags, and ReDoc ordered Jobs-first."
+---
+
+**Shipped:** 2026-09-05 · **OpenAPI:** `1.8.0` · **Prefix:** `/api/v1/public/`
+
+## Breaking
+
+None. Existing paths are unchanged. Assessment-only orgs keep working without Jobs.
+
+## Docs / catalog
+
+- Public ReDoc and Mintlify OpenAPI **tag order** now starts with **Jobs → Applications → Screening → Offers → Profiles**, then pipelines and the assessment spine.
+- Schema description documents the recommended integration order (jobs first).
+- Tag names normalized: `Public API — Offers`, `Public API — Insights`, `Public API — Screening`.
+
+## Added
+
+### Soft offers
+
+| Area | Paths | Scopes |
+|------|-------|--------|
+| Offers | `GET/POST /offers/`, `GET /offers/{id}/`, `POST …/send/`, `POST …/withdraw/` | `offers:read` / `offers:write` (Growth+) |
+
+Soft offer = letter + PDF + accept/decline. Not DocuSign / e-sign.
+
+### Insights
+
+| Area | Paths | Scopes |
+|------|-------|--------|
+| Funnel | `GET /insights/funnel/` | `insights:read` (Growth+) |
+
+Filters: `date_from`, `date_to`, `job_id`, `team_id`.
+
+## Also in 1.7.0
+
+Jobs, applications, screening, and candidate CRM shipped in [1.7.0](/api-changelog/1-7-0).
+
+## Guides
+
+[Jobs](/guides/jobs) · [API Reference](/guides/api-reference) · [Scopes](/guides/scopes)

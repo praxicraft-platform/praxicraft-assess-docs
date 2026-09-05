@@ -9,7 +9,7 @@ Use this when you are building software against Assess. Recruiters and ops can s
 
 <CardGroup cols={2}>
  <Card title="ReDoc" icon="book-open" href="https://assess.praxicraft.com/api/v1/public/redoc/">
- Live reference for every Public API endpoint. schemas, examples, try-it.
+ Live reference for every Public API endpoint. Jobs are listed first, then applications and screening.
  </Card>
  <Card title="Authentication" icon="key" href="/guides/authentication">
  Keys, Bearer auth, and base URL before you call anything.
@@ -18,21 +18,31 @@ Use this when you are building software against Assess. Recruiters and ops can s
 
 Direct link: [https://assess.praxicraft.com/api/v1/public/redoc/](https://assess.praxicraft.com/api/v1/public/redoc/)
 
-Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground (snapshot `openapi.json`, currently **1.7.0**).
+Use the **API Reference** tab in these docs for the Mintlify OpenAPI playground (snapshot `openapi.json`, currently **1.8.0**). Tag groups start with **Jobs**.
 
-## Current surface (1.7.0)
+## Recommended order
 
-Additive resources since the 1.1.0 baseline. details in the [API changelog](/api-changelog):
+1. **Jobs** — create and publish openings
+2. **Applications** — list, advance, reject
+3. **Screening** — match scores and reruns
+4. **Assessments / invitations** — invite above-threshold candidates
+5. Pipelines, interviews, soft offers as needed
+
+Assessment-only orgs can skip Jobs and start at Assessments.
+
+## Current surface (1.8.0)
 
 | Area | Paths | Notes |
 |------|-------|--------|
 | Jobs & applications | `/jobs/…`, `/applications/…` | Openings, apply, advance/reject/hold; scopes `jobs:*`, `applications:*` |
 | Screening | `/jobs/{key}/requirements/…`, `/applications/{id}/screening/…` | L3 rank + optional L4; `screening:write` for reruns |
-| Candidate CRM | `/candidates/…` | Profiles, notes, tags, scorecards, merge; `profiles:*` (not `candidates:read`) |
+| Soft offers | `/offers/…` | Draft / send / withdraw; `offers:*`; Growth+ |
+| Insights | `/insights/funnel/` | Stage counts; `insights:read`; Growth+ |
+| Candidate CRM | `/candidates/…` | Profiles, notes, tags, scorecards, merge; `profiles:*` |
 | Org reads | `/org/usage/`, `/org/developer/health/`, `/org/billing/`, `/org/audit-log/export/` | Mode-scoped usage/health/export; billing is org-global |
 | Org writes | `PATCH /org/`, `/org/squads/…`, `/org/member-invites/` | Scope `organisation:write` for mutations |
 | Pipelines | `POST /pipelines/create/`, enrollments, advance, notes | Linear stages; Growth+; `cv_screen` with jobs |
-| Destinations | `/webhooks/` (+ delivery retry) | Includes job / application / CRM events |
+| Destinations | `/webhooks/` (+ delivery retry) | Includes job / application / CRM / offer events |
 
 Guides: [Jobs](/guides/jobs) · [Screening](/guides/screening) · [Candidate profiles](/guides/candidates) · [Organisation](/guides/organisation) · [Pipelines](/guides/pipelines) · [Scopes](/guides/scopes) · [Webhooks](/guides/webhooks).
 
@@ -78,8 +88,5 @@ Paste keys only in trusted environments. Prefer [SDKs](/sdks/introduction) for p
  </Card>
  <Card title="Errors" icon="triangle-alert" href="/guides/errors">
  Stable `error.code` catalogue.
- </Card>
- <Card title="SDKs" icon="package" href="/sdks/introduction">
- Python, Node.js, Go.
  </Card>
 </CardGroup>

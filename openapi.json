@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Praxicraft Assess Public API",
-    "version": "1.7.0",
-    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove tasks |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate results and session breakdowns |\n| `tasks:read` | List and retrieve custom (org-owned) tasks |\n| `tasks:write` | Create, update, and delete custom tasks |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `jobs:read` | List and retrieve job openings, fields, knockout rules |\n| `jobs:write` | Create, update, publish, and close jobs; manage fields/rules |\n| `applications:read` | List and retrieve job applications |\n| `applications:write` | Create, advance, and reject applications |\n| `profiles:read` | List and retrieve org candidate CRM profiles |\n| `profiles:write` | Update profiles; notes, tags, scorecards, merge |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n| `assistant:write` | CLI Ask AI / `POST /assistant/chat/` (Starter+) |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'assessments:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
+    "version": "1.8.0",
+    "description": "Programmatic API for organisation integrations with Praxicraft Assess.\n\nAll endpoints live under `/api/v1/public/` and require a bearer-token API key.\n\n## Recommended integration order\n\n1. **Jobs** \u2014 create and publish openings (`jobs:*`)\n2. **Applications** \u2014 ingest or list applicants; advance / reject (`applications:*`)\n3. **Screening** \u2014 read match scores; optional rerun (`screening:write`)\n4. **Assessments / invitations** \u2014 invite above-threshold candidates\n5. **Pipelines / interviews / offers** \u2014 later stages as needed\n\nAssessment-only orgs can skip Jobs and start at Assessments.\n\n## Authentication\n\nCreate keys in **Assess \u2192 API Keys** (Live or Test mode) and include them on every request:\n```\nAuthorization: Bearer ct_live_<your-key>\n```\nTest-mode keys use `ct_test_` and only see test assessments, invites, and webhooks.\n\n## API Key Scopes\n\nScopes limit what a key can access. A key with **no scopes selected has full access** (legacy keys). Create narrow-scoped keys for each integration.\n\n| Scope | Access granted |\n|---|---|\n| `jobs:read` | List and retrieve job openings, fields, knockout rules, requirements |\n| `jobs:write` | Create, update, publish, and close jobs; manage fields/rules/requirements |\n| `applications:read` | List and retrieve job applications and screening results |\n| `applications:write` | Create, advance, reject, hold, and unhold applications |\n| `screening:write` | Re-run parse / rescore / AI brief / full screen |\n| `offers:read` | List and retrieve soft offers |\n| `offers:write` | Create, send, and withdraw soft offers |\n| `profiles:read` | List and retrieve org candidate CRM profiles |\n| `profiles:write` | Update profiles; notes, tags, scorecards, merge |\n| `pipelines:read` | List and retrieve hiring pipelines and enrollments |\n| `pipelines:write` | Create/update linear pipelines, enroll, advance, notes |\n| `assessments:read` | List and retrieve assessments |\n| `assessments:write` | Create, update, duplicate assessments; attach/replace/remove tasks |\n| `invitations:read` | List candidate invitations |\n| `invitations:write` | Create, remind, and cancel invitations |\n| `candidates:read` | Candidate assessment results and session breakdowns |\n| `tasks:read` | List and retrieve custom (org-owned) tasks |\n| `tasks:write` | Create, update, and delete custom tasks |\n| `interviews:read` | List interviews, analysis, replay, templates |\n| `interviews:write` | Create, cancel, reschedule, and share interviews |\n| `insights:read` | Hiring funnel insights (Growth+) |\n| `organisation:read` | Org info, billing entitlements, usage, health, team, squads, member invites, audit log |\n| `organisation:write` | Limited PATCH `/org/`, hiring squad CRUD and membership (Growth+) |\n| `webhooks:read` | List registered webhook destinations |\n| `webhooks:write` | Register, test, and retry webhook destinations |\n| `assistant:write` | CLI Ask AI / `POST /assistant/chat/` (Starter+) |\n\n**Insufficient scope error:**\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key does not have the 'jobs:read' scope.\", \"code\": \"INSUFFICIENT_SCOPE\" } }\n```\n\nEach operation lists its **Required scope** in the description.\n\n## IP allowlists\n\nEach key can have an optional CIDR allowlist, set per key in **Assess \u2192 Developer \u2192 API Keys**. Empty list = any IP. When set, requests from outside those networks return HTTP 403:\n\n```json\nHTTP 403\n{ \"error\": { \"message\": \"This API key is not allowed from this IP address.\", \"code\": \"IP_NOT_ALLOWED\" } }\n```\n\n## Rate limits\n\nLimits are **per organisation per hour** (shared across all API keys) and scale with plan:\n\n| Plan | Read (GET) | Write (POST / PATCH / DELETE) |\n|---|---|---|\n| Starter | 500 / hour | 100 / hour |\n| Growth | 2,000 / hour | 400 / hour |\n| Enterprise | 10,000 / hour | 2,000 / hour |\n\nBulk invite (`POST /assessments/{slug}/invites/bulk/`) is additionally capped at **20 requests / hour** per organisation.\n\nSuccessful responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Rate-limit errors return HTTP 429 with code `RATE_LIMITED` and a `Retry-After` header.\n\nEvery successful **GET** includes top-level `meta` with `plan`, `invite_limit`, `invites_used`, and `invites_remaining`.\n\n## Response format\n\nSuccessful responses return the resource directly (not wrapped in a status envelope). Errors return `{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }`."
   },
   "paths": {
     "/api/v1/public/assessments/": {
@@ -2712,6 +2712,115 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicOrgUsageResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/insights/funnel/": {
+      "get": {
+        "operationId": "public_insights_funnel",
+        "description": "\n\n> **Required scope:** `insights:read`",
+        "summary": "Hiring funnel stage counts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "job_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Insights"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {},
+                  "description": "Unspecified response body"
                 }
               }
             },
@@ -7095,6 +7204,14 @@
           },
           {
             "in": "query",
+            "name": "ordering",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Default ranks by L3 score. Pass submitted_at for chronological."
+          },
+          {
+            "in": "query",
             "name": "page_size",
             "schema": {
               "type": "integer"
@@ -7498,6 +7615,479 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicApplication"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/offers/": {
+      "get": {
+        "operationId": "public_offers_list",
+        "summary": "List soft offers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "application_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque pagination cursor \u2014 pass the value from `next` to fetch the next page."
+          },
+          {
+            "in": "query",
+            "name": "job",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Results per page, max 100 (default 20)."
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Offers"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offer"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "public_offers_create",
+        "summary": "Create draft soft offer",
+        "tags": [
+          "Public API \u2014 Offers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicOfferCreateRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicOfferCreateRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicOfferCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offer"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/offers/{offer_id}/": {
+      "get": {
+        "operationId": "public_offer_detail",
+        "description": "\n\n> **Required scope:** `offers:read`",
+        "summary": "Retrieve soft offer",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "offer_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Offers"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offer"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/offers/{offer_id}/send/": {
+      "post": {
+        "operationId": "public_offer_send",
+        "description": "\n\n> **Required scope:** `offers:write`",
+        "summary": "Send soft offer",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "offer_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Offers"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offer"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicAPIErrorBody"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/public/offers/{offer_id}/withdraw/": {
+      "post": {
+        "operationId": "public_offer_withdraw",
+        "description": "\n\n> **Required scope:** `offers:write`",
+        "summary": "Withdraw soft offer",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "offer_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Public API \u2014 Offers"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offer"
                 }
               }
             },
@@ -11579,6 +12169,56 @@
   },
   "components": {
     "schemas": {
+      "ApplicationScreenSummary": {
+        "type": "object",
+        "description": "Denormalized L3/L4 summary for ranked inbox (no N+1 parse blob).",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "l1_passed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "l3_score": {
+            "type": "string",
+            "format": "decimal",
+            "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$",
+            "nullable": true
+          },
+          "l3_breakdown": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "ai_brief": {
+            "type": "string"
+          },
+          "ai_red_flags": {
+            "type": "array",
+            "items": {}
+          },
+          "brief_error": {
+            "type": "string"
+          },
+          "auto_advanced": {
+            "type": "boolean"
+          },
+          "screened_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "parse_error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "l1_passed",
+          "l3_score",
+          "status"
+        ]
+      },
       "CVScreenResult": {
         "type": "object",
         "properties": {
@@ -12132,10 +12772,12 @@
               "held",
               "unheld",
               "screened",
-              "auto_advanced"
+              "auto_advanced",
+              "hired",
+              "offer_sent"
             ],
             "type": "string",
-            "x-spec-enum-id": "d54d96fcf237a83b"
+            "x-spec-enum-id": "c34de469ba36cfa6"
           },
           "actor_user_id": {
             "type": "string",
@@ -12293,10 +12935,11 @@
               "on_hold",
               "withdrawn",
               "advanced",
-              "rejected"
+              "rejected",
+              "hired"
             ],
             "type": "string",
-            "x-spec-enum-id": "395c39072d45c698"
+            "x-spec-enum-id": "53bd306f7c6bc5be"
           },
           "source": {
             "enum": [
@@ -12337,7 +12980,12 @@
             "readOnly": true
           },
           "screening": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApplicationScreenSummary"
+              }
+            ],
+            "nullable": true,
             "readOnly": true
           }
         },
@@ -12477,6 +13125,129 @@
           "id",
           "key",
           "label"
+        ]
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "job_slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "job_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "candidate_email": {
+            "type": "string",
+            "format": "email",
+            "readOnly": true
+          },
+          "candidate_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "scheduled",
+              "sent",
+              "accepted",
+              "declined",
+              "withdrawn",
+              "expired"
+            ],
+            "type": "string",
+            "x-spec-enum-id": "0babf44ed8414969",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "body_html": {
+            "type": "string"
+          },
+          "compensation_text": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "scheduled_send_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "nullable": true
+          },
+          "responded_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "nullable": true
+          },
+          "decline_reason": {
+            "type": "string",
+            "readOnly": true
+          },
+          "respond_url": {
+            "type": "string",
+            "readOnly": true
+          },
+          "livemode": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "application_id",
+          "candidate_email",
+          "candidate_name",
+          "created_at",
+          "decline_reason",
+          "id",
+          "job_slug",
+          "job_title",
+          "livemode",
+          "respond_url",
+          "responded_at",
+          "sent_at",
+          "status",
+          "title",
+          "updated_at"
         ]
       },
       "OrgCandidateDetail": {
@@ -13116,10 +13887,11 @@
               "on_hold",
               "withdrawn",
               "advanced",
-              "rejected"
+              "rejected",
+              "hired"
             ],
             "type": "string",
-            "x-spec-enum-id": "395c39072d45c698"
+            "x-spec-enum-id": "53bd306f7c6bc5be"
           },
           "source": {
             "enum": [
@@ -13160,7 +13932,12 @@
             "readOnly": true
           },
           "screening": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApplicationScreenSummary"
+              }
+            ],
+            "nullable": true,
             "readOnly": true
           },
           "enrollment_id": {
@@ -15073,6 +15850,12 @@
             "format": "date-time",
             "nullable": true
           },
+          "scheduled_publish_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When set on a draft, Celery auto-publishes at this UTC time."
+          },
           "cv_required": {
             "type": "boolean"
           },
@@ -15293,6 +16076,12 @@
             "format": "date-time",
             "nullable": true
           },
+          "scheduled_publish_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When set on a draft, Celery auto-publishes at this UTC time."
+          },
           "cv_required": {
             "type": "boolean"
           },
@@ -15393,6 +16182,42 @@
         },
         "required": [
           "message"
+        ]
+      },
+      "PublicOfferCreateRequest": {
+        "type": "object",
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body_html": {
+            "type": "string"
+          },
+          "compensation_text": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "scheduled_send_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "application_id"
         ]
       },
       "PublicOrgBillingResponse": {
@@ -17261,8 +18086,28 @@
   },
   "tags": [
     {
-      "name": "Public API \u2014 Organisation",
-      "description": "Organisation profile, billing entitlements, usage series, developer health, team, hiring squads, member invites, and audit log/export.\n\nRead scope: `organisation:read`. Mutations (limited PATCH, squads): `organisation:write`.\n\nCanonical paths use `/org/\u2026`. The US-spelling aliases `/organisation/\u2026` also work at runtime but are omitted from this catalog to avoid duplicates."
+      "name": "Public API \u2014 Jobs",
+      "description": "Job openings: list, create, update, publish, close, application fields, knockout rules, and screening requirements.\n\nRead endpoints require `jobs:read`. Mutations require `jobs:write`. Create requires `team_id` (alias `squad_id`). Empty API key scopes grant full access.\n\n**Start here for hiring integrations:** post a role, then collect applications."
+    },
+    {
+      "name": "Public API \u2014 Applications",
+      "description": "Inbound job applications: list, create (same submit path as careers), retrieve, advance, reject, hold, and unhold.\n\nRead endpoints require `applications:read`. Create / advance / reject / hold require `applications:write`."
+    },
+    {
+      "name": "Public API \u2014 Screening",
+      "description": "CV screening results and reruns for applications (L1\u2013L5).\n\nRead screening via `applications:read`. Rerun parse / rescore / AI brief requires `screening:write`."
+    },
+    {
+      "name": "Public API \u2014 Offers",
+      "description": "Soft offers after hire: list, create draft, send, and withdraw.\n\nRead: `offers:read`. Write: `offers:write`. Growth+ plan required. Not DocuSign / e-sign \u2014 letter + PDF + accept/decline link."
+    },
+    {
+      "name": "Public API \u2014 Profiles",
+      "description": "Org-scoped candidate CRM profiles (people), notes, tags, scorecards, and merge.\n\nRead: `profiles:read`. Write: `profiles:write`. Distinct from `candidates:read` (assessment results)."
+    },
+    {
+      "name": "Public API \u2014 Pipelines",
+      "description": "Manage multi-stage hiring pipelines and candidate enrollments.\n\nListing / reading pipelines and enrollment status requires `pipelines:read`. Creating/updating linear pipelines, enrolling, advancing, and notes require `pipelines:write`."
     },
     {
       "name": "Public API \u2014 Assessments",
@@ -17281,32 +18126,24 @@
       "description": "Manage custom (organisation-owned) tasks.\n\nListing / reading tasks requires `tasks:read`. Creating, updating, or deleting tasks requires `tasks:write`."
     },
     {
-      "name": "Public API \u2014 Pipelines",
-      "description": "Manage multi-stage hiring pipelines and candidate enrollments.\n\nListing / reading pipelines and enrollment status requires `pipelines:read`. Creating/updating linear pipelines, enrolling, advancing, and notes require `pipelines:write`."
-    },
-    {
-      "name": "Public API \u2014 Jobs",
-      "description": "Job openings: list, create, update, publish, close, application fields, and knockout rules.\n\nRead endpoints require `jobs:read`. Mutations require `jobs:write`. Create requires `team_id` (alias `squad_id`). Empty API key scopes grant full access."
-    },
-    {
-      "name": "Public API \u2014 Applications",
-      "description": "Inbound job applications: list, create (same submit path as careers), retrieve, advance, and reject.\n\nRead endpoints require `applications:read`. Create / advance / reject require `applications:write`."
-    },
-    {
-      "name": "Public API \u2014 Profiles",
-      "description": "Org-scoped candidate CRM profiles (people), notes, tags, scorecards, and merge.\n\nRead: `profiles:read`. Write: `profiles:write`. Distinct from `candidates:read` (assessment results)."
-    },
-    {
-      "name": "Public API \u2014 Webhooks",
-      "description": "Register and verify webhook endpoints for real-time event delivery.\n\nListing webhooks requires `webhooks:read`. Creating or testing webhooks requires `webhooks:write`."
-    },
-    {
       "name": "Public API \u2014 Interviews",
       "description": "Programmatic live AI and hybrid interviews.\n\nRead endpoints require `interviews:read`. Create, cancel, reschedule, and share require `interviews:write`."
     },
     {
+      "name": "Public API \u2014 Insights",
+      "description": "Hiring funnel stage counts for agents and dashboards.\n\nRequired scope: `insights:read`. Growth+ plan required."
+    },
+    {
+      "name": "Public API \u2014 Organisation",
+      "description": "Organisation profile, billing entitlements, usage series, developer health, team, hiring squads, member invites, and audit log/export.\n\nRead scope: `organisation:read`. Mutations (limited PATCH, squads): `organisation:write`.\n\nCanonical paths use `/org/\u2026`. The US-spelling aliases `/organisation/\u2026` also work at runtime but are omitted from this catalog to avoid duplicates."
+    },
+    {
       "name": "Public API \u2014 Integrations",
       "description": "Read ATS connection status, inbound webhook URLs, connect URLs, and credential tests.\n\nRequired scope: `organisation:read`"
+    },
+    {
+      "name": "Public API \u2014 Webhooks",
+      "description": "Register and verify webhook endpoints for real-time event delivery.\n\nListing webhooks requires `webhooks:read`. Creating or testing webhooks requires `webhooks:write`."
     },
     {
       "name": "Public API \u2014 Assistant",
@@ -17317,18 +18154,21 @@
     {
       "name": "Public API (Integrations)",
       "tags": [
-        "Public API \u2014 Organisation",
+        "Public API \u2014 Jobs",
+        "Public API \u2014 Applications",
+        "Public API \u2014 Screening",
+        "Public API \u2014 Offers",
+        "Public API \u2014 Profiles",
+        "Public API \u2014 Pipelines",
         "Public API \u2014 Assessments",
         "Public API \u2014 Invitations",
         "Public API \u2014 Results",
         "Public API \u2014 Tasks",
-        "Public API \u2014 Pipelines",
-        "Public API \u2014 Jobs",
-        "Public API \u2014 Applications",
-        "Public API \u2014 Profiles",
-        "Public API \u2014 Webhooks",
         "Public API \u2014 Interviews",
+        "Public API \u2014 Insights",
+        "Public API \u2014 Organisation",
         "Public API \u2014 Integrations",
+        "Public API \u2014 Webhooks",
         "Public API \u2014 Assistant"
       ]
     }

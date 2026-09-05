@@ -48,7 +48,8 @@ Assessment-only path: create an **assessment** → send an **invitation** → re
 | Proctoring | Integrity signals for human review (never auto-fail) | [Proctoring](/guides/proctoring) |
 | Interviews | AI / human / hybrid rooms, analysis, replay | [Live interviews](/guides/interviews) |
 | Pipelines | Multi-stage funnels, including `cv_screen` with jobs | [Pipelines](/guides/pipelines) |
-| Webhooks | Signed events for jobs, applications, screening, assessments, interviews | [Webhooks](/guides/webhooks) |
+| Webhooks | Signed events for jobs, applications, screening, assessments, interviews, offers | [Webhooks](/guides/webhooks) |
+| Soft offers | Letter + PDF + accept/decline after hire (Growth+; not e-sign) | [API Reference](/guides/api-reference) |
 | Organisation | Plan limits, seats, hiring squads, audit log | [Organisation](/guides/organisation) |
 
 ## Core concepts
@@ -64,6 +65,7 @@ Assessment-only path: create an **assessment** → send an **invitation** → re
 - **Result**: Score, pass/fail, optional proctoring signals.
 - **Pipeline**: Multi-stage funnel. Linked jobs can use a `cv_screen` stage.
 - **Interview**: Live AI, human, or hybrid room.
+- **Soft offer**: Letter + PDF + accept/decline link (`offers:*`, Growth+). Not DocuSign.
 - **Webhook**: HTTPS callback. Secret `whsec_…` shown once.
 - **API key**: `ct_live_…` or `ct_test_…` Bearer (Starter+). Empty scopes = full access (legacy).
 - **Hiring squad**: Growth+ sub-team for filtering jobs, assessments, and pipelines.

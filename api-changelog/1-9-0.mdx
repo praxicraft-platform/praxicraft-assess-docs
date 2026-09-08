@@ -1,0 +1,33 @@
+---
+title: "1.9.0: Interview list filters and platform task bank"
+description: "interviewer_mode list filter, platform-tasks search, and human_only coding task pinning on create."
+---
+
+**Shipped:** 2026-09-08 · **OpenAPI:** `1.9.0` · **Prefix:** `/api/v1/public/`
+
+## Breaking
+
+None. Existing interview create paths keep working. Coding and mixed **human_only** creates now require at least one of `coding_task_ids` / `org_task_ids` (same rule AI/hybrid already had).
+
+## Added
+
+### List filter: `interviewer_mode`
+
+`GET /interviews/` accepts `interviewer_mode` as a single value or comma-separated list: `ai_only`, `human_only`, `hybrid`. Existing filters `status`, `interview_type`, and `q` are documented on the OpenAPI schema.
+
+### Platform task bank
+
+| Method | Path | Scope |
+|--------|------|-------|
+| GET | `/interviews/platform-tasks/?q=` | `interviews:read` |
+
+Use returned task UUIDs in `coding_task_ids` on create/bulk. Org bank remains `GET /interviews/org-tasks/`.
+
+### Scheduled coding interviews
+
+`human_only` rooms with `interview_type` `coding` or `mixed` pin `coding_task_ids` / `org_task_ids` at create time (no AI plan generation). Aligns Public API create with the dashboard scheduled-interview flow.
+
+## Guides
+
+- [Live interviews](/guides/interviews)
+- [Pipelines](/guides/pipelines) (stages vs Kanban board in the dashboard)

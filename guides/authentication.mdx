@@ -116,16 +116,29 @@ Same organisation, two isolated environments. Switch **Live / Test** in the dash
 | | Live (`ct_live_…`) | Test (`ct_test_…`) |
 |--|--|--|
 | Dashboard | Org menu → **Switch to test mode** | Org menu → **Switch to live mode** (amber banner) |
-| Assessments, invites, pipelines, webhooks, API keys | Production hiring data | Isolated copies. starts **empty** |
-| Candidate email | Sent when you ask | Never sent |
-| Invite / assessment quota | Counts | Does not count |
+| Assessments, invites, jobs, pipelines, interviews, webhooks, API keys | Production hiring data | Isolated copies. starts **empty** |
+| Candidate email (invites, reminders, interview invites) | Sent when you ask | Never sent |
+| Invite / assessment / interview quota | Counts | Does not count |
+| Plan features (hybrid interviews, pipelines, CV screening, …) | Plan-gated | Still plan-gated (Test is not a feature unlock) |
 | Webhooks | Only live destinations | Only test destinations |
+| Public careers / job board | Live open jobs only | Test jobs never appear on careers |
 
 **Shared across modes:** org profile, team members, billing, platform task catalog, org task library. **Copy to test mode** on a live assessment duplicates the assessment and its task links (new slug, draft, no invites).
 
 Wrong-mode GET returns **404** (a test key cannot see a live assessment id). Objects include `"livemode": true|false` in Public API JSON.
 
 Dashboard session requests send `X-Praxicraft-Livemode: true|false`. Public API mode comes only from the key prefix.
+
+### Candidate links in Test mode
+
+Invite and interview create responses still return `invite_url` / join links so you can exercise the full flow with a `ct_test_…` key.
+
+- Assessment links use `/take/{token}`
+- Interview links use `/interview/{token}`
+- Those URLs work without an API key
+- The candidate UI shows a clear **Test mode** banner so a shared practice link does not look like live hiring
+
+Use Test mode for integrations and dry runs. Use Live mode (and careers publish) for real applicants.
 
 <Warning>
 A key that does not start with `ct_live_` or `ct_test_` is not treated as an organisation key (MCP tokens use a different format). Do not mint a fake prefix that still points at production data. use Test mode instead.

@@ -69,7 +69,9 @@ curl -sS -X POST https://assess.praxicraft.com/api/v1/public/interviews/create/ 
  }'
 ```
 
-List responses include quota fields such as `used`, `limit`, and `remaining`.
+List responses include quota fields such as `used`, `limit`, and `remaining`. Interview rooms are mode-scoped like assessments (`livemode` on the object; Test keys only see Test rooms).
+
+In **Test** mode, `send_invite: true` does not email the candidate. The join link (`/interview/{token}`) still works for practice runs and shows a **Test mode** banner on the candidate UI. Interview quota is not consumed in Test. See [Live and Test mode](/guides/authentication#live-and-test-mode).
 
 ### Webhook events
 

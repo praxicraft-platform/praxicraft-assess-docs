@@ -99,7 +99,7 @@ curl -sS -X POST https://assess.praxicraft.com/api/v1/public/applications/create
 
 List defaults to L3 match rank when screening exists (`ordering=-l3_score,-submitted_at`). Pass `?ordering=submitted_at` for chronological order. Filter with `job_id` / `job_slug`, `status`, `team_id` / `squad_id`.
 
-Careers (anonymous, no API key): `/api/v1/careers/{org_slug}/jobs/…`.
+Careers (anonymous, no API key): `/api/v1/careers/{org_slug}/jobs/…` — **Live open jobs only**. Test-mode jobs stay out of the public board even if `status` is `open`.
 
 ### Webhooks
 

@@ -5,18 +5,23 @@ description: "AI, human, or hybrid interview rooms from the dashboard or the Pub
 
 Live interviews are real-time sessions (not take-home assessments). Candidates join from an email link and never see your API key.
 
+In the Assess dashboard, interviews are split into **AI Interviews** and **Scheduled interviews** (human and hybrid). Both can include coding tasks when the interview type is `coding` or `mixed`.
+
 ## If you are recruiting / ops
 
 Use the [Assess dashboard](https://assess.praxicraft.com/assess):
 
 <Steps>
  <Step title="Choose the interview style">
- - **Human only**: you (or a teammate) lead the call 
- - **AI only**: Assess runs the interview (needs a job description and resume text) 
- - **Hybrid**: AI + human (Growth plan)
+ - **AI Interviews**: Assess runs the interview (needs a job description and resume text)
+ - **Scheduled interviews — Human only**: you (or a teammate) lead the live call
+ - **Scheduled interviews — Hybrid**: AI starts and a human can take over (Growth plan)
+ </Step>
+ <Step title="Pin coding tasks when needed">
+ For `coding` or `mixed` interviews (AI, human, or hybrid), pick at least one platform or org task before you send the invite — the same flow as HackerRank-style live coding screens.
  </Step>
  <Step title="Schedule and invite">
- Create the interview, add the candidate’s email, and send the invite. They join from the magic link in email.
+   Create the interview, add the candidate's email, and send the invite. They join from the magic link in email.
  </Step>
  <Step title="Review afterwards">
  Open analysis and replay in the dashboard when the session is done. Share a link with hiring managers if needed.
@@ -29,9 +34,9 @@ Connecting interviews to your ATS? See [Integrations](/integrations/overview) (G
 
 | Mode | Who leads | Notes |
 |------|-----------|--------|
-| `human_only` | Recruiter | Standard live room |
-| `ai_only` | AI | Requires `job_description` + `resume_text` |
-| `hybrid` | Both | Growth plan |
+| `human_only` | Recruiter | Standard live room; pin tasks for coding/mixed |
+| `ai_only` | AI | Requires `job_description` + `resume_text`; pin tasks for coding/mixed |
+| `hybrid` | Both | Growth plan; pin tasks for coding/mixed |
 
 Video and in-room controls stay in the Assess product UI.
 
@@ -41,33 +46,48 @@ Scopes: `interviews:read` / `interviews:write`. Base path: `/api/v1/public/inter
 
 | Action | Path |
 |--------|------|
-| List / create | `GET/POST /interviews/` · `POST /interviews/create/` |
+| List / create | `GET /interviews/` · `POST /interviews/create/` |
 | Bulk create | `POST /interviews/bulk/` |
 | Retrieve / cancel / reschedule | `/interviews/{id}/…` |
 | Analysis / replay / share | `/interviews/{id}/analysis/`, `/replay/`, share link |
 | Templates | CRUD under `/interviews/templates/…` |
 | Analytics | Interview analytics endpoint |
-| Org coding tasks | List org tasks available for interviews (`GET /interviews/org-tasks/`) |
+| Org coding tasks | `GET /interviews/org-tasks/` |
+| Platform coding tasks | `GET /interviews/platform-tasks/?q=` |
+
+### List filters
+
+| Param | Description |
+| --- | --- |
+| `status` | Room status |
+| `interview_type` | `coding`, `behavioral`, `mixed`, `system_design`, `technical` |
+| `interviewer_mode` | Comma-separated: `ai_only`, `human_only`, `hybrid` |
+| `q` | Candidate name or email |
+| `cursor` / `page_size` | Cursor pagination |
 
 Full schemas: [API Reference](/guides/api-reference) or [ReDoc](https://assess.praxicraft.com/api/v1/public/redoc/).
 
-### Create example
+### Create example (scheduled coding)
 
 ```bash
 curl -sS -X POST https://assess.praxicraft.com/api/v1/public/interviews/create/ \
  -H "Authorization: Bearer $PRAXICRAFT_API_KEY" \
  -H "Content-Type: application/json" \
  -d '{
- "title": "Staff backend screen",
- "interviewer_mode": "ai_only",
- "interview_type": "technical",
+ "title": "Staff backend live coding",
+ "interviewer_mode": "human_only",
+ "interview_type": "coding",
  "candidate_email": "candidate@example.com",
  "candidate_name": "Jane Doe",
- "job_description": "…",
- "resume_text": "…",
+ "scheduled_at": "2030-01-15T14:00:00Z",
+ "time_limit_minutes": 60,
+ "coding_task_ids": ["PLATFORM_TASK_UUID"],
+ "org_task_ids": [],
  "send_invite": true
  }'
 ```
+
+For AI screens, set `interviewer_mode` to `ai_only` (or `hybrid`) and include `job_description` plus `resume_text`. Coding and mixed types still require `coding_task_ids` and/or `org_task_ids`.
 
 List responses include quota fields such as `used`, `limit`, and `remaining`.
 

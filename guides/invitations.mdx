@@ -90,11 +90,11 @@ curl -sS -X POST \
  }'
 ```
 
-Returns `invited[]` and `skipped[{ "email", "reason" }]`. Also limited to **20 bulk requests/hour**.
+Returns `invited[]` (each row includes `livemode`) and `skipped[{ "email", "reason" }]`. Also limited to **20 bulk requests/hour**.
 
 ### Remind / cancel
 
-- Remind: one per invitation per 24 hours → else `REMINDER_COOLDOWN`
+- Remind: one per invitation per 24 hours → else `REMINDER_COOLDOWN`. In Test mode, Assess does not email — the call succeeds with a skip message.
 - Cancel: **pending** only → `204`; fails if already started
 
 ## Next

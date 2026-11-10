@@ -88,23 +88,7 @@ Nav tabs: **Guides** (get started only) · **Product** (jobs, screening, assessm
 When the Public API changes in the main Assess backend, regenerate `openapi.json` from the live public schema (paths under `/api/v1/public/*`), then rebuild the Postman collection:
 
 ```bash
-# From the Gamified-Application monorepo (Docker backend):
-docker compose -f docker-compose.dev.yml run --rm \
-  -v /path/to/praxicraft-assess-docs:/assess-docs \
-  backend python -c "
-import json, django, os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
-from drf_spectacular.views import SpectacularAPIView
-from apps.assess.public_openapi import get_public_spectacular_settings
-from rest_framework.test import APIRequestFactory
-request = APIRequestFactory().get('/api/v1/public/schema/', HTTP_ACCEPT='application/json')
-response = SpectacularAPIView.as_view(custom_settings=get_public_spectacular_settings())(request)
-with open('/assess-docs/openapi.json', 'w') as f:
-    json.dump(response.data, f, indent=2)
-    f.write('\n')
-"
-
+curl --fail --silent --show-error https://assess.praxicraft.com/api/v1/public/schema/ -o openapi.json
 node scripts/openapi-to-postman.mjs
 ```
 

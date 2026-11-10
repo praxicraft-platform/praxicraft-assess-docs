@@ -1,0 +1,20 @@
+---
+title: "Integration security"
+description: "Protect credentials and personal data when using the Assess Public API."
+---
+
+Keep API keys in server-side environment variables or a secret manager. Never place them in browser bundles, public repositories, screenshots, or logs. Use the smallest scopes your integration needs and rotate a key if it is exposed.
+
+## Browser requests
+
+CORS controls browser access to responses. It does not authenticate an API client or stop scripts running outside a browser. Public API integrations must supply their authorized API key; a matching Origin or Referer header is not proof of identity.
+
+## Requests and personal data
+
+Request only the task, assessment, invitation, or result data the integration needs. Avoid logging candidate payloads or invitation tokens. Follow the documented pagination and rate limits; handle rate-limit responses without retrying in a tight loop.
+
+## Public API and account sign-in
+
+Account signup, email verification, and two-factor authentication are product sign-in flows. They are separate from the organization API keys used by the official SDKs. Do not substitute account session cookies for Public API credentials.
+
+Report a suspected vulnerability to [security@praxicraft.com](mailto:security@praxicraft.com). Do not include live credentials in public issues.
